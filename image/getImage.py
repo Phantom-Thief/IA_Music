@@ -2,11 +2,12 @@
 import pyscreeze
 # Importing Image module from PIL package  
 from PIL import Image  
-import PIL  
-   
+import PIL
+
+import datetime
+
   
 im1 = pyscreeze.screenshot()
-im2 = pyscreeze.screenshot('my_screenshot.png')
 
 # save a image using extension 
-im1 = im1.save("geeks.jpg") 
+im1 = im1.save( str(datetime.datetime.now()) ) 
