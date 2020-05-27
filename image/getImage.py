@@ -6,8 +6,14 @@ import PIL
 
 import datetime
 
-  
+
 im1 = pyscreeze.screenshot()
 
-# save a image using extension 
-im1 = im1.save( str(datetime.datetime.now()) ) 
+#build image name
+name = str(datetime.datetime.now())
+name = name.replace('-','_')
+name = name.replace(':','_')
+dot= name.find('.')
+name = name[:dot]+".jpeg"
+# save a image using extension
+im1 = im1.save(name)
