@@ -14,5 +14,6 @@ name = name.replace('-','_')
 name = name.replace(':','_')
 dot= name.find('.')
 name = name[:dot]+".jpeg"
+name = "tmp.jpeg"
 # save a image using extension
 im1 = im1.save(name)
