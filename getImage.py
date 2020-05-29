@@ -6,15 +6,9 @@ import PIL
 
 import datetime
 
-def getImage():
-    im1 = pyscreeze.screenshot()
+class GetImage():
+    def __init__(self):
+        self.image = None
 
-    #build image name
-    name = str(datetime.datetime.now())
-    name = name.replace('-','_')
-    name = name.replace(':','_')
-    dot= name.find('.')
-    name = name[:dot]+".jpeg"
-    name = "tmp.jpeg"
-    # save a image using extension
-    im1 = im1.save(name)
+    def takeScreen(self):
+        self.image = pyscreeze.screenshot()
