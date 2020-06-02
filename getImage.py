@@ -1,8 +1,9 @@
 #import module for screenshot
 import pyscreeze
 # Importing Image module from PIL package  
-from PIL import Image
 import PIL
+from PIL import Image
+#from PIL import Image
 
 import datetime
 
