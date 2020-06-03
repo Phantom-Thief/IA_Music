@@ -3,11 +3,10 @@ import wave
 
 class getSound:
 
-    def init(self,a_duration):
+    def init(self):
         self.a_record = None
-        self.duration = a_duration
 
-    def record(self):
+    def record(self, duration):
         # set the chunk size of 1024 samples
         chunk = 1024
         # sample format
@@ -31,7 +30,7 @@ class getSound:
                         frames_per_buffer=chunk)
         frames = []
         print("Recording...")
-        for i in range(int(44100 / chunk * self.duration)):
+        for i in range(int(44100 / chunk * duration)):
             data = stream.read(chunk)
             # if you want to hear your voice while recording
             # stream.write(data)
@@ -52,7 +51,7 @@ class getSound:
         # wf.writeframes(b''.join(frames))
         # wf.close()
 
-sound = getSound(2)
-sound.record()
+# sound = getSound(2)
+# sound.record()
 #pour voir se que ça donne
 #print("sortie audio : {}".format(sound.a_record))

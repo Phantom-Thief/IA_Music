@@ -2,7 +2,6 @@
 import pyscreeze
 # Importing Image module from PIL package  
 import PIL
-from PIL import Image
 #from PIL import Image
 
 import datetime
