@@ -27,6 +27,21 @@ class Mouselog:
         with Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll) as listener:
             listener.join()
 
+    def write_on_file(self, filename):
+        with open(filename,'w') as f:
+            for mov in self.move:
+                f.write(mov)
+                f.write("\n")
+            f.write(";\n")
+            for cli in self.clic:
+                f.write(cli)
+                f.write("\n")
+            f.write(";\n")
+            for scro in self.scroll:
+                f.write(scro)
+                f.write("\n")
+            f.write(";")
+
     def start(self):
         """
         permet de démarrer le mouselogger

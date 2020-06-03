@@ -24,6 +24,7 @@ def test_mouselog(waittime):
     mlog.start()
     time.sleep(waittime)
     mlog.stop()
+    mlog.write_on_file("mouse.txt")
     # print(mlog.move)
     # print(mlog.clic)
     # print(mlog.scroll)
@@ -36,6 +37,7 @@ def test_getImage():
 def test_getSound():
     sound = getSound.getSound()
     sound.record(2)
+    sound.write_on_file("sound.wav")
 
 if __name__ == "__main__":
     main()

@@ -3,35 +3,39 @@ import wave
 
 class getSound:
 
-    def init(self):
+    def init(self, chunk=1024, format=pyaudio.paInt16, channels=1, sample_rate=44100):
         self.a_record = None
+        self.a_chunk=chunk
+        self.a_format=format
+        self.a_channels=channels
+        self.a_sample_rate=sample_rate
+        self.a_pyaudio = pyaudio.PyAudio()
+
+    def write_on_file(self,filename):
+        wf = wave.open(filename, 'wb')
+        wf.setnchannels(self.a_channels)
+        wf.setsampwidth(self.a_pyaudio.get_sample_size(self.a_format))
+        wf.setframerate(self.a_sample_rate)
+        wf.writeframes(b''.join(self.a_record))
+        wf.close()
 
     def record(self, duration):
-        # set the chunk size of 1024 samples
-        chunk = 1024
-        # sample format
-        FORMAT = pyaudio.paInt16
-        # mono, change to 2 if you want stereo
-        channels = 1
-        # 44100 samples per second
-        sample_rate = 44100
-
         #fichier de sortie pour test
         #sortie_test = "output.wav"
 
         # initialize PyAudio object
-        p = pyaudio.PyAudio()
+        p = self.a_pyaudio
         # open stream object as input & output
-        stream = p.open(format=FORMAT,
-                        channels=channels,
-                        rate=sample_rate,
+        stream = p.open(format=self.a_format,
+                        channels=self.a_channels,
+                        rate=self.a_sample_rate,
                         input=True,
                         output=True,
-                        frames_per_buffer=chunk)
+                        frames_per_buffer=self.a_chunk)
         frames = []
         print("Recording...")
-        for i in range(int(44100 / chunk * duration)):
-            data = stream.read(chunk)
+        for i in range(int(44100 / self.a_chunk * duration)):
+            data = stream.read(self.a_chunk)
             # if you want to hear your voice while recording
             # stream.write(data)
             frames.append(data)
@@ -42,16 +46,3 @@ class getSound:
         stream.close()
         # terminate pyaudio object
         p.terminate()
-
-        #partie des tests
-        # wf = wave.open(sortie_test, 'wb')
-        # wf.setnchannels(channels)
-        # wf.setsampwidth(p.get_sample_size(FORMAT))
-        # wf.setframerate(sample_rate)
-        # wf.writeframes(b''.join(frames))
-        # wf.close()
-
-# sound = getSound(2)
-# sound.record()
-#pour voir se que ça donne
-#print("sortie audio : {}".format(sound.a_record))
