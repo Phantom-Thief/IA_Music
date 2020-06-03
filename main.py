@@ -36,6 +36,9 @@ def test_getImage():
 
 def test_getSound():
     sound = getSound.getSound()
+    print()
+    print(sound.a_pyaudio)
+    print()
     sound.record(2)
     sound.write_on_file("sound.wav")
 
