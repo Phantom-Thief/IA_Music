@@ -3,7 +3,7 @@ import wave
 
 class getSound:
 
-    def init(self, chunk=1024, format=pyaudio.paInt16, channels=1, sample_rate=44100):
+    def __init__(self, chunk=1024, format=pyaudio.paInt16, channels=1, sample_rate=44100):
         self.a_record = None
         self.a_chunk=chunk
         self.a_format=format
@@ -12,9 +12,10 @@ class getSound:
         self.a_pyaudio = pyaudio.PyAudio()
 
     def write_on_file(self,filename):
+        p = self.a_pyaudio
         wf = wave.open(filename, 'wb')
         wf.setnchannels(self.a_channels)
-        wf.setsampwidth(self.a_pyaudio.get_sample_size(self.a_format))
+        wf.setsampwidth(p.get_sample_size(self.a_format))
         wf.setframerate(self.a_sample_rate)
         wf.writeframes(b''.join(self.a_record))
         wf.close()
