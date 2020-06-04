@@ -65,8 +65,8 @@ class Mouselog:
         try:
             for i in self.move:
                 points.append(i[1])
-            p1 = np.min(points)
-            p2 = np.max(points)
+            p1 = np.min(points,axis=0)
+            p2 = np.max(points,axis=0)
             return distance.euclidean(p1,p2)
         except:
             return 0
@@ -76,12 +76,26 @@ class Mouselog:
         return the number of left clic
         """
         leftClic = []
+        try:
+            for i in self.clic:
+                if "left" in str(i[2]):
+                    leftClic.append(i)
+            return len(leftClic)
+        except:
+            return 0
 
     def getRightMouseClicF(self):
         """
         return the number of right clic
         """
         rightClic = []
+        try:
+            for i in self.clic:
+                if "right" in str(i[2]):
+                    rightClic.append(i)
+            return len(rightClic)
+        except:
+            return 0
 
     def on_move(self,x,y):
         """

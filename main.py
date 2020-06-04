@@ -7,7 +7,7 @@ import Mouselogger
 def main():
 
     # test_keylog(5)
-    test_mouselog(2)
+    test_mouselog(5)
     # test_getImage()
     # test_getSound(2)
     #test_threading()
@@ -48,12 +48,16 @@ def test_mouselog(waittime):
     time.sleep(waittime)
     mlog.stop()
     mlog.write_on_file("test/mouse.txt")
+    print("dist1 : ")
     print(mlog.getTravelDistance())
+    print("distCumul : ")
     print(mlog.getCumulTravelDistance())
+    print("distMax : ")
     print(mlog.getMaxDistance())
-    # print(mlog.move)
-    # print(mlog.clic)
-    # print(mlog.scroll)
+    print("leftClicF : ")
+    print(mlog.getLeftMouseClicF())
+    print("rightClicF : ")
+    print(mlog.getRightMouseClicF())
 
 def test_getImage():
     screen = getImage.GetImage()
