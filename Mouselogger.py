@@ -36,32 +36,52 @@ class Mouselog:
         """
         return distance between the first and the last cursor's position
         """
-        p1 = self.move[0][1]
-        p2 = self.move[-1][1]
-        return distance.euclidean(p1,p2)
+        try:
+            p1 = self.move[0][1]
+            p2 = self.move[-1][1]
+            return distance.euclidean(p1,p2)
+        except:
+            return 0
 
     def getCumulTravelDistance(self):
         """
         return the whole distance traveled by the cursor
         """
         dist = []
-        for i in range(len(self.move)-1):
-            p1 = self.move[i][1]
-            p2 = self.move[i+1][1]
-            dist.append( distance.euclidean(p1,p2) )
-        return np.sum(dist)
+        try:
+            for i in range(len(self.move)-1):
+                p1 = self.move[i][1]
+                p2 = self.move[i+1][1]
+                dist.append( distance.euclidean(p1,p2) )
+            return np.sum(dist)
+        except:
+            return 0
 
     def getMaxDistance(self):
         """
         return the distance between the two farthest points
         """
         points = []
-        for i in self.move:
-            points.append(i[1])
-        p1 = np.min(points)
-        p2 = np.max(points)
-        return distance.euclidean(p1,p2)
+        try:
+            for i in self.move:
+                points.append(i[1])
+            p1 = np.min(points)
+            p2 = np.max(points)
+            return distance.euclidean(p1,p2)
+        except:
+            return 0
 
+    def getLeftMouseClicF(self):
+        """
+        return the number of left clic
+        """
+        leftClic = []
+
+    def getRightMouseClicF(self):
+        """
+        return the number of right clic
+        """
+        rightClic = []
 
     def on_move(self,x,y):
         """
@@ -74,8 +94,9 @@ class Mouselog:
         """
         add logs and mouse's coordonates when a mouse's button is pressed or release
         """
-        log = ( datetime.now().time(), (x,y) )
-        self.clic.append(log)
+        if pressed:
+            log = ( datetime.now().time(), (x,y), button )
+            self.clic.append(log)
 
     def on_scroll(self,x,y,dx,dy):
         """

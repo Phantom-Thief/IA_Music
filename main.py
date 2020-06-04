@@ -7,7 +7,7 @@ import Mouselogger
 def main():
 
     # test_keylog(5)
-    test_mouselog(5)
+    test_mouselog(2)
     # test_getImage()
     # test_getSound(2)
     #test_threading()
