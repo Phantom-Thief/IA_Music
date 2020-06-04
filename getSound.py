@@ -1,9 +1,16 @@
+#importation du module qui permet le record du son
 import pyaudio
+#import pour la creation de .wav
 import wave
+#import pour les Threads
 from threading import Thread
 
 class getSound(Thread):
-
+    """ Création de la classe getSound. Cette classe permet l'enregistrement du microphone pendant a_duration secondes.
+        L'enregistrement peut etre lancer avec la fonction Run() puis enregistré avec la fonction write_on_file()
+    """
+    
+    #Constructeur de la classe getSound()
     def __init__(self, chunk=1024, format=pyaudio.paInt16, channels=1, sample_rate=44100, duration=8):
         Thread.__init__(self)
         self.a_record = None
@@ -14,6 +21,7 @@ class getSound(Thread):
         self.a_duration=duration
         self.a_pyaudio = pyaudio.PyAudio()
 
+    #permet d'enregistrer l'audio record
     def write_on_file(self,filename):
         p = self.a_pyaudio
         wf = wave.open(filename, 'wb')
@@ -23,6 +31,7 @@ class getSound(Thread):
         wf.writeframes(b''.join(self.a_record))
         wf.close()
 
+    #lance le programme de captation du son
     def run(self):
         #fichier de sortie pour test
         #sortie_test = "output.wav"
