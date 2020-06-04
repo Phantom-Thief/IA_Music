@@ -1,14 +1,17 @@
 import pyaudio
 import wave
+from threading import Thread
 
-class getSound:
+class getSound(Thread):
 
-    def __init__(self, chunk=1024, format=pyaudio.paInt16, channels=1, sample_rate=44100):
+    def __init__(self, chunk=1024, format=pyaudio.paInt16, channels=1, sample_rate=44100, duration=8):
+        Thread.__init__(self)
         self.a_record = None
         self.a_chunk=chunk
         self.a_format=format
         self.a_channels=channels
         self.a_sample_rate=sample_rate
+        self.a_duration=duration
         self.a_pyaudio = pyaudio.PyAudio()
 
     def write_on_file(self,filename):
@@ -20,7 +23,7 @@ class getSound:
         wf.writeframes(b''.join(self.a_record))
         wf.close()
 
-    def record(self, duration):
+    def run(self):
         #fichier de sortie pour test
         #sortie_test = "output.wav"
 
@@ -35,7 +38,7 @@ class getSound:
                         frames_per_buffer=self.a_chunk)
         frames = []
         print("Recording...")
-        for i in range(int(44100 / self.a_chunk * duration)):
+        for i in range(int(44100 / self.a_chunk * self.a_duration)):
             data = stream.read(self.a_chunk)
             # if you want to hear your voice while recording
             # stream.write(data)
