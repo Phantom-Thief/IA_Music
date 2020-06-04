@@ -9,25 +9,24 @@ class Mouselog:
         self.scroll = []
 
         def on_move(x,y):
-            log = str(datetime.now().time()) + "/" + str((x,y))
+            log = str(datetime.now().time()) + " " + str((x,y))
             self.move.append(log)
 
         def on_click(x,y,button,pressed):
-            log = str(datetime.now().time()) + "/" + str((x,y))
+            log = str(datetime.now().time()) + " " + str((x,y))
             self.clic.append(log)
 
         def on_scroll(x,y,dx,dy):
-            log = str(datetime.now().time()) + "/" + str((x,y,dx,dy))
+            log = str(datetime.now().time()) + " " + str((x,y,dx,dy))
             self.scroll.append(log)
 
         self.listener = Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll)
 
 
-    def getFreqClick(self):
-        plage_tps = self.clic[0]
-        print(plage_tps)
-        return plage_tps
-    
+    def mouseLogger():
+        with Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll) as listener:
+            listener.join()
+
     def write_on_file(self, filename):
         with open(filename,'w') as f:
             for mov in self.move:
