@@ -3,15 +3,14 @@ import time
 import getImage
 import Mouselogger
 from Recorder_Son import Recorder
+import numpy as np
 
 def main():
 
-    # test_keylog(5)
-    # test_mouselog(5)
-    # test_getImage()
-    # test_getSound(2)
-    test_threading()
-    #pass
+    vector = np.zeros(5)
+    #[distance cumulée, fréquence clic, fréquence touche (+touches particulière), amplitude du son du micro, info API]
+    
+
 
 
 def test_threading():
