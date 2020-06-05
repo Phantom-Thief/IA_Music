@@ -68,10 +68,5 @@ def test_getImage():
     screen.takeScreen()
     screen.takeScreen("test/image.png")
 
-def test_getSound(duration):
-    sound = getSound.getSound()
-    sound.record(duration)
-    sound.write_on_file("test/sound.wav")
-
 if __name__ == "__main__":
     main()

