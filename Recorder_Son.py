@@ -3,6 +3,9 @@ import pyaudio
 #import pour la creation de .wav
 import wave
 import time
+import matplotlib.pyplot as plt
+
+import soundfile as sf
 
 class Recorder(object):
 
@@ -58,6 +61,13 @@ class RecordingFile(object):
             return in_data, pyaudio.paContinue
         return callback
 
+    def amplitude(self):
+        data, samplerate = sf.read(self.fname)
+        abs_data = abs(data)
+        plt.plot(abs_data)
+        plt.ylabel('some numbers')
+        plt.show()
+        return abs_data
 
     def close(self):
         self._stream.close()
@@ -70,3 +80,14 @@ class RecordingFile(object):
         wavefile.setsampwidth(self._pa.get_sample_size(pyaudio.paInt16))
         wavefile.setframerate(self.rate)
         return wavefile
+
+"""
+GetS = Recorder()
+S = GetS.open('Sortie_GetS.wav')
+S.start_recording()
+print("Lancement du son")
+time.sleep(5)
+print("hop hop on stop le record")
+S.stop_recording()
+print(S.amplitude())
+"""
