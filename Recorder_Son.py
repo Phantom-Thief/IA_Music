@@ -3,7 +3,8 @@ import pyaudio
 #import pour la creation de .wav
 import wave
 import time
-import matplotlib.pyplot as plt
+#Décommenter cette ligne pour plt les graphiques
+#import matplotlib.pyplot as plt
 
 import soundfile as sf
 
@@ -64,9 +65,11 @@ class RecordingFile(object):
     def amplitude(self):
         data, samplerate = sf.read(self.fname)
         abs_data = abs(data)
+        """ #décommenter la section ci-dessous pour voir les graphiquesS
         plt.plot(abs_data)
-        plt.ylabel('some numbers')
+        plt.ylabel('Amplitude')
         plt.show()
+        """
         return abs_data
 
     def close(self):
