@@ -35,6 +35,9 @@ def test_threading():
     time.sleep(10)
     print("hop hop on stop le record")
     S.stop_recording()
+    #Donne les amplitudes du fichiers wav courant
+    #S.amplitude()
+
     klog.stop()
     print("keylog arrêté")
     mlog.stop()
