@@ -51,8 +51,9 @@ def test_threading(vector):
     vector[0] = mlog.getCumulTravelDistance()/2202
     vector[1] = mlog.getNbSample()[1]/recordTime
     vector[2] = klog.CountKey()/recordTime
-    vector[3] = 0 #GetS.amplitude()
+    vector[3] = S.amplitude()
     vector[4] = 0
+
     return vector
 
 def test_keylog(waittime):
