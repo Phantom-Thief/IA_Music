@@ -1,17 +1,20 @@
+"""
+Tous les imports pour pouvoir lancer le programme
+"""
 #importation du module qui permet le record du son
 import pyaudio
 #import pour la creation de .wav
 import wave
 import time
 import _portaudio as pa
-#Décommenter cette ligne pour plt les graphiques
+# cette ligne pour plt les graphiques
 import matplotlib.pyplot as plt
 import numpy
 import soundfile as sf
 
 class Recorder(object):
-
-
+    """Création de la classe Recorder.
+    """
     def __init__(self, channels=1, rate=44100, frames_per_buffer=1024):
         self.a_channels = channels
         self.a_rate = rate
@@ -69,7 +72,7 @@ class RecordingFile(object):
         self.a_abs_data = abs(data)
 
         if(plot):
-            #décommenter la section ci-dessous pour voir les graphiquesS
+            #décommenter la section ci-dessous pour voir les graphiques
             plt.plot(self.a_abs_data)
             plt.ylabel('Amplitude')
             plt.show()
