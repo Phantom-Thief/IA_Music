@@ -4,8 +4,8 @@ import pyaudio
 import wave
 import time
 #Décommenter cette ligne pour plt les graphiques
-#import matplotlib.pyplot as plt
-
+import matplotlib.pyplot as plt
+import numpy
 import soundfile as sf
 
 class Recorder(object):
@@ -34,6 +34,7 @@ class RecordingFile(object):
         self._pa = pyaudio.PyAudio()
         self.wavefile = self._prepare_file(self.fname, self.mode)
         self._stream = None
+        self.abs_data = None
 
     def __enter__(self):
         return self
@@ -62,15 +63,20 @@ class RecordingFile(object):
             return in_data, pyaudio.paContinue
         return callback
 
-    def amplitude(self):
+    def amplitude(self,plot):
         data, samplerate = sf.read(self.fname)
-        abs_data = abs(data)
-        """ #décommenter la section ci-dessous pour voir les graphiquesS
-        plt.plot(abs_data)
-        plt.ylabel('Amplitude')
-        plt.show()
-        """
-        return abs_data
+        self.abs_data = abs(data)
+
+        if(plot):
+            #décommenter la section ci-dessous pour voir les graphiquesS
+            plt.plot(self.abs_data)
+            plt.ylabel('Amplitude')
+            plt.show()
+            
+        return self.abs_data
+
+    def moyenne(self):
+        return numpy.mean(self.abs_data)
 
     def close(self):
         self._stream.close()
@@ -84,7 +90,7 @@ class RecordingFile(object):
         wavefile.setframerate(self.rate)
         return wavefile
 
-"""
+
 GetS = Recorder()
 S = GetS.open('Sortie_GetS.wav')
 S.start_recording()
@@ -92,5 +98,6 @@ print("Lancement du son")
 time.sleep(5)
 print("hop hop on stop le record")
 S.stop_recording()
-print(S.amplitude())
-"""
+print(S.amplitude(plot = True))
+
+print(S.moyenne())
