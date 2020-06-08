@@ -42,8 +42,8 @@ for row in match_detail['participants']:
     participants.append(participants_row)
 df = pd.DataFrame(participants)
 print(df)
-
+"""
 time.sleep(5)
 
 swagger = requests.get("https://127.0.0.1:2999/swagger/v2/swagger.json", verify=False)
-openapi = requests.get("https://127.0.0.1:2999/swagger/v3/openapi.json", verify=False)
+openapi = requests.get("https://127.0.0.1:2999/swagger/v3/openapi.json", verify=False)"""
