@@ -26,23 +26,19 @@ class Requests_Api():
     def sortie(self):
         """Select dans scores les 'kills' et 'assists' de la personne current
         """
-        self.List_AllData.append(a_query['scores']['kills'])
-        self.List_AllData.append(a_query['scores']['assists'])
+        self.List_AllData.append(self.a_AllData['scores']['kills'])
+        self.List_AllData.append(self.a_AllData['scores']['assists'])
 
         """Select dans championStats la 'currentHealth'
         """
-        self.List_AllData.append(a_query['championStats']['currentHealth'])
+        self.List_AllData.append(self.a_AllData['championStats']['currentHealth'])
 
         """Select dans event le dernier event
         """
-        self.List_AllData.append(a_query['events']['Events'])
+        self.List_AllData.append(self.a_AllData['events']['Events'][-1])
 
     def reset(self):
         self.List_AllData[:] = []
 
     def update(self):
         self.a_AllData = requests.get(self.a_request, verify = False).json()
-
-
-# test = Requests_Api()
-# print(test.start())
