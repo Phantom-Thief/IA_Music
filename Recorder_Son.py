@@ -67,7 +67,7 @@ class RecordingFile(object):
             return in_data, pyaudio.paContinue
         return callback
 
-    def amplitude(self,plot):
+    def amplitude(self,plot=False):
         data, samplerate = sf.read(self.a_fname)
         self.a_abs_data = abs(data)
 
@@ -99,13 +99,13 @@ class RecordingFile(object):
         return wavefile
 
 
-GetS = Recorder()
-S = GetS.open('Sortie_GetS.wav')
-S.start_recording()
-print("Lancement du son")
-time.sleep(5)
-print("hop hop on stop le record")
-S.stop_recording()
-print(S.amplitude(plot = False))
+# GetS = Recorder()
+# S = GetS.open('Sortie_GetS.wav')
+# S.start_recording()
+# print("Lancement du son")
+# time.sleep(5)
+# print("hop hop on stop le record")
+# S.stop_recording()
+# print(S.amplitude(plot = False))
 
-print(S.extremum())
+# print(S.extremum())

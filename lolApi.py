@@ -2,7 +2,7 @@ from riotwatcher import LolWatcher, ApiError
 import pandas as pd
 import requests
 import time
-
+"""
 # golbal variables
 api_key = 'RGAPI-fd76932d-f467-436f-a1dc-3ae6b8650fdc'
 watcher = LolWatcher(api_key)
@@ -43,9 +43,60 @@ for row in match_detail['participants']:
 df = pd.DataFrame(participants)
 print(df)
 print()
+"""
 
-j = requests.get("https://127.0.0.1:2999/liveclientdata/allgamedata%22",verify=False)
+
+import certifi
+import urllib3
+import json
+import time
+import pandas as pd
+
+start_time = time.time()
 
 
-# swagger = requests.get("https://127.0.0.1:2999/swagger/v2/swagger.json", verify=False)
-# openapi = requests.get("https://127.0.0.1:2999/swagger/v3/openapi.json", verify=False)
+urllib3.disable_warnings()
+
+allinfo = "https://127.0.0.1:2999/liveclientdata/allgamedata"
+# spells = "https://127.0.0.1:2999/liveclientdata/activeplayerabilities"
+# runes = "https://127.0.0.1:2999/liveclientdata/activeplayerrunes"
+# allplayer = "https://127.0.0.1:2999/liveclientdata/playerlist"
+# score = "https://127.0.0.1:2999/liveclientdata/sumonerName=Menchrof"
+# player = "https://127.0.0.1:2999/liveclientdata/activeplayername"
+# event = "https://127.0.0.1:2999/liveclientdata/eventdata"
+# gamestat = "https://127.0.0.1:2999/liveclientdata/gamestat"
+
+
+
+
+# rspells = requests.get​(spells,verify=False).json()
+# rrunes = requests.get(​runes,verify=False).json()
+# rallplayer = requests.get(allplayer,verify=False).json()
+# rscore = requests.get(score,verify=False).json()
+# rplayer = requests.get(player,verify=False).json()
+# revent = requests.get(event,verify=False).json()
+# rgamestat = requests.get(​gamestat,verify=False).json()
+
+
+
+rallinfo = requests.get(allinfo,verify=False).json()
+print(rallinfo.keys())
+print()
+print(rallinfo['activePlayer'].keys())
+print()
+print(rallinfo['events']['EventTime'])
+print()
+print(rallinfo['gameData'].keys())
+print()
+print(rallinfo['allPlayers'])
+print()
+
+
+
+
+
+
+
+
+
+print("--- %s seconds ---" % (time.time() - start_time))

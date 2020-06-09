@@ -4,14 +4,22 @@ import getImage
 import Mouselogger
 from Recorder_Son import Recorder, RecordingFile
 import numpy as np
+import json
+import Request_Api as api
 
 def main():
 
-    vector = np.zeros(5)
-    #[distance cumulée, fréquence clic, fréquence touche (+touches particulière), amplitude du son du micro, info API]
-    vector = test_threading(vector)
-    print(vector)
-
+    # vector = np.zeros(5)
+    # #[distance cumulée, fréquence clic, fréquence touche (+touches particulière), amplitude du son du micro, info API]
+    # vector = test_threading(vector)
+    # print(vector)
+    for i in range(1000):
+        start_time = time.time()
+        lolApi = api.Requests_Api()
+        data = lolApi.select()
+        print(data['summonerName'])
+        print("--- %s seconds ---" % (time.time() - start_time))
+        lolApi.update()
 
 
 def test_threading(vector):
