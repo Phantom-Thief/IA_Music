@@ -68,7 +68,7 @@ class RecordingFile(object):
         return callback
 
     def amplitude(self,plot=False):
-        data, samplerate = sf.read(self.a_fname)
+        data = sf.read(self.a_fname)[0]
         self.a_abs_data = abs(data)
 
         if(plot):

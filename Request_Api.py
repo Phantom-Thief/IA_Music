@@ -37,7 +37,7 @@ class Requests_Api():
         """
         self.List_AllData.append(a_query['events']['Events'])
 
-    def remiseZero(self):
+    def reset(self):
         self.List_AllData[:] = []
 
     def update(self):
