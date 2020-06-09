@@ -12,6 +12,10 @@ class Requests_Api():
         self.a_df = None
 
     def start(self):
-        self.a_AllData = """ """ + requests.get(self.a_request, verify = False).json()
-        df = DataFrame(self.a_AllData)
+        self.a_AllData = str(requests.get(self.a_request, verify = False).json())
+        df = DataFrame(columns = [self.a_AllData])
         return df
+
+
+test = Requests_Api()
+print(test.start())
