@@ -13,13 +13,13 @@ def main():
     # #[distance cumulée, fréquence clic, fréquence touche (+touches particulière), amplitude du son du micro, info API]
     # vector = test_threading(vector)
     # print(vector)
-    for i in range(1000):
-        start_time = time.time()
-        lolApi = api.Requests_Api()
-        data = lolApi.select()
-        print(data['summonerName'])
-        print("--- %s seconds ---" % (time.time() - start_time))
-        lolApi.update()
+
+    start_time = time.time()
+    lolApi = api.Requests_Api()
+    data = lolApi.select()
+    print(int(data['championStats']['currentHealth']))
+    print("--- %s seconds ---" % (time.time() - start_time))
+    lolApi.update()
 
 
 def test_threading(vector):
