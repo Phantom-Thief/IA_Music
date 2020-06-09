@@ -33,7 +33,7 @@ def test_threading():
     
     #getIm.start()
     print("Capture Image lancée")
-    time.sleep(10)
+    time.sleep(300)
     print("hop hop on stop le record")
     S.stop_recording()
     klog.stop()
