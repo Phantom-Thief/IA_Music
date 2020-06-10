@@ -1,12 +1,13 @@
 import keylog
 import time
-#import getImage
+import getImage
 import Mouselogger
 from Recorder_Son import Recorder, RecordingFile
 import numpy as np
 import json
 import Request_Api as api
 import scipy
+import repeatedTime
 
 g_klog = None
 g_mlog = None
@@ -74,13 +75,13 @@ def resetAll():
 
 
 def test_threading(vector):
-    recordTime = 5
+    recordTime = 10
 
     klog = keylog.KeyLogger() 
     mlog = Mouselogger.Mouselog()
     #getIm = getImage.GetImage()
     GetS = Recorder()
-
+   
     S = GetS.open('Sortie_GetS.wav')
     S.start_recording()
     print("Lancement du son")
@@ -91,7 +92,9 @@ def test_threading(vector):
     print("keylog lancé")
     mlog.start()
     print("mouselog lancé")
-    
+    rt = repeatedTime.RepeatedTimer(1,hello,"Test")
+    print("Timer lancé lets go")
+   
 
     time.sleep(recordTime)
     print("hop hop on stop le record")
@@ -103,6 +106,8 @@ def test_threading(vector):
     print("keylog arrêté")
     mlog.stop()
     print("mouselog arrêté")
+    rt.stop()
+    print("Timer stop")
 
     klog.write_on_file("keyboard.txt")
     mlog.write_on_file("mouse.txt")
@@ -137,6 +142,9 @@ def test_getImage():
     screen = getImage.GetImage()
     screen.takeScreen()
     screen.takeScreen("test/image.png")
+
+def hello(name):
+    print(name)
 
 if __name__ == "__main__":
     main()
