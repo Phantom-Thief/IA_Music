@@ -1,6 +1,4 @@
-"""
-All imports necessary to carry out this process
-"""
+"""All imports necessary to carry out this process"""
 import pynput
 from pynput import keyboard
 from datetime import datetime
