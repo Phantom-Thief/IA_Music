@@ -79,11 +79,8 @@ class RecordingFile(object):
             return in_data, pyaudio.paContinue
         return callback
 
-    """
-    function that calculates the amplitudes of the sound placed in input, calculates the amplitudes
-    """
-    def amplitude(self,p_plot=False):
-        data, samplerate = sf.read(self.a_fname)
+    def amplitude(self,plot=False):
+        data = sf.read(self.a_fname)[0]
         self.a_abs_data = abs(data)
 
         if(p_plot):

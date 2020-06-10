@@ -6,6 +6,7 @@ from Recorder_Son import Recorder, RecordingFile
 import numpy as np
 import json
 import Request_Api as api
+import scipy
 
 def main():
 
@@ -14,12 +15,14 @@ def main():
     # vector = test_threading(vector)
     # print(vector)
 
-    start_time = time.time()
-    lolApi = api.Requests_Api()
-    data = lolApi.select()
-    print(int(data['championStats']['currentHealth']))
-    print("--- %s seconds ---" % (time.time() - start_time))
-    lolApi.update()
+    # start_time = time.time()
+    # lolApi = api.Requests_Api()
+    # data = lolApi.select()
+    # print(data['championStats']['currentHealth'])
+    # print("--- %s seconds ---" % (time.time() - start_time))
+    # lolApi.update()
+    
+    pass
 
 
 def test_threading(vector):
