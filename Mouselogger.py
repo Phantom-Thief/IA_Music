@@ -130,6 +130,11 @@ class Mouselog:
                 f.write("\n")
             f.write(";")
 
+    def reset(self):
+        self.a_move[:] = []
+        self.a_clic[:] = []
+        self.a_scroll[:] = []
+
     def start(self):
         """Starts the mouselogger in a thread."""
         self.a_listener.start()
