@@ -51,7 +51,7 @@ def appendInList(p_li, p_tab):
         p_li.append(i)
     return 1
 
-def corpse(duration):
+def corpse():
     """Periodically call 'dataHooker' which fills the 'g_allData' list."""
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
 
