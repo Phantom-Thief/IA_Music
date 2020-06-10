@@ -48,7 +48,7 @@ class RecordingFile(object):
         self.close()
     
     """
-    start_recording' is used to start recording.
+    'start_recording' is used to start recording.
     Use a stream with a callback in non-blocking mode
     """
     def start_recording(self):
@@ -63,7 +63,7 @@ class RecordingFile(object):
         return self
 
     """
-    arrête l'enregistrement
+    The 'stop_recording' function is used to stop recording.
     """
     def stop_recording(self):
         self._stream.stop_stream()
@@ -78,8 +78,12 @@ class RecordingFile(object):
             self.a_wavefile.writeframes(in_data)
             return in_data, pyaudio.paContinue
         return callback
-
-    def amplitude(self,plot=False):
+    
+    """
+    This function retrieves a .wav file and transforms it into a frequency.
+By calling this function with 'p_plot' = True, a graph is returned (attention blocking process).
+    """
+    def amplitude(self,p_plot=False):
         data = sf.read(self.a_fname)[0]
         self.a_abs_data = abs(data)
 
@@ -91,38 +95,31 @@ class RecordingFile(object):
         return self.a_abs_data
 
     """
-    return the average of the calculated amplitudes
+    return the average of the calculated amplitudes.
     """
     def moyenne(self):
         return numpy.mean(self.a_abs_data)
 
     """
-    return
+    Return the maximum value in the list of amplitudes.
     """
     def extremum(self):
         return self.a_abs_data.max()
     
-
+    """
+    shut everything down
+    """
     def close(self):
         self._stream.close()
         self._pa.terminate()
         self.a_wavefile.close()
 
+    """
+    Create and open a .wav file that will store the requested record.
+    """
     def _prepare_file(self, p_fname, mode='wb'):
         wavefile = wave.open(p_fname, mode)
         wavefile.setnchannels(self.a_channels)
         wavefile.setsampwidth(self._pa.get_sample_size(pyaudio.paInt16))
         wavefile.setframerate(self.a_rate)
         return wavefile
-
-
-# GetS = Recorder()
-# S = GetS.open('Sortie_GetS.wav')
-# S.start_recording()
-# print("Lancement du son")
-# time.sleep(5)
-# print("hop hop on stop le record")
-# S.stop_recording()
-# print(S.amplitude(plot = False))
-
-# print(S.extremum())
