@@ -38,7 +38,7 @@ def startAll():
     g_getS.start_recording()
 
 def dataHooker():
-    """Fills the 'g_allData' list with the different calculation functions implemented in classes. """
+    """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
     global g_klog, g_mlog, g_getApi, g_getS, g_allData
     g_allData[:] = []
     appendInList(g_allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), 
@@ -46,7 +46,7 @@ def dataHooker():
                             g_getApi.output()])
 
 def appendInList(p_li, p_tab):
-    """Function that adds an element of the array to the list in parameter"""
+    """Function that adds an element of the array to the list in parameter."""
     for i in p_tab:
         p_li.append(i)
     return 1
@@ -56,7 +56,7 @@ def corpse(duration):
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
 
 def stopAll():
-    """stops all processes"""
+    """Stops all processes."""
     global g_klog, g_mlog, g_getS, g_rt
     g_klog.stop()
     g_mlog.stop()
@@ -64,7 +64,7 @@ def stopAll():
     g_rt.stop()
 
 def resetAll():
-    """resets all internal class lists"""
+    """Resets all internal class lists."""
     global g_klog, g_mlog, g_getApi, g_getS
     g_klog.reset()
     g_mlog.reset()
