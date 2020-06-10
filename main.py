@@ -46,6 +46,7 @@ def dataHooker():
     appendInList(g_allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), 
                             g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
                             g_getApi.output(), g_getS.moyenne(), g_getS.extremum()])
+    resetAll()
     g_getS.start_recording()
 
 def appendInList(p_li, p_tab):
@@ -56,7 +57,8 @@ def appendInList(p_li, p_tab):
 
 def corpse():
     """Periodically call 'dataHooker' which fills the 'g_allData' list."""
-    g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
+    g_rt = repeatedTime.RepeatedTimer(1,corpse)
+    dataHooker()
 
 def stopAll():
     """Stops all processes."""
