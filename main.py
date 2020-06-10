@@ -14,64 +14,60 @@ g_mlog = None
 g_getApi = None
 g_getS = None
 g_allData = []
+g_rt = None
 
 def main():
-
     init()
     startAll()
-    time.sleep(5)
-    dataHooker()
-    time.sleep(2)
-    stopAll()
-    
-    print(g_allData)
-    # vector = np.zeros(5)
-    # #[distance cumulée, fréquence clic, fréquence touche (+touches particulière), amplitude du son du micro, info API]
-    # vector = test_threading(vector)
-    # print(vector)
-
-    # start_time = time.time()
-    # lolApi = api.Requests_Api()
-    # data = lolApi.select()
-    # print(data['championStats']['currentHealth'])
-    # print("--- %s seconds ---" % (time.time() - start_time))
-    # lolApi.update()
+    corpse()
 
 
 def init():
+    """This function instantiates all our global variables."""
     global g_klog, g_mlog, g_getApi, g_getS
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
-    #g_getApi = api.Requests_Api()
+    g_getApi = api.Requests_Api()
     g_getS = Recorder().open('Sortie_GetS.wav')
 
 def startAll():
+    """Starts listening to the keyboard+mouse and recording the voice."""
     global g_klog, g_mlog, g_getS
     g_klog.start()
     g_mlog.start()
     g_getS.start_recording()
 
 def dataHooker():
+    """Fills the 'g_allData' list with the different calculation functions implemented in classes. """
     global g_klog, g_mlog, g_getApi, g_getS, g_allData
     g_allData[:] = []
     appendInList(g_allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), g_mlog.getCumulTravelDistance()])
 
-def appendInList(li, tab):
-    for i in tab:
-        li.append(i)
+def appendInList(p_li, p_tab):
+    """Function that adds an element of the array to the list in parameter"""
+    for i in p_tab:
+        p_li.append(i)
     return 1
 
+def corpse(duration):
+    """Periodically call 'dataHooker' which fills the 'g_allData' list."""
+    g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
+
 def stopAll():
-    global g_klog, g_mlog, g_getApi, g_getS
+    """stops all processes"""
+    global g_klog, g_mlog, g_getS, g_rt
     g_klog.stop()
     g_mlog.stop()
     g_getS.stop_recording()
+    g_rt.stop()
 
 def resetAll():
+    """resets all internal class lists"""
     global g_klog, g_mlog, g_getApi, g_getS
     g_klog.reset()
     g_mlog.reset()
     g_getApi.reset()
+    g_rt.stop()
 
 
 def test_threading(vector):
