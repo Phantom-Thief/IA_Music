@@ -9,6 +9,7 @@ class RepeatedTimer(object):
     The execution of the function is non-blocking and allow other threads to execute at the same time.
     The constructor call the "run" function by itself so no need to call it when you create your 
     repeatedTime object
+    
     """
     self.a_time = None
     self.a_interval = interval
