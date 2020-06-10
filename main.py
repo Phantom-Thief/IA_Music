@@ -40,10 +40,13 @@ def startAll():
 def dataHooker():
     """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
     global g_klog, g_mlog, g_getApi, g_getS, g_allData
+    g_getS.stop_recording()
+    g_getS.amplitude()
     g_allData[:] = []
     appendInList(g_allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), 
                             g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
-                            g_getApi.output()])
+                            g_getApi.output(), g_getS.moyenne(), g_getS.extremum()])
+    g_getS.start_recording()
 
 def appendInList(p_li, p_tab):
     """Function that adds an element of the array to the list in parameter."""
