@@ -1,6 +1,6 @@
 import keylog
 import time
-import getImage
+#import getImage
 import Mouselogger
 from Recorder_Son import Recorder, RecordingFile
 import numpy as np
@@ -8,7 +8,13 @@ import json
 import Request_Api as api
 import scipy
 
+klog = None
+mlog = None
+getApi = None
+GetS = None
+
 def main():
+
 
     # vector = np.zeros(5)
     # #[distance cumulée, fréquence clic, fréquence touche (+touches particulière), amplitude du son du micro, info API]
@@ -23,6 +29,24 @@ def main():
     # lolApi.update()
     
     pass
+
+
+def init():
+    global klog, mlog, getApi, GetS
+    klog = keylog.KeyLogger()
+    mlog = Mouselogger.Mouselog()
+    getApi = api.Requests_Api()
+    GetS = Recorder().open('Sortie_GetS.wav')
+
+def startAll():
+    klog.start()
+    mlog.start()
+    GetS.start_recording()
+
+def stopAll():
+    klog.stop()
+    mlog.stop()
+    GetS.stop_recording()
 
 
 def test_threading(vector):
