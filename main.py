@@ -12,10 +12,18 @@ g_klog = None
 g_mlog = None
 g_getApi = None
 g_getS = None
+g_allData = []
 
 def main():
 
-
+    init()
+    startAll()
+    time.sleep(5)
+    dataHooker()
+    time.sleep(2)
+    stopAll()
+    
+    print(g_allData)
     # vector = np.zeros(5)
     # #[distance cumulée, fréquence clic, fréquence touche (+touches particulière), amplitude du son du micro, info API]
     # vector = test_threading(vector)
@@ -27,34 +35,30 @@ def main():
     # print(data['championStats']['currentHealth'])
     # print("--- %s seconds ---" % (time.time() - start_time))
     # lolApi.update()
-    
-    pass
 
 
 def init():
     global g_klog, g_mlog, g_getApi, g_getS
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
-    g_getApi = api.Requests_Api()
+    #g_getApi = api.Requests_Api()
     g_getS = Recorder().open('Sortie_GetS.wav')
 
 def startAll():
-    global g_klog, g_mlog, g_getApi, g_getS
+    global g_klog, g_mlog, g_getS
     g_klog.start()
     g_mlog.start()
     g_getS.start_recording()
 
 def dataHooker():
-    global g_klog, g_mlog, g_getApi, g_getS
-    allData = []
-    allData[:] = []
-    appendInList(allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), g_mlog.getCumulTravelDistance()])
-    allData.append()
+    global g_klog, g_mlog, g_getApi, g_getS, g_allData
+    g_allData[:] = []
+    appendInList(g_allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), g_mlog.getCumulTravelDistance()])
 
-def appendInList(liste, tab):
+def appendInList(li, tab):
     for i in tab:
-        liste.append(i)
-    return liste
+        li.append(i)
+    return 1
 
 def stopAll():
     global g_klog, g_mlog, g_getApi, g_getS
