@@ -8,10 +8,10 @@ import json
 import Request_Api as api
 import scipy
 
-klog = None
-mlog = None
-getApi = None
-GetS = None
+g_klog = None
+g_mlog = None
+g_getApi = None
+g_getS = None
 
 def main():
 
@@ -32,21 +32,41 @@ def main():
 
 
 def init():
-    global klog, mlog, getApi, GetS
-    klog = keylog.KeyLogger()
-    mlog = Mouselogger.Mouselog()
-    getApi = api.Requests_Api()
-    GetS = Recorder().open('Sortie_GetS.wav')
+    global g_klog, g_mlog, g_getApi, g_getS
+    g_klog = keylog.KeyLogger()
+    g_mlog = Mouselogger.Mouselog()
+    g_getApi = api.Requests_Api()
+    g_getS = Recorder().open('Sortie_GetS.wav')
 
 def startAll():
-    klog.start()
-    mlog.start()
-    GetS.start_recording()
+    global g_klog, g_mlog, g_getApi, g_getS
+    g_klog.start()
+    g_mlog.start()
+    g_getS.start_recording()
+
+def dataHooker():
+    global g_klog, g_mlog, g_getApi, g_getS
+    allData = []
+    allData[:] = []
+    appendInList(allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), g_mlog.getCumulTravelDistance()])
+    allData.append()
+
+def appendInList(liste, tab):
+    for i in tab:
+        liste.append(i)
+    return liste
 
 def stopAll():
-    klog.stop()
-    mlog.stop()
-    GetS.stop_recording()
+    global g_klog, g_mlog, g_getApi, g_getS
+    g_klog.stop()
+    g_mlog.stop()
+    g_getS.stop_recording()
+
+def resetAll():
+    global g_klog, g_mlog, g_getApi, g_getS
+    g_klog.reset()
+    g_mlog.reset()
+    g_getApi.reset()
 
 
 def test_threading(vector):
