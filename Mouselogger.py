@@ -131,6 +131,7 @@ class Mouselog:
             f.write(";")
 
     def reset(self):
+        """Reset all attribute"""
         self.a_move[:] = []
         self.a_clic[:] = []
         self.a_scroll[:] = []

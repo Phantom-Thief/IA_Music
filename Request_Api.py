@@ -33,6 +33,7 @@ class Requests_Api():
         self.a_list_AllData.append(self.a_AllData['scores']['assists'])
         self.a_list_AllData.append(self.a_AllData['championStats']['currentHealth'])
         self.a_list_AllData.append(self.a_AllData['events']['Events'][-1])
+        return self.a_list_AllData
 
     def reset(self):
         """Empty the list 'a_list_AllData'."""
