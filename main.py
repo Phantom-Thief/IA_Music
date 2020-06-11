@@ -63,12 +63,6 @@ def dataHooker():
     else:
         stopAll()
 
-def appendInList(p_li, p_tab):
-    """Function that adds an element of the array to the list in parameter."""
-    for i in p_tab:
-        p_li.append(i)
-    return p_li
-
 def corpse():
     """Periodically call 'dataHooker' which fills the 'g_allData' list."""
     g_rt.start()
