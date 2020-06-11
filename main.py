@@ -1,6 +1,6 @@
 import keylog
 import time
-import getImage
+#import getImage
 import Mouselogger
 from Recorder_Son import Recorder, RecordingFile
 import numpy as np
@@ -24,10 +24,11 @@ def main():
 
 def init():
     """This function instantiates all our global variables."""
-    global g_klog, g_mlog, g_getApi, g_getS
+    global g_klog, g_mlog, g_getApi, g_getS, g_rt
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
-    g_getApi = api.Requests_Api()
+    g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
+    #g_getApi = api.Requests_Api()
     g_getS = Recorder().open('Sortie_GetS.wav')
 
 def startAll():
@@ -39,15 +40,20 @@ def startAll():
 
 def dataHooker():
     """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
-    global g_klog, g_mlog, g_getApi, g_getS, g_allData
-    g_getS.stop_recording()
-    g_getS.amplitude()
-    g_allData[:] = []
-    appendInList(g_allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), 
-                            g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
-                            g_getApi.output(), g_getS.moyenne(), g_getS.extremum()])
-    resetAll()
-    g_getS.start_recording()
+    global g_klog, g_mlog, g_getApi, g_getS, g_allData, g_rt
+    if(g_klog.a_stopMain):
+        g_getS.stop_recording()
+        g_getS.amplitude()
+        g_allData[:] = []
+        appendInList(g_allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), 
+                                g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
+                                g_getS.moyenne(), g_getS.extremum()])
+        print(g_allData)
+        resetAll()
+        g_getS.start_recording()
+    
+    else:
+        stopAll()
 
 def appendInList(p_li, p_tab):
     """Function that adds an element of the array to the list in parameter."""
@@ -57,23 +63,25 @@ def appendInList(p_li, p_tab):
 
 def corpse():
     """Periodically call 'dataHooker' which fills the 'g_allData' list."""
-    g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
+    g_rt.start()
+
+
 
 def stopAll():
     """Stops all processes."""
     global g_klog, g_mlog, g_getS, g_rt
     g_klog.stop()
     g_mlog.stop()
-    g_getS.stop_recording()
     g_rt.stop()
+    g_getS.stop_recording()
+    g_getS.close()
 
 def resetAll():
     """Resets all internal class lists."""
     global g_klog, g_mlog, g_getApi, g_getS
     g_klog.reset()
     g_mlog.reset()
-    g_getApi.reset()
-    g_rt.stop()
+    #g_getApi.reset()
 
 if __name__ == "__main__":
     main()
