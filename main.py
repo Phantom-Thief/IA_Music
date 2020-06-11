@@ -9,7 +9,6 @@ import Request_Api as api
 import scipy
 import repeatedTime
 import musicologie
-from sklearn.neighbors import NearestNeighbors
 
 g_klog = None
 g_mlog = None
@@ -17,7 +16,6 @@ g_getApi = None
 g_getS = None
 g_allData = []
 g_rt = None
-g_ApiActive=False
 
 def main():
     init()
@@ -40,14 +38,14 @@ def startAll():
     g_klog.start()
     g_mlog.start()
     g_getS.start_recording()
-    if(g_ApiActive):
-        g_getApi.Update()
+    try:
+        g_getApi.update()
 
 def dataHooker():
     """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
     global g_klog, g_mlog, g_getApi, g_getS, g_allData, g_rt
     if(g_klog.a_stopMain):
-        if(g_ApiActive):
+        try:
             g_getS.stop_recording()
             g_getS.amplitude()
             g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
@@ -58,7 +56,7 @@ def dataHooker():
             resetAll()
             g_getS.start_recording()
 
-        else:
+        except:
             g_getS.stop_recording()
             g_getS.amplitude()
             g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
@@ -97,10 +95,7 @@ def resetAll():
     #g_getApi.reset()
 
 def knn(data):
-    nbrs = NearestNeighbors(n_neighbors=2, algorithm='auto').fit(data)
-    distances, indices = nbrs.kneighbors(data)
-    print(indices)
-    print(distances)
+    print(data)
 
 if __name__ == "__main__":
     main()
