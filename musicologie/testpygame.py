@@ -56,4 +56,3 @@ class Pymix:
         channel = self.a_label[feeling]
         pygame.mixer.Channel(channel).fadeout(fade_out)
         return 1
-

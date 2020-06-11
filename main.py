@@ -8,6 +8,7 @@ import json
 import Request_Api as api
 import scipy
 import repeatedTime
+import musicologie
 
 g_klog = None
 g_mlog = None
@@ -49,6 +50,9 @@ def dataHooker():
                                 g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
                                 g_getS.moyenne(), g_getS.extremum()])
         print(g_allData)
+        with open('result.txt','a') as f:
+            f.write(str(g_allData))
+            f.write('\n')
         resetAll()
         g_getS.start_recording()
     
