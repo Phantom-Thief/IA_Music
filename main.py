@@ -49,18 +49,13 @@ def dataHooker():
         g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
                                 g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
                                 g_getS.moyenne(), g_getS.extremum()]) )
-
-        with open('result.txt','a') as f:
-            f.write(str(np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
-                                g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
-                                g_getS.moyenne(), g_getS.extremum()])))
-            f.write('\n')
-        
+      
         print(g_allData)
         resetAll()
         g_getS.start_recording()
     
     else:
+        knn(np.asarray(g_allData))
         stopAll()
 
 
@@ -85,6 +80,9 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
     #g_getApi.reset()
+
+def knn(data):
+    print(data)
 
 if __name__ == "__main__":
     main()
