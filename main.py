@@ -57,8 +57,7 @@ def appendInList(p_li, p_tab):
 
 def corpse():
     """Periodically call 'dataHooker' which fills the 'g_allData' list."""
-    g_rt = repeatedTime.RepeatedTimer(1,corpse)
-    dataHooker()
+    g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
 
 def stopAll():
     """Stops all processes."""
