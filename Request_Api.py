@@ -16,7 +16,7 @@ class Requests_Api():
         
         """
         self.a_request = p_request
-        self.a_AllData = requests.get(self.a_request, verify = False).json()
+        self.a_AllData = []
         self.a_list_AllData = []
 
     def output(self):
@@ -43,7 +43,3 @@ class Requests_Api():
     def update(self):
         """Restart the 'allData' query."""
         self.a_AllData = requests.get(self.a_request, verify = False).json()
-
-test = Requests_Api()
-
-print(test.output())

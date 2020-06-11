@@ -9,6 +9,7 @@ import Request_Api as api
 import scipy
 import repeatedTime
 import musicologie
+from sklearn.neighbors import NearestNeighbors
 
 g_klog = None
 g_mlog = None
@@ -82,7 +83,10 @@ def resetAll():
     #g_getApi.reset()
 
 def knn(data):
-    print(data)
+    nbrs = NearestNeighbors(n_neighbors=2, algorithm='auto').fit(data)
+    distances, indices = nbrs.kneighbors(data)
+    print(indices)
+    print(distances)
 
 if __name__ == "__main__":
     main()
