@@ -46,11 +46,11 @@ class Requests_Api():
         If event[1] > 0 then the player lost life points
         If event[1] < 0 then the player gained life points
         """
-        kill_init = self.a_AllData_bis['allPlayers'][0]['scores']['assists']
+        kill_init = self.a_AllData_bis['allPlayers'][0]['scores']['kills']
         life_init = self.a_AllData_bis['activePlayer']['championStats']['currentHealth']
         event = []
 
-        kill_update = self.a_AllData['allPlayers'][0]['scores']['assists']
+        kill_update = self.a_AllData['allPlayers'][0]['scores']['kills']
         life_update = self.a_AllData['activePlayer']['championStats']['currentHealth']
 
         kill_count = kill_update - kill_init
