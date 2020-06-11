@@ -48,10 +48,9 @@ def dataHooker():
     if(g_klog.a_stopMain):
         if(g_ApiActive):
             g_getS.stop_recording()
-            g_getS.amplitude()
             g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
                                     g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
-                                    g_getS.moyenne(), g_getS.extremum()]) )
+                                    g_getS.amplitude()]) )
         
             print(g_allData)
             resetAll()
@@ -59,10 +58,9 @@ def dataHooker():
 
         else:
             g_getS.stop_recording()
-            g_getS.amplitude()
             g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
                                     g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
-                                    g_getS.moyenne(), g_getS.extremum()]) ) #######rajouter l'API DE LOL
+                                    g_getS.amplitude()]) ) #######rajouter l'API DE LOL
         
             print(g_allData)
             resetAll()
