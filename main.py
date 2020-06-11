@@ -16,6 +16,7 @@ g_getApi = None
 g_getS = None
 g_allData = []
 g_rt = None
+g_ApiActive=False
 
 def main():
     init()
@@ -38,14 +39,14 @@ def startAll():
     g_klog.start()
     g_mlog.start()
     g_getS.start_recording()
-    try:
-        g_getApi.update()
+    if(g_ApiActive):
+        g_getApi.Update()
 
 def dataHooker():
     """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
     global g_klog, g_mlog, g_getApi, g_getS, g_allData, g_rt
     if(g_klog.a_stopMain):
-        try:
+        if(g_ApiActive):
             g_getS.stop_recording()
             g_getS.amplitude()
             g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
@@ -56,7 +57,7 @@ def dataHooker():
             resetAll()
             g_getS.start_recording()
 
-        except:
+        else:
             g_getS.stop_recording()
             g_getS.amplitude()
             g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
