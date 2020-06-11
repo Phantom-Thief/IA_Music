@@ -1,36 +1,59 @@
 import pygame
-import soundfile as sf
 import time
+import random
+from os import listdir
+from os.path import isfile, join
 
 
-# data, fs = sf.read("electro.wav")
+class Pymix:
 
-# pygame.mixer.init()
-# pygame.mixer.music.load('exp.wav')
-# pygame.mixer.music.set_volume(0.5)
-# pygame.mixer.Channel(0)
-# pygame.mixer.music.play()
-# input()
-# pygame.mixer.Channel(1)
-# pygame.mixer.music.play()
-# input()
-# pygame.mixer.music.stop()
-# pygame.mixer.quit()
+    def __init__(self,pathjoy=None,pathanger=None,pathcalm=None,pathsad=None):
+        """
+        The builder of the 'Pymix' class
 
+        Class for creating real time soundtrack.
+        It launchs pygame mixer, stores all the file in list store in the tuple a_soundfile
+        and a_label is used to labelize our four emotions.
+        """
+        pygame.mixer.init()
+        self.a_soundfile = (self.get_file(pathjoy),self.get_file(pathanger),self.get_file(pathcalm),self.get_file(pathsad))
+        self.a_label = {'joy':0,'anger':1,'calm':2,'sadness':3}
 
-pygame.mixer.init()
+    def get_file(self,path):
+        """Method used to have the list of all files in a directory."""
+        onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+        return onlyfiles
 
+    def is_busy(self):
+        """Return True if pygame is currently playing music."""
+        return pygame.mixer.get_busy()
 
-pygame.mixer.Channel(0).play(pygame.mixer.Sound('exp.wav'),fade_ms=1000)
-time.sleep(4)
-pygame.mixer.Channel(1).play(pygame.mixer.Sound('exp.wav'))
-time.sleep(1)
-pygame.mixer.Channel(0).fadeout(1000)
+    def stop(self):
+        """Stop the pygame's mixer and all the sound."""
+        pygame.mixer.stop()
+        pygame.mixer.quit()
 
-# pygame.mixer.Channel(i+1).play(pygame.mixer.Sound('exp.wav'))
+    def add_track(self,channel,file,fade_in=1000):
+        """Play an audio file in the specified channel."""
+        pygame.mixer.Channel(channel).play(pygame.mixer.Sound(file),fade_ms=fade_in)
+        return 1
 
+    def add_feeling(self,feeling,fade_in=1000,rand=True,file=None):
+        """
+        Add a track linked to an emotion and play it in his personnal channel.
+        The file is choosen randomly in the list of it emotion if rand is True, otherwise the file
+        has to be specified in the file arg.
+        """
+        channel = self.a_label[feeling]
+        if rand:
+            pygame.mixer.Channel(channel).play( pygame.mixer.Sound( random.choice(self.a_soundfile[channel]) ),fade_ms=fade_in )
+        else:
+            pygame.mixer.Channel(channel).play( pygame.mixer.Sound(file),fade_ms=fade_in )
+        return 1
 
-while(pygame.mixer.get_busy()):
-    pass
+    def kill_feeling(self,feeling,fade_out=1000):
+        """Stop a track related to the feeling gave in parameters."""
+        channel = self.a_label[feeling]
+        pygame.mixer.Channel(channel).fadeout(fade_out)
+        return 1
 
-pygame.mixer.quit()
