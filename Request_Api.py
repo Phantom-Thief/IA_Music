@@ -1,6 +1,5 @@
 import requests
 import certifi
-import psutil
 import urllib3
 from pandas import DataFrame
 urllib3.disable_warnings()
@@ -16,12 +15,9 @@ class Requests_Api():
         
         """
         self.a_list_AllData = []
-        try:
-            self.a_request = p_request
-            self.a_AllData = requests.get(self.a_request, verify = False).json()
-            self.a_AllData_bis = requests.get(self.a_request, verify = False).json()
-        except:
-           self.a_list_AllData = [0, 0]       
+        self.a_request = p_request
+        self.a_AllData = requests.get(self.a_request, verify = False).json()
+        self.a_AllData_bis = requests.get(self.a_request, verify = False).json()     
         
         
 
@@ -38,8 +34,8 @@ class Requests_Api():
         self.a_list_AllData.append(self.a_AllData['activePlayer']['championStats']['currentHealth'])
         self.a_list_AllData.append(self.a_AllData['allPlayers'][0]['scores']['assists'])
         self.a_list_AllData.append(self.a_AllData['allPlayers'][0]['scores']['kills'])
-        self.a_list_AllData.append(self.a_AllData['events']['Events'][-1]['EventName'])#enleve EventName et Stolen si ça marche pas(avec les brackets)
-        self.a_list_AllData.append(self.a_AllData['events']['Events'][-1]['Stolen'])
+        # self.a_list_AllData.append(self.a_AllData['events']['Events'][-1])
+        self.a_list_AllData.append(self.a_AllData['gameData']['gameTime'])
         return self.a_list_AllData
 
     def reset(self):
@@ -49,10 +45,10 @@ class Requests_Api():
     def Event_kill_life(self):
         """Catch in a array 'event' if the player gets a kill or loses life points.
 
-        If event[0] = 0 then the player gets no kill
-        If event[1] = 0 then the player didn't lose life points
-        If event[1] > 0 then the player lost life points
-        If event[1] < 0 then the player gained life points
+        If event[0] = 0 then the player gets no kill.
+        If event[1] = 0 then the player didn't lose life points.
+        If event[1] > 0 then the player lost life points.
+        If event[1] < 0 then the player gained life points.
 
         """
         kill_init = self.a_AllData_bis['allPlayers'][0]['scores']['kills']
@@ -68,6 +64,8 @@ class Requests_Api():
         life_change = life_update - life_init
         event.append(life_change)
 
+        event.append(self.a_AllData['gameData']['gameTime'])
+
         return event
         
 
@@ -75,7 +73,3 @@ class Requests_Api():
         """Restart the 'allData' and 'allData_bis query."""
         self.a_AllData_bis = self.a_AllData
         self.a_AllData = requests.get(self.a_request, verify = False).json()
-
-#test = Requests_Api()
-
-#print(test.output())

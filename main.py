@@ -16,7 +16,8 @@ g_getApi = None
 g_getS = None
 g_allData = []
 g_rt = None
-g_ApiActive=False
+g_ApiActive=True
+g_file = 'data.csv'
 
 def main():
     init()
@@ -26,12 +27,13 @@ def main():
 
 def init():
     """This function instantiates all our global variables."""
-    global g_klog, g_mlog, g_getApi, g_getS, g_rt
+    global g_klog, g_mlog, g_getApi, g_getS, g_rt, g_ApiActive
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
-    g_getApi = api.Requests_Api()
+    if g_ApiActive : g_getApi = api.Requests_Api()
     g_getS = Recorder().open('Sortie_GetS.wav')
+    print("Initialize")
 
 def startAll():
     """Starts listening to the keyboard+mouse and recording the voice."""
@@ -39,35 +41,37 @@ def startAll():
     g_klog.start()
     g_mlog.start()
     g_getS.start_recording()
-    if(g_ApiActive):
-        g_getApi.update()
+    if g_ApiActive : g_getApi.update()
+    print("All Started")
 
 def dataHooker():
     """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
     global g_klog, g_mlog, g_getApi, g_getS, g_allData, g_rt
     if(g_klog.a_stopMain):
-        if(g_ApiActive):
-            g_getS.stop_recording()
-            g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
-                                    g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
-                                    g_getS.amplitude()]) )
-        
-            print(g_allData)
-            resetAll()
-            g_getS.start_recording()
+        g_getS.stop_recording()
+        database = np.asarray([
+            g_klog.CountKey(), 
+            g_mlog.getTravelDistance(), 
+            g_mlog.getCumulTravelDistance(), 
+            g_mlog.getRightMouseClicF(),
+            g_getS.amplitude(),
+            0,
+            0,
+            0,])
 
-        else:
-            g_getS.stop_recording()
-            g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
-                                    g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
-                                    g_getS.amplitude()]) ) #######rajouter l'API DE LOL
-        
-            print(g_allData)
-            resetAll()
-            g_getS.start_recording()
+        if(g_ApiActive):
+            # listelol = g_getApi.Event_kill_life().append(g_getApi.output())
+            for i in range(3):
+                database[i+5]=g_getApi.Event_kill_life()[i]
+
+     
+        g_allData.append(database)
+        g_getApi.update()
+        print(g_allData)   
+        resetAll()   
+        g_getS.start_recording()
     
     else:
-        knn(np.asarray(g_allData))
         stopAll()
 
 
@@ -79,12 +83,13 @@ def corpse():
 
 def stopAll():
     """Stops all processes."""
-    global g_klog, g_mlog, g_getS, g_rt
+    global g_klog, g_mlog, g_getS, g_rt, g_allData, g_file
     g_klog.stop()
     g_mlog.stop()
     g_rt.stop()
     g_getS.stop_recording()
     g_getS.close()
+    np.savetxt(g_file, g_allData, delimiter=';')
 
 def resetAll():
     """Resets all internal class lists."""
@@ -92,9 +97,6 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
     #g_getApi.reset()
-
-def knn(data):
-    print(data)
 
 if __name__ == "__main__":
     main()
