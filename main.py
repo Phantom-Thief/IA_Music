@@ -45,14 +45,18 @@ def dataHooker():
     if(g_klog.a_stopMain):
         g_getS.stop_recording()
         g_getS.amplitude()
-        g_allData[:] = []
-        appendInList(g_allData,[g_klog.CountKey(), g_mlog.getTravelDistance(), 
+
+        g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
                                 g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
-                                g_getS.moyenne(), g_getS.extremum()])
-        print(g_allData)
+                                g_getS.moyenne(), g_getS.extremum()]) )
+
         with open('result.txt','a') as f:
-            f.write(str(g_allData))
+            f.write(str(np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
+                                g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
+                                g_getS.moyenne(), g_getS.extremum()])))
             f.write('\n')
+        
+        print(g_allData)
         resetAll()
         g_getS.start_recording()
     
@@ -63,7 +67,7 @@ def appendInList(p_li, p_tab):
     """Function that adds an element of the array to the list in parameter."""
     for i in p_tab:
         p_li.append(i)
-    return np.array(p_li)
+    return p_li
 
 def corpse():
     """Periodically call 'dataHooker' which fills the 'g_allData' list."""
