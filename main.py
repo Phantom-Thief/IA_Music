@@ -40,7 +40,7 @@ def startAll():
     g_mlog.start()
     g_getS.start_recording()
     if(g_ApiActive):
-        g_getApi.Update()
+        g_getApi.update()
 
 def dataHooker():
     """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
