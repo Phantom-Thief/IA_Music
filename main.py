@@ -16,6 +16,7 @@ g_getApi = None
 g_getS = None
 g_allData = []
 g_rt = None
+g_ApiActive=False
 
 def main():
     init()
@@ -29,7 +30,7 @@ def init():
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
-    #g_getApi = api.Requests_Api()
+    g_getApi = api.Requests_Api()
     g_getS = Recorder().open('Sortie_GetS.wav')
 
 def startAll():
@@ -43,16 +44,27 @@ def dataHooker():
     """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
     global g_klog, g_mlog, g_getApi, g_getS, g_allData, g_rt
     if(g_klog.a_stopMain):
-        g_getS.stop_recording()
-        g_getS.amplitude()
+        if(g_ApiActive):
+            g_getS.stop_recording()
+            g_getS.amplitude()
+            g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
+                                    g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
+                                    g_getS.moyenne(), g_getS.extremum()]) )
+        
+            print(g_allData)
+            resetAll()
+            g_getS.start_recording()
 
-        g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
-                                g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
-                                g_getS.moyenne(), g_getS.extremum()]) )
-      
-        print(g_allData)
-        resetAll()
-        g_getS.start_recording()
+        else:
+            g_getS.stop_recording()
+            g_getS.amplitude()
+            g_allData.append( np.asarray([g_klog.CountKey(), g_mlog.getTravelDistance(), 
+                                    g_mlog.getCumulTravelDistance(), g_mlog.getRightMouseClicF(),
+                                    g_getS.moyenne(), g_getS.extremum()]) ) #######rajouter l'API DE LOL
+        
+            print(g_allData)
+            resetAll()
+            g_getS.start_recording()
     
     else:
         knn(np.asarray(g_allData))
