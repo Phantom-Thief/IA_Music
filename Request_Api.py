@@ -1,5 +1,6 @@
 import requests
 import certifi
+import psutil
 import urllib3
 from pandas import DataFrame
 urllib3.disable_warnings()
@@ -8,16 +9,21 @@ class Requests_Api():
 
     def __init__(self, p_request = "https://127.0.0.1:2999/liveclientdata/allgamedata", p_AllData = None):
         """The builder of the 'Requests_Api' class.
+
         This class makes an 'allgamedata' request to the server of a Lol game (the game must be launched). 
         The response returns all the data on the current game stored in 'a_query'/
         The chosen objects will be stored in 'a_list_AllData'.
-        To make this request it is necessary to have a key API linked to your Lol account.
         
         """
-        self.a_request = p_request
-        self.a_AllData = requests.get(self.a_request, verify = False).json()
-        self.a_AllData_bis = requests.get(self.a_request, verify = False).json()
         self.a_list_AllData = []
+        try:
+            self.a_request = p_request
+            self.a_AllData = requests.get(self.a_request, verify = False).json()
+            self.a_AllData_bis = requests.get(self.a_request, verify = False).json()
+        except:
+           self.a_list_AllData = [0, 0]       
+        
+        
 
     def output(self):
         """Select an object in ['activePlayer', 'events', 'gameData', 'allPlayers'].
@@ -27,6 +33,7 @@ class Requests_Api():
         'gameData' is a dictionnary with keys ['gameMode', 'gameTime', 'mapName', 'mapNumber', 'mapTerrain']
         'allPlayers' is a list with each player and their info (notable : isDead(bool),dict of player's items, team).
         We are storing the 'kills', 'assists', 'currentHealth of the current person and the last event in 'a_list_AllData'.
+
         """
         self.a_list_AllData.append(self.a_AllData['activePlayer']['championStats']['currentHealth'])
         self.a_list_AllData.append(self.a_AllData['allPlayers'][0]['scores']['assists'])
@@ -41,10 +48,12 @@ class Requests_Api():
       
     def Event_kill_life(self):
         """Catch in a array 'event' if the player gets a kill or loses life points.
+
         If event[0] = 0 then the player gets no kill
         If event[1] = 0 then the player didn't lose life points
         If event[1] > 0 then the player lost life points
         If event[1] < 0 then the player gained life points
+
         """
         kill_init = self.a_AllData_bis['allPlayers'][0]['scores']['kills']
         life_init = self.a_AllData_bis['activePlayer']['championStats']['currentHealth']
