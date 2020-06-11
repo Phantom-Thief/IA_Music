@@ -35,10 +35,12 @@ def init():
 
 def startAll():
     """Starts listening to the keyboard+mouse and recording the voice."""
-    global g_klog, g_mlog, g_getS
+    global g_klog, g_mlog, g_getS, g_ApiActive
     g_klog.start()
     g_mlog.start()
     g_getS.start_recording()
+    if(g_ApiActive):
+        g_getApi.Update()
 
 def dataHooker():
     """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
