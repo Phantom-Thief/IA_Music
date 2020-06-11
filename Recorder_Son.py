@@ -46,7 +46,6 @@ class RecordingFile(object):
         self._pa = pyaudio.PyAudio()
         self.a_wavefile = self._prepare_file(self.a_fname, self.a_mode)
         self._stream = None
-        self.a_abs_data = None
 
     def __enter__(self):
         return self
@@ -82,25 +81,19 @@ class RecordingFile(object):
 
         This function retrieves a .wav file and transforms it into a frequency.
         By calling this function with 'p_plot' = True, a graph is returned (attention blocking process).
+
+        Return the maximum value in the list of amplitudes.
         
         """
         data = sf.read(self.a_fname)[0]
-        self.a_abs_data = abs(data)
+        abs_data = abs(data)
 
         if(p_plot):
-            plt.plot(self.a_abs_data)
+            plt.plot(abs_data)
             plt.ylabel('Amplitude')
             plt.show()
             
-        return self.a_abs_data
-
-    def moyenne(self):
-        """Return the average of the calculated amplitudes."""
-        return numpy.mean(self.a_abs_data)
-
-    def extremum(self):
-        """Return the maximum value in the list of amplitudes."""
-        return self.a_abs_data.max()
+        return abs_data.max()
 
     def close(self):
         """Shut everything down."""
