@@ -32,7 +32,8 @@ class Requests_Api():
         self.a_list_AllData.append(self.a_AllData['activePlayer']['championStats']['currentHealth'])
         self.a_list_AllData.append(self.a_AllData['allPlayers'][0]['scores']['assists'])
         self.a_list_AllData.append(self.a_AllData['allPlayers'][0]['scores']['kills'])
-        self.a_list_AllData.append(self.a_AllData['events']['Events'][-1])
+        self.a_list_AllData.append(self.a_AllData['events']['Events'][-1]['EventName'])#enleve EventName et Stolen si ça marche pas(avec les brackets)
+        self.a_list_AllData.append(self.a_AllData['events']['Events'][-1]['Stolen'])
         return self.a_list_AllData
 
     def reset(self):
