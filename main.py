@@ -63,6 +63,7 @@ def dataHooker():
     else:
         stopAll()
 
+
 def corpse():
     """Periodically call 'dataHooker' which fills the 'g_allData' list."""
     g_rt.start()
