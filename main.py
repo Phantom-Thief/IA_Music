@@ -16,7 +16,7 @@ g_getApi = None
 g_getS = None
 g_allData = []
 g_rt = None
-g_ApiActive=False
+g_ApiActive=True
 g_file = 'rawdata.csv'
 
 def main():

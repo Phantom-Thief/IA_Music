@@ -72,8 +72,6 @@ class Requests_Api():
 
         event.append(self.a_AllData['gameData']['gameTime'])
 
-        print(self.a_score)
-
         return event
         
 
