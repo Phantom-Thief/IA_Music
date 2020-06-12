@@ -17,7 +17,7 @@ g_getS = None
 g_allData = []
 g_rt = None
 g_ApiActive=False
-g_file = 'data/rawdata.csv'
+g_file = 'rawdata.csv'
 
 def main():
     init()
@@ -92,7 +92,9 @@ def stopAll():
     g_rt.stop()
     # g_getS.stop_recording()
     # g_getS.close()
-    np.savetxt(g_file, g_allData, delimiter=';')
+    f=open(g_file,'a')
+    np.savetxt(f, g_allData, delimiter=';')
+    f.close()
 
 def resetAll():
     """Resets all internal class lists."""
