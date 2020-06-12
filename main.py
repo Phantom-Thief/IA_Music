@@ -16,8 +16,8 @@ g_getApi = None
 g_getS = None
 g_allData = []
 g_rt = None
-g_ApiActive=True
-g_file = 'data.csv'
+g_ApiActive=False
+g_file = 'data/rawdata.csv'
 
 def main():
     init()
@@ -49,9 +49,9 @@ def dataHooker():
     global g_klog, g_mlog, g_getApi, g_getS, g_allData, g_rt
     if(g_klog.a_stopMain):
         # g_getS.stop_recording()
+        g_klog.write_on_file('keylog.txt')
         database = np.asarray([
             g_klog.CountKey(), 
-            g_mlog.getTravelDistance(), 
             g_mlog.getCumulTravelDistance(), 
             g_mlog.getRightMouseClicF(),
             # g_getS.amplitude(),
@@ -61,10 +61,11 @@ def dataHooker():
             0])
 
         if(g_ApiActive):
-            for i in range(4):
+            for i in range(3):
                 database[i+4]=g_getApi.Event_kill_life()[i]
             g_getApi.update()
-
+            
+        database[-1] = g_klog.a_state
      
         g_allData.append(database)
         

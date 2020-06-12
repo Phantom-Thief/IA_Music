@@ -67,10 +67,10 @@ class Requests_Api():
 
         life_change = life_update - life_init
         event.append(life_change)
+      
+        event.append(self.a_AllData['activePlayer']['championStats']['currentHealth']==0)
 
         event.append(self.a_AllData['gameData']['gameTime'])
-        
-        event.append(self.a_AllData['activePlayer']['championStats']['currentHealth']==0)
 
         print(self.a_score)
 
