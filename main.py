@@ -32,7 +32,7 @@ def init():
     g_mlog = Mouselogger.Mouselog()
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
     if g_ApiActive : g_getApi = api.Requests_Api()
-    g_getS = Recorder().open('Sortie_GetS.wav')
+    # g_getS = Recorder().open('Sortie_GetS.wav')
     print("Initialize")
 
 def startAll():
@@ -40,7 +40,7 @@ def startAll():
     global g_klog, g_mlog, g_getS, g_ApiActive
     g_klog.start()
     g_mlog.start()
-    g_getS.start_recording()
+    # g_getS.start_recording()
     if g_ApiActive : g_getApi.update()
     print("All Started")
 
@@ -48,13 +48,13 @@ def dataHooker():
     """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
     global g_klog, g_mlog, g_getApi, g_getS, g_allData, g_rt
     if(g_klog.a_stopMain):
-        g_getS.stop_recording()
+        # g_getS.stop_recording()
         database = np.asarray([
             g_klog.CountKey(), 
             g_mlog.getTravelDistance(), 
             g_mlog.getCumulTravelDistance(), 
             g_mlog.getRightMouseClicF(),
-            g_getS.amplitude(),
+            # g_getS.amplitude(),
             0,
             0,
             0,])
@@ -62,14 +62,15 @@ def dataHooker():
         if(g_ApiActive):
             # listelol = g_getApi.Event_kill_life().append(g_getApi.output())
             for i in range(3):
-                database[i+5]=g_getApi.Event_kill_life()[i]
+                database[i+4]=g_getApi.Event_kill_life()[i]
+            g_getApi.update()
 
      
         g_allData.append(database)
-        g_getApi.update()
+        
         print(g_allData)   
         resetAll()   
-        g_getS.start_recording()
+        # g_getS.start_recording()
     
     else:
         stopAll()
@@ -87,8 +88,8 @@ def stopAll():
     g_klog.stop()
     g_mlog.stop()
     g_rt.stop()
-    g_getS.stop_recording()
-    g_getS.close()
+    # g_getS.stop_recording()
+    # g_getS.close()
     np.savetxt(g_file, g_allData, delimiter=';')
 
 def resetAll():
