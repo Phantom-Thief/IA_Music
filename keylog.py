@@ -1,7 +1,7 @@
 """All imports necessary to carry out this process"""
 import pynput
 from pynput import keyboard
-from datetime import datetime
+from datetime import datetime   
 
 
 class KeyLogger:
@@ -34,10 +34,7 @@ class KeyLogger:
     
     def CountKey(self):
         """Return the number of keys pressed."""
-        count = 0
-        for key in self.a_keys:
-            count +=1
-        return count
+        return len(self.a_keys)
 
     def getNumKeys(self,p_key):
         """Return the number of a given key (parameter)."""
