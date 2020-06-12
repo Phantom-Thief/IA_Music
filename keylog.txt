@@ -52,3 +52,8 @@
 (datetime.time(14, 11, 13, 11641), 'f')
 (datetime.time(14, 11, 13, 815453), <Key.f2: <113>>)
 (datetime.time(14, 11, 15, 402810), <Key.f3: <114>>)
+(datetime.time(15, 38, 46, 21964), <Key.f4: <115>>)
+(datetime.time(15, 38, 48, 414109), <Key.f3: <114>>)
+(datetime.time(15, 38, 50, 483270), <Key.f1: <112>>)
+(datetime.time(15, 38, 51, 743504), <Key.f2: <113>>)
+(datetime.time(15, 38, 52, 897157), <Key.f3: <114>>)
