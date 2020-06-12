@@ -57,18 +57,19 @@ def dataHooker():
             # g_getS.amplitude(),
             0,
             0,
-            0,])
+            0,
+            0])
 
         if(g_ApiActive):
-            # listelol = g_getApi.Event_kill_life().append(g_getApi.output())
-            for i in range(3):
+            for i in range(4):
                 database[i+4]=g_getApi.Event_kill_life()[i]
             g_getApi.update()
 
      
         g_allData.append(database)
         
-        print(g_allData)   
+        print(g_allData[-1])
+        print()
         resetAll()   
         # g_getS.start_recording()
     
@@ -97,7 +98,7 @@ def resetAll():
     global g_klog, g_mlog, g_getApi, g_getS
     g_klog.reset()
     g_mlog.reset()
-    #g_getApi.reset()
+    if g_ApiActive : g_getApi.reset()
 
 if __name__ == "__main__":
     main()

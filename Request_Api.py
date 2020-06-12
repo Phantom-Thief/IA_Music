@@ -17,7 +17,11 @@ class Requests_Api():
         self.a_list_AllData = []
         self.a_request = p_request
         self.a_AllData = requests.get(self.a_request, verify = False).json()
-        self.a_AllData_bis = requests.get(self.a_request, verify = False).json()     
+        self.a_AllData_bis = requests.get(self.a_request, verify = False).json()
+        self.a_summonerName = self.a_AllData['activePlayer']['summonerName']
+        self.a_query = 'https://127.0.0.1:2999/liveclientdata/playerscores?summonerName='+str(self.a_summonerName)
+        self.a_score = requests.get(self.a_query,verify=False).json()
+        self.a_score_bis = requests.get(self.a_query,verify=False).json()
         
         
 
@@ -51,11 +55,11 @@ class Requests_Api():
         If event[1] < 0 then the player gained life points.
 
         """
-        kill_init = self.a_AllData_bis['allPlayers'][0]['scores']['kills']
+        kill_init = self.a_score_bis['kills']
         life_init = self.a_AllData_bis['activePlayer']['championStats']['currentHealth']
         event = []
 
-        kill_update = self.a_AllData['allPlayers'][0]['scores']['kills']
+        kill_update = self.a_score['kills']
         life_update = self.a_AllData['activePlayer']['championStats']['currentHealth']
 
         kill_count = kill_update - kill_init
@@ -65,6 +69,10 @@ class Requests_Api():
         event.append(life_change)
 
         event.append(self.a_AllData['gameData']['gameTime'])
+        
+        event.append(self.a_AllData['activePlayer']['championStats']['currentHealth']==0)
+
+        print(self.a_score)
 
         return event
         
@@ -73,3 +81,5 @@ class Requests_Api():
         """Restart the 'allData' and 'allData_bis query."""
         self.a_AllData_bis = self.a_AllData
         self.a_AllData = requests.get(self.a_request, verify = False).json()
+        self.a_score_bis=self.a_score
+        self.a_score = requests.get(self.a_query,verify=False).json()
