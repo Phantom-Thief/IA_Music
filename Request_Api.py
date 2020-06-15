@@ -41,7 +41,7 @@ class Requests_Api():
             return -1
         
 
-    def reset(self):
+    def reset_event(self):
         """Empty the string 'a_str_AllData'."""
         self.a_str_AllData = ""
         pass
