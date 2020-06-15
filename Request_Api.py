@@ -44,7 +44,6 @@ class Requests_Api():
     def reset_event(self):
         """Empty the string 'a_str_AllData'."""
         self.a_str_AllData = ""
-        pass
       
     def Event_kill_life(self):
         """Catch in a array 'event' if the player gets a kill or loses life points.
