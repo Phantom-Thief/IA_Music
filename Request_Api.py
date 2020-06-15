@@ -1,7 +1,7 @@
 import requests
 import certifi
 import urllib3
-import Dictionnaire
+from Dictionnaire import pyApi
 from pandas import DataFrame
 urllib3.disable_warnings()
 
