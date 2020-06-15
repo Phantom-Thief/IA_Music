@@ -80,6 +80,3 @@ class Requests_Api():
         self.a_score_bis=self.a_score
         self.a_score = requests.get(self.a_query,verify=False).json()
 
-
-test = Requests_Api()
-test.output()

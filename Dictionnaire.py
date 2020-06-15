@@ -11,5 +11,3 @@ pyApi["Multikill4"] = 10
 pyApi["Multikill5"] = 11
 pyApi["Ace"] = 12
 pyApi["FirstBlood"]=13
-
-

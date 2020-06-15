@@ -73,8 +73,8 @@ def dataHooker():
      
         g_allData.append(database)
         
-        print(g_allData[-1])
-        print()
+        # print(g_allData[-1])
+        # print()
         resetAll()   
         # g_getS.start_recording()
         label = [i[-1] for i in g_allData]
@@ -116,6 +116,9 @@ def iaMusic(input,inertia=2):
         if not (label == input[-inertia-1]):
             g_py.kill_feeling( int(input[-inertia-1]) )
             g_py.add_feeling(label)
+
+    if not (g_py.is_busy()):
+        g_py.add_feeling(label,fade_in=0)
 
     return g_py.get_feeling_busy()
 
