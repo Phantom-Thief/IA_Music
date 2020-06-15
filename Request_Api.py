@@ -80,9 +80,5 @@ class Requests_Api():
         self.a_AllData_bis = self.a_AllData
         self.a_AllData = requests.get(self.a_request, verify = False).json()
         self.a_score_bis=self.a_score
-<<<<<<< HEAD
         self.a_score = requests.get(self.a_query,verify=False).json()
 
-=======
-        self.a_score = requests.get(self.a_query,verify=False).json()
->>>>>>> c3192465b3aa2ee5c8700b82f62093a12cba0966
