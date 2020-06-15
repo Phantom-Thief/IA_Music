@@ -7,15 +7,16 @@ from os.path import isfile, join
 
 class Pymix:
 
-    def __init__(self,pathjoy=None,pathanger=None,pathcalm=None,pathsad=None):
-        """
-        The builder of the 'Pymix' class
+    def __init__(self,pathjoy='musicologie/musiques/joyeux/',pathanger='musicologie/musiques/colere/',pathcalm='musicologie/musiques/calme/',pathsad='musicologie/musiques/triste/'):
+        """The builder of the 'Pymix' class
 
         Class for creating real time soundtrack.
         It launchs pygame mixer, stores all the file in list store in the tuple a_soundfile
         and a_label is used to labelize our four emotions.
+
         """
         pygame.mixer.init()
+        self.a_path = [pathjoy,pathanger,pathcalm,pathsad]
         self.a_soundfile = (self.get_file(pathjoy),self.get_file(pathanger),self.get_file(pathcalm),self.get_file(pathsad))
         self.a_label = {'joy':0,'anger':1,'calm':2,'sadness':3}
 
@@ -46,7 +47,7 @@ class Pymix:
         """
         channel = self.a_label[feeling]
         if rand:
-            pygame.mixer.Channel(channel).play( pygame.mixer.Sound( random.choice(self.a_soundfile[channel]) ),fade_ms=fade_in )
+            pygame.mixer.Channel(channel).play( pygame.mixer.Sound( self.a_path[channel]+random.choice(self.a_soundfile[channel]) ),fade_ms=fade_in )
         else:
             pygame.mixer.Channel(channel).play( pygame.mixer.Sound(file),fade_ms=fade_in )
         return 1
@@ -56,3 +57,15 @@ class Pymix:
         channel = self.a_label[feeling]
         pygame.mixer.Channel(channel).fadeout(fade_out)
         return 1
+
+    def get_all_busy(self):
+        pass
+
+
+
+py = Pymix()
+py.add_feeling('calm')
+time.sleep(10)
+py.add_feeling('anger',fade_in=3000)
+py.kill_feeling('calm',fade_out=3000)
+input()
