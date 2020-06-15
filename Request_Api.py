@@ -1,6 +1,7 @@
 import requests
 import certifi
 import urllib3
+from Dictionnaire import pyApi
 from pandas import DataFrame
 urllib3.disable_warnings()
 
@@ -14,7 +15,7 @@ class Requests_Api():
         The chosen objects will be stored in 'a_list_AllData'.
         
         """
-        self.a_list_AllData = []
+        self.a_str_AllData = ""
         self.a_request = p_request
         self.a_AllData = requests.get(self.a_request, verify = False).json()
         self.a_AllData_bis = requests.get(self.a_request, verify = False).json()
@@ -25,24 +26,25 @@ class Requests_Api():
         
         
 
-    def output(self):
-        """Select an object in ['activePlayer', 'events', 'gameData', 'allPlayers'].
+    def output_event(self):
+        """Select an object in ['events'].
         
-        'activePlayer' is a dictionnary with keys : ['abilities', 'championStats', 'currentGold', 'fullRunes', 'level', 'summonerName'].
         'events' is a list of events with their id, name, EventTime.
-        'gameData' is a dictionnary with keys ['gameMode', 'gameTime', 'mapName', 'mapNumber', 'mapTerrain']
-        'allPlayers' is a list with each player and their info (notable : isDead(bool),dict of player's items, team).
-        We are storing the 'kills', 'assists', 'currentHealth of the current person and the last event in 'a_list_AllData'.
+        We retrieve the name of the event and thanks to the dictionary we transform it into an interger.
+        If the element does not interest us -1 is returned.
 
         """
-        self.a_list_AllData.append(self.a_AllData['allPlayers'])
-        self.a_list_AllData.append(self.a_AllData['events']['Events'][-1]['EventName'])
-        print(self.a_list_AllData)
-        return self.a_list_AllData
+        self.a_str_AllData = self.a_AllData['events']['Events'][-1]['EventName']
+        try:
+            return pyApi[self.a_list_AllData]
+        except:
+            return -1
+        
 
-    def reset(self):
-        """Empty the list 'a_list_AllData'."""
-        self.a_list_AllData[:] = []
+    def reset_event(self):
+        """Empty the string 'a_str_AllData'."""
+        self.a_str_AllData = ""
+        pass
       
     def Event_kill_life(self):
         """Catch in a array 'event' if the player gets a kill or loses life points.
@@ -78,5 +80,9 @@ class Requests_Api():
         self.a_AllData_bis = self.a_AllData
         self.a_AllData = requests.get(self.a_request, verify = False).json()
         self.a_score_bis=self.a_score
+<<<<<<< HEAD
         self.a_score = requests.get(self.a_query,verify=False).json()
 
+=======
+        self.a_score = requests.get(self.a_query,verify=False).json()
+>>>>>>> c3192465b3aa2ee5c8700b82f62093a12cba0966
