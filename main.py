@@ -44,7 +44,8 @@ def startAll():
     g_mlog.start()
     # g_getS.start_recording()
     if g_ApiActive : g_getApi.update()
-    g_py.add_feeling('calm')
+    g_py.add_track('musicologie/musiques/effects/high_tech_start.wav')
+    g_py.add_feeling('calm',fade_in=10000)
     g_rt.start()
     print("All Started")
 
@@ -53,7 +54,6 @@ def dataHooker():
     global g_klog, g_mlog, g_getApi, g_getS, g_allData, g_rt
     if(g_klog.a_stopMain):
         # g_getS.stop_recording()
-        g_klog.write_on_file('keylog.txt')
         database = np.asarray([
             g_klog.CountKey(), 
             g_mlog.getCumulTravelDistance(), 
@@ -78,7 +78,7 @@ def dataHooker():
         resetAll()   
         # g_getS.start_recording()
         label = [i[-1] for i in g_allData]
-        print(iaMusic(label))
+        if len(label)>3 : print(iaMusic(label))
     else:
         stopAll()
 
