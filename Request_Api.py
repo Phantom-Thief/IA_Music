@@ -35,7 +35,9 @@ class Requests_Api():
         We are storing the 'kills', 'assists', 'currentHealth of the current person and the last event in 'a_list_AllData'.
 
         """
+        self.a_list_AllData.append(self.a_AllData['allPlayers'])
         self.a_list_AllData.append(self.a_AllData['events']['Events'][-1]['EventName'])
+        print(self.a_list_AllData)
         return self.a_list_AllData
 
     def reset(self):
