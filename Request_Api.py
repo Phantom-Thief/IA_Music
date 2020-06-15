@@ -35,11 +35,7 @@ class Requests_Api():
         We are storing the 'kills', 'assists', 'currentHealth of the current person and the last event in 'a_list_AllData'.
 
         """
-        self.a_list_AllData.append(self.a_AllData['activePlayer']['championStats']['currentHealth'])
-        self.a_list_AllData.append(self.a_AllData['allPlayers'][0]['scores']['assists'])
-        self.a_list_AllData.append(self.a_AllData['allPlayers'][0]['scores']['kills'])
-        # self.a_list_AllData.append(self.a_AllData['events']['Events'][-1])
-        self.a_list_AllData.append(self.a_AllData['gameData']['gameTime'])
+        self.a_list_AllData.append(self.a_AllData['events']['Events'][-1]['EventName'])
         return self.a_list_AllData
 
     def reset(self):
@@ -81,3 +77,7 @@ class Requests_Api():
         self.a_AllData = requests.get(self.a_request, verify = False).json()
         self.a_score_bis=self.a_score
         self.a_score = requests.get(self.a_query,verify=False).json()
+
+
+test = Requests_Api()
+test.output()
