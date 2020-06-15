@@ -1,1 +1,1 @@
-pyApi = {"DragonKill" : 0, "BaronKill" : 1, "Ace" : 2}
+pyApi={"DragonKill" : 0, "BaronKill" : 1, "Ace" : 2}
