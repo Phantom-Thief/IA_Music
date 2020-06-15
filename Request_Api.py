@@ -15,7 +15,7 @@ class Requests_Api():
         The chosen objects will be stored in 'a_list_AllData'.
         
         """
-        self.a_list_AllData = ""
+        self.a_str_AllData = ""
         self.a_request = p_request
         self.a_AllData = requests.get(self.a_request, verify = False).json()
         self.a_AllData_bis = requests.get(self.a_request, verify = False).json()
@@ -26,17 +26,15 @@ class Requests_Api():
         
         
 
-    def output(self):
-        """Select an object in ['activePlayer', 'events', 'gameData', 'allPlayers'].
+    def output_event(self):
+        """Select an object in ['events'].
         
-        'activePlayer' is a dictionnary with keys : ['abilities', 'championStats', 'currentGold', 'fullRunes', 'level', 'summonerName'].
         'events' is a list of events with their id, name, EventTime.
-        'gameData' is a dictionnary with keys ['gameMode', 'gameTime', 'mapName', 'mapNumber', 'mapTerrain']
-        'allPlayers' is a list with each player and their info (notable : isDead(bool),dict of player's items, team).
-        We are storing the 'kills', 'assists', 'currentHealth of the current person and the last event in 'a_list_AllData'.
+        We retrieve the name of the event and thanks to the dictionary we transform it into an interger.
+        If the element does not interest us -1 is returned.
 
         """
-        self.a_list_AllData = self.a_AllData['events']['Events'][-1]['EventName']
+        self.a_str_AllData = self.a_AllData['events']['Events'][-1]['EventName']
         try:
             return pyApi[self.a_list_AllData]
         except:
@@ -44,8 +42,8 @@ class Requests_Api():
         
 
     def reset(self):
-        """Empty the list 'a_list_AllData'."""
-        #self.a_list_AllData[:] = []
+        """Empty the string 'a_str_AllData'."""
+        self.a_str_AllData = ""
         pass
       
     def Event_kill_life(self):
