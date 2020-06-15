@@ -12,7 +12,7 @@ class Requests_Api():
 
         This class makes an 'allgamedata' request to the server of a Lol game (the game must be launched). 
         The response returns all the data on the current game stored in 'a_query'/
-        The chosen objects will be stored in 'a_list_AllData'.
+        The chosen objects will be stored in 'a_str_AllData'.
         
         """
         self.a_str_AllData = ""
