@@ -1,6 +1,7 @@
 import requests
 import certifi
 import urllib3
+import Dictionnaire
 from pandas import DataFrame
 urllib3.disable_warnings()
 
@@ -14,7 +15,7 @@ class Requests_Api():
         The chosen objects will be stored in 'a_list_AllData'.
         
         """
-        self.a_list_AllData = []
+        self.a_list_AllData = ""
         self.a_request = p_request
         self.a_AllData = requests.get(self.a_request, verify = False).json()
         self.a_AllData_bis = requests.get(self.a_request, verify = False).json()
@@ -35,14 +36,17 @@ class Requests_Api():
         We are storing the 'kills', 'assists', 'currentHealth of the current person and the last event in 'a_list_AllData'.
 
         """
-        self.a_list_AllData.append(self.a_AllData['allPlayers'])
-        self.a_list_AllData.append(self.a_AllData['events']['Events'][-1]['EventName'])
-        print(self.a_list_AllData)
-        return self.a_list_AllData
+        self.a_list_AllData = self.a_AllData['events']['Events'][-1]['EventName']
+        try:
+            return pyApi[self.a_list_AllData]
+        except:
+            return -1
+        
 
     def reset(self):
         """Empty the list 'a_list_AllData'."""
-        self.a_list_AllData[:] = []
+        #self.a_list_AllData[:] = []
+        pass
       
     def Event_kill_life(self):
         """Catch in a array 'event' if the player gets a kill or loses life points.
@@ -79,7 +83,3 @@ class Requests_Api():
         self.a_AllData = requests.get(self.a_request, verify = False).json()
         self.a_score_bis=self.a_score
         self.a_score = requests.get(self.a_query,verify=False).json()
-
-
-test = Requests_Api()
-test.output()
