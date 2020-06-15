@@ -24,7 +24,6 @@ g_file = 'rawdata.csv'
 def main():
     init()
     startAll()
-    corpse()
 
 
 def init():
@@ -40,12 +39,13 @@ def init():
 
 def startAll():
     """Starts listening to the keyboard+mouse and recording the voice."""
-    global g_klog, g_mlog, g_getS, g_ApiActive, g_py
+    global g_klog, g_mlog, g_getS, g_ApiActive, g_py, g_rt
     g_klog.start()
     g_mlog.start()
     # g_getS.start_recording()
     if g_ApiActive : g_getApi.update()
     g_py.add_feeling('calm')
+    g_rt.start()
     print("All Started")
 
 def dataHooker():
@@ -77,20 +77,15 @@ def dataHooker():
         print()
         resetAll()   
         # g_getS.start_recording()
-        print(ia())
+        label = [i[-1] for i in g_allData]
+        print(iaMusic(label))
     else:
         stopAll()
 
 
-def corpse():
-    """Periodically call 'dataHooker' which fills the 'g_allData' list."""
-    g_rt.start()
-
-
-
 def stopAll():
     """Stops all processes."""
-    global g_klog, g_mlog, g_getS, g_rt, g_allData, g_file
+    global g_klog, g_mlog, g_getS, g_rt, g_allData, g_file, g_py
     g_klog.stop()
     g_mlog.stop()
     g_rt.stop()
@@ -99,6 +94,10 @@ def stopAll():
     f=open(g_file,'a')
     np.savetxt(f, g_allData, delimiter=';')
     f.close()
+    g_py.stop()
+    print()
+    print()
+    print("All finished")
 
 def resetAll():
     """Resets all internal class lists."""
@@ -107,16 +106,18 @@ def resetAll():
     g_mlog.reset()
     if g_ApiActive : g_getApi.reset()
 
-def ia():
+def iaMusic(input,inertia=2):
     global g_py
-    tab = g_allData[-2:]
-    label = [ tab[0][-1],tab[1][-1] ]
-    if label[0] == label[1]:
-        if not (label[1] == g_py.state()):
-            g_py.kill_feeling(g_py.state(),fade_out=3000)
-            g_py.add_feeling(int(label[1]),fade_in=3000)
 
-    return label
+    labels = input[-inertia:]
+
+    if labels.count(labels[-1]) == len(labels) and labels:
+        label = int(labels[-1])
+        if not (label == input[-inertia-1]):
+            g_py.kill_feeling( int(input[-inertia-1]) )
+            g_py.add_feeling(label)
+
+    return g_py.get_feeling_busy()
 
 if __name__ == "__main__":
     main()
