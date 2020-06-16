@@ -23,9 +23,7 @@ class Requests_Api():
         self.a_summonerName = self.a_AllData['activePlayer']['summonerName']
         self.a_query = 'https://127.0.0.1:2999/liveclientdata/playerscores?summonerName='+str(self.a_summonerName)
         self.a_score = requests.get(self.a_query,verify=False).json()
-        self.a_score_bis = requests.get(self.a_query,verify=False).json()
-        
-        
+        self.a_score_bis = requests.get(self.a_query,verify=False).json()  
 
     def output_event(self):
         """Select an object in ['events'].
@@ -36,7 +34,7 @@ class Requests_Api():
 
         """
         self.team()
-
+        print(self.a_team)
         self.a_str_AllData = self.a_AllData['events']['Events'][-1]['EventName']
         try:
             name = self.a_AllData['events']['Events'][-1]['KillerName']
@@ -53,15 +51,19 @@ class Requests_Api():
     def team(self):
         i=0
         try:
-            while i != 11:
+            while i != 10:
                 name = self.a_AllData['allPlayers'][i]['summonerName']
                 team = self.a_AllData['allPlayers'][i]['team']
-                self.a_team.append([name,team])
+                if name == self.a_summonerName:
+                    ally = team
+                if team == ally:
+                    self.a_team.append([name,"ally"])
+                else:
+                    self.a_team.append([name,"enemy"])
+                
                 i +=1
         except:
             return -1
-    
-    
     
     def reset_event(self):
         """Empty the string 'a_str_AllData'."""
@@ -95,10 +97,12 @@ class Requests_Api():
 
         return event
         
-
     def update(self):
         """Restart the 'allData' and 'allData_bis query."""
         self.a_AllData_bis = self.a_AllData
         self.a_AllData = requests.get(self.a_request, verify = False).json()
         self.a_score_bis=self.a_score
         self.a_score = requests.get(self.a_query,verify=False).json()
+
+test = Requests_Api()
+print(test.output_event())
