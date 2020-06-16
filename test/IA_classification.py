@@ -1,31 +1,38 @@
 #IA de classification 
-import tensorflow as tf
 from numpy import loadtxt
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense,Flatten
+import tensorflow as tf
+from imblearn.over_sampling import SMOTE,ADASYN,RandomOverSampler
 
 
 # load the dataset
-dataset = loadtxt('rawdata_A_6.csv', delimiter=';')
+dataset = loadtxt('rawdata_A_4.csv', delimiter=';')
+
+
 
 # split into input (X) and output (y) variables
 X = dataset[:,0:6]
-X = tf.keras.utils.normalize(
-    X, axis=1, order=2
-)
-y = dataset[:,-1]
+# X = tf.keras.utils.normalize(
+#     X, axis=1, order=2
+# )
+y = dataset[:,6]
+
+X_resampled, y_resampled = RandomOverSampler().fit_sample(X, y)
 
 # define the keras model
 model = Sequential()
-model.add(Dense(12, input_dim=6, activation='relu'))
-model.add(Dense(6, activation='relu'))
+model.add(Dense(64, input_dim=6, activation='relu'))
+model.add(Dense(32, input_dim=6, activation='relu'))
+model.add(Dense(16, activation='relu'))
 model.add(Dense(4, activation='softmax'))
-
+model.summary()
+# input("Press ENTER to continue...")
 # compile the keras model
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # fit the keras model on the dataset
-model.fit(X, y, epochs=100, batch_size=10)
+model.fit(X_resampled, y_resampled, epochs=1000, batch_size=10)
 
 # evaluate the keras model
 _, accuracy = model.evaluate(X, y)
@@ -38,6 +45,7 @@ rounded = [round(x[0]) for x in predictions]
 
 # make class predictions with the model
 predictions = model.predict_classes(X)
+
 
 # summarize the first 5 cases
 for i in range(5):
