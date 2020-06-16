@@ -1,7 +1,6 @@
 import requests
 import certifi
 import urllib3
-from Dictionnaire import pyApi
 from pandas import DataFrame
 urllib3.disable_warnings()
 
@@ -15,6 +14,7 @@ class Requests_Api():
         The chosen objects will be stored in 'a_str_AllData'.
         
         """
+        self.a_pyApi={"DragonKill" : 0, "BaronKill" : 1, "Ace" : 2}
         self.a_str_AllData = ""
         self.a_request = p_request
         self.a_AllData = requests.get(self.a_request, verify = False).json()
@@ -36,7 +36,7 @@ class Requests_Api():
         """
         self.a_str_AllData = self.a_AllData['events']['Events'][-1]['EventName']
         try:
-            return pyApi[self.a_list_AllData]
+            return self.a_pyApi[self.a_list_AllData]
         except:
             return -1
         
