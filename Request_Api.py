@@ -34,7 +34,6 @@ class Requests_Api():
 
         """
         self.team()
-        print(self.a_team)
         self.a_str_AllData = self.a_AllData['events']['Events'][-1]['EventName']
         try:
             name = self.a_AllData['events']['Events'][-1]['KillerName']
@@ -103,6 +102,3 @@ class Requests_Api():
         self.a_AllData = requests.get(self.a_request, verify = False).json()
         self.a_score_bis=self.a_score
         self.a_score = requests.get(self.a_query,verify=False).json()
-
-test = Requests_Api()
-print(test.output_event())
