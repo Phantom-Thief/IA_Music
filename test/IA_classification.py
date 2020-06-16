@@ -12,7 +12,7 @@ X = dataset[:,0:8]
 y = dataset[:,8]
 
 # define the keras model
-model = Sequential()
+model = sequential()
 model.add(Dense(12, input_dim=8, activation='relu'))
 model.add(Dense(8, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
