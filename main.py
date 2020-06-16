@@ -58,7 +58,6 @@ def dataHooker():
             g_klog.CountKey(), 
             g_mlog.getCumulTravelDistance(), 
             g_mlog.getRightMouseClicF(),
-            # g_getS.amplitude(),
             0,
             0,
             0,
@@ -78,7 +77,7 @@ def dataHooker():
         resetAll()   
         # g_getS.start_recording()
         label = [i[-1] for i in g_allData]
-        if len(label)>3 : print(iaMusic(label))
+        if len(label)>3 : iaMusic(label)
     else:
         stopAll()
 
@@ -104,7 +103,6 @@ def resetAll():
     global g_klog, g_mlog, g_getApi, g_getS
     g_klog.reset()
     g_mlog.reset()
-    if g_ApiActive : g_getApi.reset()
 
 def iaMusic(input,inertia=2):
     global g_py
