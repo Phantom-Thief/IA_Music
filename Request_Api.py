@@ -14,7 +14,8 @@ class Requests_Api():
         The chosen objects will be stored in 'a_str_AllData'.
         
         """
-        self.a_pyApi={"DragonKill" : 0, "BaronKill" : 1, "AceORDER" : 2, "Ace" : 3}
+        self.a_pyApi={"DragonKillORDER" : 0, "BaronKillORDER" : 1, "AceORDER" : 2,"DragonKillCHAOS" : 3, "BaronKillCHAOS" : 4, "AceCHAOS" : 5}
+        self.a_team = []
         self.a_str_AllData = ""
         self.a_request = p_request
         self.a_AllData = requests.get(self.a_request, verify = False).json()
@@ -36,11 +37,30 @@ class Requests_Api():
         """
         self.a_str_AllData = self.a_AllData['events']['Events'][-1]['EventName']
         try:
-            return self.a_pyApi[self.a_str_AllData]
+            name = self.a_AllData['events']['Events'][-1]['KillerName']
+            for i in self.a_team:
+                if i[0] == name:
+                    return self.a_pyApi[self.a_str_AllData+str(i[1])]
+        except:
+            try:
+                team = self.a_AllData['events']['Events'][-1]['AcingTeam']
+                return self.a_pyApi[self.a_str_AllData+str(team)]
+            except:
+                return -1
+        
+    def team(self):
+        i=0
+        try:
+            while i != 11:
+                name = self.a_AllData['allPlayers'][i]['summonerName']
+                team = self.a_AllData['allPlayers'][i]['team']
+                self.a_team.append([name,team])
+                i +=1
         except:
             return -1
-        
-
+    
+    
+    
     def reset_event(self):
         """Empty the string 'a_str_AllData'."""
         self.a_str_AllData = ""
@@ -81,3 +101,6 @@ class Requests_Api():
         self.a_score_bis=self.a_score
         self.a_score = requests.get(self.a_query,verify=False).json()
 
+test = Requests_Api()
+test.team()
+print(test.output_event())
