@@ -9,6 +9,9 @@ import repeatedTime
 import musicologie
 import pymix
 import queue
+from tensorflow import keras
+
+g_model = keras.models.load_model('model.h5')
 
 g_py = None
 g_klog = None
@@ -17,7 +20,7 @@ g_getApi = None
 #Changement sans fichier intermedaire g_allData = queue.Queue(maxsize=2)
 g_allData = []
 g_rt = None
-g_ApiActive=False
+g_ApiActive=True
 g_file = 'rawdata.csv'
 
 def main():
@@ -64,9 +67,11 @@ def dataHooker():
             for i in range(3):
                 database[i+4]=g_getApi.event_kill_life()[i]
             g_getApi.update()
-            
-        database[-1] = g_klog.a_state
-     
+        
+        print(database[:-1])
+        print( database[:-1].shape )
+        database[-1] = iaClassification( [database[:-1]] )
+
         # Changement g_allData.put(database,block=False)
         """La file créée est une file de 2 élements (mode FIFO) pour sortir l'élément qui est rentré en premier,
             Il faut utiliser g_allData.get(block=False) ce qui renvoie et enlève la premiere donnée rentrée dans la file
@@ -102,9 +107,17 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
 
+def iaClassification(vector):
+    global g_model
+    global g_getApi
+    if g_getApi.event_kill_life()[2] == 1: return 3
+    label = g_model.predict(vector)
+    print(label)
+    return label
+    
+ 
 def iaMusic(input,inertia=2):
     global g_py, g_getApi
-
     labels = input[-inertia:]
 
     # if g_getApi.event_kill_life()[2]:
