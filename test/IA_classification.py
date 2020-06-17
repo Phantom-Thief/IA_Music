@@ -74,4 +74,8 @@ y_test = datasetest[:,6]
 
 print('\n# Evaluate on test data')
 results = model.evaluate(x_test, y_test, batch_size=128)
+<<<<<<< HEAD
 print('test loss, test acc:', results)
+=======
+print('test loss, test acc:', results)
+>>>>>>> e2541b68a418b449dd74fc21e6c02256b161673d

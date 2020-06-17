@@ -15,7 +15,8 @@ class Requests_Api():
         The chosen objects will be stored in 'a_str_AllData'.
         
         """
-        self.a_team = []
+        self.a_list_team = []
+        self.a_ally = None
         self.a_str_AllData = ""
         self.a_request = p_request
         self.a_AllData = requests.get(self.a_request, verify = False).json()
@@ -23,9 +24,7 @@ class Requests_Api():
         self.a_summonerName = self.a_AllData['activePlayer']['summonerName']
         self.a_query = 'https://127.0.0.1:2999/liveclientdata/playerscores?summonerName='+str(self.a_summonerName)
         self.a_score = requests.get(self.a_query,verify=False).json()
-        self.a_score_bis = requests.get(self.a_query,verify=False).json()
-        
-        
+        self.a_score_bis = requests.get(self.a_query,verify=False).json()  
 
     def output_event(self):
         """Select an object in ['events'].
@@ -36,32 +35,38 @@ class Requests_Api():
 
         """
         self.team()
-
         self.a_str_AllData = self.a_AllData['events']['Events'][-1]['EventName']
         try:
             name = self.a_AllData['events']['Events'][-1]['KillerName']
-            for i in self.a_team:
+            for i in self.a_list_team:
                 if i[0] == name:
                     return pyApi[self.a_str_AllData+str(i[1])]
         except:
             try:
                 team = self.a_AllData['events']['Events'][-1]['AcingTeam']
-                return pyApi[self.a_str_AllData+str(team)]
+                if team == self.a_ally :
+                    return pyApi[self.a_str_AllData+ 'ally']
+                else:
+                    return pyApi[self.a_str_AllData+ 'enemy']
             except:
                 return -1
         
     def team(self):
         i=0
         try:
-            while i != 11:
+            while i != 10:
                 name = self.a_AllData['allPlayers'][i]['summonerName']
                 team = self.a_AllData['allPlayers'][i]['team']
-                self.a_team.append([name,team])
+                if name == self.a_summonerName:
+                    self.a_ally = team
+                if team == self.a_ally:
+                    self.a_list_team.append([name,"ally"])
+                else:
+                    self.a_list_team.append([name,"enemy"])
+                
                 i +=1
         except:
             return -1
-    
-    
     
     def reset_event(self):
         """Empty the string 'a_str_AllData'."""
@@ -95,7 +100,6 @@ class Requests_Api():
 
         return event
         
-
     def update(self):
         """Restart the 'allData' and 'allData_bis query."""
         self.a_AllData_bis = self.a_AllData
