@@ -64,10 +64,7 @@ def dataHooker():
                 database[i+4]=g_getApi.event_kill_life()[i]
             g_getApi.update()
         
-        database[-1] = iaClassification( [database[:-1]] )
-
-        # Changement g_allData.put(database,block=False)
-        g_queue.append(database)
+        g_queue.append(iaClassification( [database[:-1]] ))
         resetAll()  
         
         label = [i[-1] for i in g_queue]
