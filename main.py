@@ -69,7 +69,7 @@ def dataHooker():
      
         # Changement g_allData.put(database,block=False)
         """La file créée est une file de 2 élements (mode FIFO) pour sortir l'élément qui est rentré en premier,
-            Il faut utiliser g_allData(block=False) ce qui renvoie et enlève la premiere donnée rentrée dans la file
+            Il faut utiliser g_allData.get(block=False) ce qui renvoie et enlève la premiere donnée rentrée dans la file
         """
         g_allData.append(database)
         
