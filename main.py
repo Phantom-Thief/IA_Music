@@ -8,12 +8,14 @@ import scipy
 import repeatedTime
 import musicologie
 import pymix
+import queue
 
 g_py = None
 g_klog = None
 g_mlog = None
 g_getApi = None
-g_allData = [0] * 50
+#Changement sans fichier intermedaire g_allData = queue.Queue(maxsize=2)
+g_allData = []
 g_rt = None
 g_ApiActive=False
 g_file = 'rawdata.csv'
@@ -55,6 +57,7 @@ def dataHooker():
             g_mlog.getRightMouseClicF(),
             0,
             0,
+            0,
             0])
 
         if(g_ApiActive):
@@ -64,10 +67,14 @@ def dataHooker():
             
         database[-1] = g_klog.a_state
      
-        g_allData.popleft()
+        # Changement g_allData.put(database,block=False)
+        """La file créée est une file de 2 élements (mode FIFO) pour sortir l'élément qui est rentré en premier,
+            Il faut utiliser g_allData(block=False) ce qui renvoie et enlève la premiere donnée rentrée dans la file
+        """
         g_allData.append(database)
         
-        resetAll()   
+        resetAll()  
+        
         label = [i[-1] for i in g_allData]
 
         if len(label)>3 : iaMusic(label)
