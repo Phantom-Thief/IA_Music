@@ -7,7 +7,7 @@ from imblearn.over_sampling import SMOTE,ADASYN,RandomOverSampler
 
 
 # load the dataset
-dataset = loadtxt('rawdata_A_4.csv', delimiter=';')
+dataset = loadtxt('finalreenregistrer.csv', delimiter=';')
 
 
 
@@ -32,7 +32,8 @@ print( (y_resampled==1).sum()/y_resampled.shape )
 
 # define the keras model
 model = Sequential()
-model.add(Dense(64, input_dim=6, activation='relu'))
+model.add(Dense(128, input_dim=6, activation='relu'))
+model.add(Dense(64, activation='relu'))
 model.add(Dense(16, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 model.summary()
@@ -42,11 +43,11 @@ model.summary()
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[tf.keras.metrics.Recall()])
 
 # fit the keras model on the dataset
-model.fit(X_resampled, y_resampled, epochs=10000, batch_size=128)
+model.fit(X_resampled, y_resampled, epochs=100, batch_size=128)
 
 # evaluate the keras model
-_, accuracy = model.evaluate(X, y)
-print('Accuracy: %.2f' % (accuracy*100))
+_, recall = model.evaluate(X, y)
+print('Recall: %.2f' % (recall*100))
 
 # make probability predictions with the model
 predictions = model.predict(X)
@@ -62,20 +63,15 @@ for i in range(100):
 	print('%s => %d (expected %d)' % (X[i].tolist(), predictions[i], y[i]))
 
 
+# datasetest = loadtxt('rawdata_A_5.csv', delimiter=';')
 
-datasetest = loadtxt('rawdata_A_5.csv', delimiter=';')
+# # split into input (X) and output (y) variables
+# x_test = datasetest[:,0:6]
+# # X = tf.keras.utils.normalize(
+# #     X, axis=1, order=2
+# # )
+# y_test = datasetest[:,6]
 
-# split into input (X) and output (y) variables
-x_test = datasetest[:,0:6]
-# X = tf.keras.utils.normalize(
-#     X, axis=1, order=2
-# )
-y_test = datasetest[:,6]
-
-print('\n# Evaluate on test data')
-results = model.evaluate(x_test, y_test, batch_size=128)
-<<<<<<< HEAD
-print('test loss, test acc:', results)
-=======
-print('test loss, test acc:', results)
->>>>>>> e2541b68a418b449dd74fc21e6c02256b161673d
+# print('\n# Evaluate on test data')
+# results = model.evaluate(x_test, y_test, batch_size=128)
+# print('test loss, test acc:', results)
