@@ -75,3 +75,6 @@ for i in range(100):
 # print('\n# Evaluate on test data')
 # results = model.evaluate(x_test, y_test, batch_size=128)
 # print('test loss, test acc:', results)
+
+model.save("model.h5")
+print("Saved model to disk")

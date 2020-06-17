@@ -68,9 +68,7 @@ def dataHooker():
                 database[i+4]=g_getApi.event_kill_life()[i]
             g_getApi.update()
         
-        print(database[:-1])
-        print( database[:-1].shape )
-        database[-1] = iaClassification( [database[:-1]] )
+        database[-1] = iaClassification( np.asarray([database[:-1]]) )
 
         # Changement g_allData.put(database,block=False)
         """La file créée est une file de 2 élements (mode FIFO) pour sortir l'élément qui est rentré en premier,
@@ -78,7 +76,7 @@ def dataHooker():
         """
         g_allData.append(database)
         
-        resetAll()  
+        resetAll()
         
         label = [i[-1] for i in g_allData]
 
