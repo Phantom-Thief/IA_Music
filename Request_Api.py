@@ -15,8 +15,7 @@ class Requests_Api():
         The chosen objects will be stored in 'a_str_AllData'.
         
         """
-        self.a_list_team = []
-        self.a_ally = None
+        self.a_team = {}
         self.a_str_AllData = ""
         self.a_request = p_request
         self.a_AllData = requests.get(self.a_request, verify = False).json()
@@ -24,47 +23,49 @@ class Requests_Api():
         self.a_summonerName = self.a_AllData['activePlayer']['summonerName']
         self.a_query = 'https://127.0.0.1:2999/liveclientdata/playerscores?summonerName='+str(self.a_summonerName)
         self.a_score = requests.get(self.a_query,verify=False).json()
-        self.a_score_bis = requests.get(self.a_query,verify=False).json()  
+        self.a_score_bis = requests.get(self.a_query,verify=False).json()
+
+        self.team()
 
     def output_event(self):
         """Select an object in ['events'].
         
         'events' is a list of events with their id, name, EventTime.
-        We retrieve the name of the event and thanks to the dictionary we transform it into an interger.
+        We retrieve the name of the event and thanks to the dictionary we transform it into a positive integer.
         If the element does not interest us -1 is returned.
 
         """
-        self.team()
-        self.a_str_AllData = self.a_AllData['events']['Events'][-1]['EventName']
-        try:
-            name = self.a_AllData['events']['Events'][-1]['KillerName']
-            for i in self.a_list_team:
-                if i[0] == name:
-                    return pyApi[self.a_str_AllData+str(i[1])]
-        except:
+        event = self.a_AllData['events']['Events'][-1]
+        if event['EventName'] == 'Ace':
+            team = event['AcingTeam']
+            if team == self.a_team[self.a_summonerName]:
+                return pyApi[event + 'ally']
+            else:
+                return pyApi[event + 'enemy']
+        else :
             try:
-                team = self.a_AllData['events']['Events'][-1]['AcingTeam']
-                if team == self.a_ally :
-                    return pyApi[self.a_str_AllData+ 'ally']
-                else:
-                    return pyApi[self.a_str_AllData+ 'enemy']
+                name = event['KillerName']
+                team = self.a_team[name]
+                return pyApi[event+team]
             except:
                 return -1
         
     def team(self):
-        i=0
+        allyTeam = str()
         try:
-            while i != 10:
-                name = self.a_AllData['allPlayers'][i]['summonerName']
-                team = self.a_AllData['allPlayers'][i]['team']
+            for summoner in self.a_AllData['allPlayers']:
+                name = summoner['summonerName']
+                team = summoner['team']
                 if name == self.a_summonerName:
-                    self.a_ally = team
-                if team == self.a_ally:
-                    self.a_list_team.append([name,"ally"])
+                    allyTeam = team
+            for summoner in self.a_AllData['allPlayers']:
+                name = summoner['summonerName']
+                team = summoner['team']
+                if team == allyTeam:
+                    self.a_team[name]='ally'
                 else:
-                    self.a_list_team.append([name,"enemy"])
-                
-                i +=1
+                    self.a_team[name]='ennemy'
+
         except:
             return -1
     
@@ -72,13 +73,14 @@ class Requests_Api():
         """Empty the string 'a_str_AllData'."""
         self.a_str_AllData = ""
       
-    def Event_kill_life(self):
+    def event_kill_life(self):
         """Catch in a array 'event' if the player gets a kill or loses life points.
 
         If event[0] = 0 then the player gets no kill.
         If event[1] = 0 then the player didn't lose life points.
         If event[1] > 0 then the player lost life points.
         If event[1] < 0 then the player gained life points.
+        If event[2] is True then the player is dead.
 
         """
         kill_init = self.a_score_bis['kills']
@@ -96,9 +98,8 @@ class Requests_Api():
       
         event.append(self.a_AllData['activePlayer']['championStats']['currentHealth']==0)
 
-        event.append(self.a_AllData['gameData']['gameTime'])
-
-        return event
+        
+        return event  # event = [delta kills, delta HP, is dead]
         
     def update(self):
         """Restart the 'allData' and 'allData_bis query."""
