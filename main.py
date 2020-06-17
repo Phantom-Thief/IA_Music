@@ -65,11 +65,12 @@ def dataHooker():
             g_getApi.update()
         
         g_queue.append(iaClassification( [database[:-1]] ))
-        resetAll()  
+        #dans g_queue il y a les labels pour les musiques
+        resetAll()
         
-        label = [i[-1] for i in g_queue]
+        label = [i for i in list(g_queue)]
 
-        if len(label)>3 : iaMusic(label)
+        #if len(label)>3 : iaMusic(label)
     else:
         stopAll()
 
@@ -85,9 +86,6 @@ def stopAll():
     g_klog.stop()
     g_mlog.stop()
     g_rt.stop()
-    f=open(g_file,'a')
-    np.savetxt(f, g_queue, delimiter=';')
-    f.close()
     g_py.stop()
     print()
     print()
@@ -105,13 +103,9 @@ def iaClassification(vector):
     label = g_model.predict(vector)
     return label
     
- 
 def iaMusic(input,inertia=2):
-    global g_py, g_getApi
+    global g_py
     labels = input[-inertia:]
-
-    # if g_getApi.event_kill_life()[2]:
-    #     labels[-inertia:] = 3
 
     if labels.count(labels[-1]) == len(labels) and labels:
         label = int(labels[-1])
