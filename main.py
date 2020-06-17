@@ -8,7 +8,7 @@ import scipy
 import repeatedTime
 import musicologie
 import pymix
-import queue
+import collections
 from tensorflow import keras
 
 g_model = keras.models.load_model('model.h5')
@@ -17,8 +17,7 @@ g_py = None
 g_klog = None
 g_mlog = None
 g_getApi = None
-#Changement sans fichier intermedaire g_allData = queue.Queue(maxsize=2)
-g_allData = []
+g_queue = collections.deque([])
 g_rt = None
 g_ApiActive=True
 g_file = 'rawdata.csv'
@@ -27,10 +26,9 @@ def main():
     init()
     startAll()
 
-
 def init():
     """This function instantiates all our global variables."""
-    global g_klog, g_mlog, g_getApi,  g_rt, g_ApiActive, g_py
+    global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
@@ -43,7 +41,6 @@ def startAll():
     global g_klog, g_mlog, g_ApiActive, g_py, g_rt
     g_klog.start()
     g_mlog.start()
-
     if g_ApiActive : g_getApi.update()
     g_py.add_track('musicologie/musiques/effects/high_tech_start.wav')
     g_py.add_feeling('calm',fade_in=10000)
@@ -51,14 +48,13 @@ def startAll():
     print("All Started")
 
 def dataHooker():
-    """Fills the 'g_allData' list with the different calculation functions implemented in classes."""
-    global g_klog, g_mlog, g_getApi, g_allData, g_rt
+    """Fills the 'g_queue' list with the different calculation functions implemented in classes."""
+    global g_klog, g_mlog, g_getApi, g_queue, g_rt
     if(g_klog.a_stopMain):
         database = np.asarray([
             g_klog.CountKey(), 
             g_mlog.getCumulTravelDistance(), 
             g_mlog.getRightMouseClicF(),
-            0,
             0,
             0,
             0])
@@ -68,33 +64,32 @@ def dataHooker():
                 database[i+4]=g_getApi.event_kill_life()[i]
             g_getApi.update()
         
-        print(database[:-1])
-        print( database[:-1].shape )
         database[-1] = iaClassification( [database[:-1]] )
 
         # Changement g_allData.put(database,block=False)
-        """La file créée est une file de 2 élements (mode FIFO) pour sortir l'élément qui est rentré en premier,
-            Il faut utiliser g_allData.get(block=False) ce qui renvoie et enlève la premiere donnée rentrée dans la file
-        """
-        g_allData.append(database)
-        
+        g_queue.append(database)
         resetAll()  
         
-        label = [i[-1] for i in g_allData]
+        label = [i[-1] for i in g_queue]
 
         if len(label)>3 : iaMusic(label)
     else:
         stopAll()
 
+def taillemaxqueue(max,queue):
+  if len(queue)>max:
+    queue.popleft()
+    taillemaxqueue(max,queue)
+
 
 def stopAll():
     """Stops all processes."""
-    global g_klog, g_mlog, g_rt, g_allData, g_file, g_py
+    global g_klog, g_mlog, g_rt, g_queue, g_file, g_py
     g_klog.stop()
     g_mlog.stop()
     g_rt.stop()
     f=open(g_file,'a')
-    np.savetxt(f, g_allData, delimiter=';')
+    np.savetxt(f, g_queue, delimiter=';')
     f.close()
     g_py.stop()
     print()
@@ -108,11 +103,9 @@ def resetAll():
     g_mlog.reset()
 
 def iaClassification(vector):
-    global g_model
-    global g_getApi
+    global g_model, g_getApi
     if g_getApi.event_kill_life()[2] == 1: return 3
     label = g_model.predict(vector)
-    print(label)
     return label
     
  
