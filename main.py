@@ -70,7 +70,9 @@ def dataHooker():
         
         label = [i for i in list(g_queue)]
 
-        #if len(label)>3 : iaMusic(label)
+        if len(label)>3 : 
+            iaMusic(label)
+            taillemaxqueue(3,g_queue)
     else:
         stopAll()
 
@@ -78,7 +80,6 @@ def taillemaxqueue(max,queue):
   if len(queue)>max:
     queue.popleft()
     taillemaxqueue(max,queue)
-
 
 def stopAll():
     """Stops all processes."""
