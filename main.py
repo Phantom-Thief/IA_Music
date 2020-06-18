@@ -110,8 +110,12 @@ def iaMusic(input,inertia=2):
     global g_py, g_getApi
     labels = input[-inertia:]
 
-    event = pyApi.keys()[list(pyApi.values()).index(1)]
-    print(event)
+    event = g_getApi.output_event()
+    if not event == -1:
+        path = "musicologie/musiques/effects/" + event + "/"
+        print(path)
+        g_py.add_track_from_directory(path,channel=4)
+
 
     if labels.count(labels[-1]) == len(labels) and labels:
         label = int(labels[-1])

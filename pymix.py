@@ -48,11 +48,13 @@ class Pymix:
         channel.play(pygame.mixer.Sound(file),fade_ms=fade_in)
         return 1
 
-    def add_track_from_directory(self,pathdirectory,channel,fade_in=3000):
+    def add_track_from_directory(self,pathdirectory,channel=7,fade_in=3000):
         """
 
         """
-        pygame.mixer.Channel(channel).play( pygame.mixer.Sound( random.choice(pathdirectory) ),fade_ms=fade_in )
+        listfile = self.get_file(pathdirectory)
+        sound = pathdirectory + random.choice(listfile)
+        pygame.mixer.Channel(channel).play( pygame.mixer.Sound( sound ),fade_ms=fade_in )
 
     def add_feeling(self,feeling,fade_in=3000,rand=True,file=None):
         """
