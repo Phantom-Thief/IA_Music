@@ -36,19 +36,23 @@ class Requests_Api():
 
         """
         event = self.a_AllData['events']['Events'][-1]
-        if event['EventName'] == 'Ace':
-            team = event['AcingTeam']
-            if team == self.a_team[self.a_summonerName]:
-                return pyApi[event + 'ally']
-            else:
-                return pyApi[event + 'enemy']
-        else :
-            try:
-                name = event['KillerName']
-                team = self.a_team[name]
-                return pyApi[event+team]
-            except:
-                return -1
+        if abs( event['EventTime'] - self.a_AllData['gameData']['gameTime'] ) <= 1:
+            if event['EventName'] == 'Ace':
+                team = event['AcingTeam']
+                if team == self.a_team[self.a_summonerName]:
+                    return event['EventName'] + 'ally'
+                else:
+                    return event['EventName'] + 'enemy'
+            else :
+                try:
+                    name = str(event['KillerName'])
+                    team = str(self.a_team[name])
+
+                    return event['EventName']+team
+                except:
+                    return -1
+        else:
+            return -1
         
     def team(self):
         allyTeam = str()

@@ -48,6 +48,12 @@ class Pymix:
         channel.play(pygame.mixer.Sound(file),fade_ms=fade_in)
         return 1
 
+    def add_track_from_directory(self,pathdirectory,channel,fade_in=3000):
+        """
+
+        """
+        pygame.mixer.Channel(channel).play( pygame.mixer.Sound( random.choice(pathdirectory) ),fade_ms=fade_in )
+
     def add_feeling(self,feeling,fade_in=3000,rand=True,file=None):
         """
         Add a track linked to an emotion and play it in his personnal channel.

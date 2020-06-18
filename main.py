@@ -10,6 +10,7 @@ import musicologie
 import pymix
 import collections
 from tensorflow import keras
+from Dictionnaire import pyApi
 
 g_model = keras.models.load_model('model.h5')
 
@@ -61,10 +62,10 @@ def dataHooker():
 
         if(g_ApiActive):
             for i in range(3):
-                database[i+4]=g_getApi.event_kill_life()[i]
+                database[i+3]=g_getApi.event_kill_life()[i]
             g_getApi.update()
         
-        g_queue.append(iaClassification( [database[:-1]] ))
+        g_queue.append(iaClassification( np.asarray([database   ]) ))
         #dans g_queue il y a les labels pour les musiques
         resetAll()
         
@@ -100,13 +101,17 @@ def resetAll():
 
 def iaClassification(vector):
     global g_model, g_getApi
+    print(g_getApi.output_event())
     if g_getApi.event_kill_life()[2] == 1: return 3
     label = g_model.predict(vector)
     return label
     
 def iaMusic(input,inertia=2):
-    global g_py
+    global g_py, g_getApi
     labels = input[-inertia:]
+
+    event = pyApi.keys()[list(pyApi.values()).index(1)]
+    print(event)
 
     if labels.count(labels[-1]) == len(labels) and labels:
         label = int(labels[-1])
