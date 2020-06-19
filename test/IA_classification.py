@@ -1,5 +1,5 @@
 #IA de classification 
-from numpy import loadtxt
+import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense,Flatten
 import tensorflow as tf
@@ -7,9 +7,15 @@ from imblearn.over_sampling import SMOTE,ADASYN,RandomOverSampler
 
 
 # load the dataset
-dataset = loadtxt('finalreenregistrer.csv', delimiter=';')
+dataset = np.loadtxt('finalreenregistrer.csv', delimiter=';')
 
-
+index=[]
+for i in dataset:
+	if i[-1] == 1 or i[-1] == 2:
+		index.append(i)
+print(dataset.shape)
+dataset = np.asarray(index)
+print(dataset.shape)
 
 # split into input (X) and output (y) variables
 X = dataset[:,0:6]
@@ -17,12 +23,6 @@ X = dataset[:,0:6]
 #     X, axis=1, order=2
 # )
 y = dataset[:,6]
-print(y.shape)
-y[y==0]=0
-y[y==1]=0
-y[y==2]=1
-y[y==3]=1
-print(y.shape)
 
 
 X_resampled, y_resampled = SMOTE().fit_sample(X, y)
@@ -76,5 +76,5 @@ for i in range(100):
 # results = model.evaluate(x_test, y_test, batch_size=128)
 # print('test loss, test acc:', results)
 
-model.save("model.h5")
-print("Saved model to disk")
+# model.save("model.h5")
+# print("Saved model to disk")
