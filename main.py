@@ -10,7 +10,6 @@ import musicologie
 import pymix
 import collections
 from tensorflow import keras
-from Dictionnaire import pyApi
 
 g_model = keras.models.load_model('model.h5')
 
