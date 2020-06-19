@@ -23,12 +23,14 @@ X = dataset[:,0:6]
 #     X, axis=1, order=2
 # )
 y = dataset[:,6]
+y = y-1
 
 
 X_resampled, y_resampled = SMOTE().fit_sample(X, y)
 
-print( (y_resampled==0).sum()/y_resampled.shape )
-print( (y_resampled==1).sum()/y_resampled.shape )
+tf.keras.utils.normalize(
+    X, axis=-1
+)
 
 # define the keras model
 model = Sequential()
@@ -40,27 +42,17 @@ model.summary()
 # input("Press ENTER to continue...")
 # compile the keras model
 
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[tf.keras.metrics.Recall()])
+# model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[tf.keras.metrics.Recall()])
+model.compile(loss=tf.keras.losses.KLDivergence(), optimizer='adam', metrics=[tf.keras.metrics.Recall(),'accuracy'])
 
 # fit the keras model on the dataset
-model.fit(X_resampled, y_resampled, epochs=100, batch_size=128)
+model.fit(X_resampled, y_resampled, epochs=100000, batch_size=64, shuffle=True)
 
 # evaluate the keras model
-_, recall = model.evaluate(X, y)
-print('Recall: %.2f' % (recall*100))
-
-# make probability predictions with the model
-predictions = model.predict(X)
-# round predictions 
-rounded = [round(x[0]) for x in predictions]
-
-# make class predictions with the model
-predictions = model.predict_classes(X)
+_, recall_poisson, accuracy_poisson = model.evaluate(X, y)
 
 
-# summarize the first 5 cases
-for i in range(100):
-	print('%s => %d (expected %d)' % (X[i].tolist(), predictions[i], y[i]))
+print('Result with Poisson loss function :   recall: {} accuracy: {}'.format(recall_poisson,accuracy_poisson))
 
 
 # datasetest = loadtxt('rawdata_A_5.csv', delimiter=';')
@@ -76,5 +68,5 @@ for i in range(100):
 # results = model.evaluate(x_test, y_test, batch_size=128)
 # print('test loss, test acc:', results)
 
-# model.save("model.h5")
-# print("Saved model to disk")
+model.save("model.h5")
+print("Saved model to disk")
