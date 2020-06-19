@@ -38,7 +38,7 @@ class Requests_Api():
         event = self.a_AllData['events']['Events'][-1]
         if abs( event['EventTime'] - self.a_AllData['gameData']['gameTime'] ) <= 1:
             if event['EventName'] == 'Ace':
-                team = event['AcingTeam']
+                team = str(event['AcingTeam'])
                 if team == self.a_team[self.a_summonerName]:
                     return event['EventName'] + 'ally'
                 else:

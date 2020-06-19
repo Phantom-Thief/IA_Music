@@ -65,7 +65,7 @@ def dataHooker():
                 database[i+3]=g_getApi.event_kill_life()[i]
             g_getApi.update()
         
-        g_queue.append(iaClassification( np.asarray([database   ]) ))
+        g_queue.append(iaClassification( np.asarray([database]) ))
         #dans g_queue il y a les labels pour les musiques
         resetAll()
         
