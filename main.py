@@ -9,18 +9,20 @@ import repeatedTime
 import musicologie
 import pymix
 import collections
+import tensorflow as tf
 from tensorflow import keras
 
-g_model = keras.models.load_model('oldmodel.h5')
+g_model = keras.models.load_model('model.h5')
 
 g_py = None
 g_klog = None
 g_mlog = None
 g_getApi = None
-g_queue = collections.deque([0,0,0,0])
+g_queue = collections.deque([0.0,0.0,0.0,0.0,0.0])
 g_rt = None
 g_ApiActive=False
 g_file = 'rawdata.csv'
+g_count = 0
 
 def main():
     init()
@@ -49,12 +51,12 @@ def startAll():
 
 def dataHooker():
     """Fills the 'g_queue' list with the different calculation functions implemented in classes."""
-    global g_klog, g_mlog, g_getApi, g_queue, g_rt
+    global g_klog, g_mlog, g_getApi, g_queue, g_rt, g_count
     if(g_klog.a_stopMain):
         database = np.asarray([
-            g_klog.CountKey(), 
-            g_mlog.getCumulTravelDistance(), 
-            g_mlog.getRightMouseClicF(),
+            g_klog.CountKey()/8,
+            g_mlog.getCumulTravelDistance()/22000,
+            g_mlog.getRightMouseClicF()/10,
             0,
             0,
             0])
@@ -64,13 +66,22 @@ def dataHooker():
                 database[i+3]=g_getApi.event_kill_life()[i]
             g_getApi.update()
         
-        g_queue.append(iaClassification( np.asarray([database]) ))
+        new_label = iaClassification( np.asarray(database) )
+
+        if new_label == 1:
+            g_count = 5
+        if g_count:
+            new_label = 1
+            g_count = g_count - 1
+
+        g_queue.append(new_label)
+
         #dans g_queue il y a les labels pour les musiques
         resetAll()
 
-        if len(g_queue)>3 : 
+        if len(g_queue)>5 : 
             iaMusic(g_queue)
-            taillemaxqueue(3,g_queue)
+            taillemaxqueue(5,g_queue)
     else:
         stopAll()
 
@@ -81,11 +92,12 @@ def taillemaxqueue(max,queue):
 
 def stopAll():
     """Stops all processes."""
-    global g_klog, g_mlog, g_rt, g_queue, g_file, g_py
+    global g_klog, g_mlog, g_rt, g_queue, g_file
     g_klog.stop()
     g_mlog.stop()
     g_rt.stop()
     g_py.stop()
+
     print()
     print()
     print("All finished")
@@ -96,19 +108,29 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
 
-def iaClassification(vector):
+def iaClassification(vector, weight=[1,0.5,0.8,1,20,0]):
+    # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
     global g_model, g_getApi, g_ApiActive
-    if g_ApiActive:
-        if g_getApi.event_kill_life()[2] == 1: return 3
-    label = g_model.predict(vector)
-    print((label[0][0]-0.39))
-    return round(label[0][0]-0.39)
+    if not len(vector) == len(weight):
+        print("Warning : weight is not the same length than input vector !")
+        return 0
+
+    is_dead = vector[5]
+    if is_dead:
+        return 3
+
+    print(np.sum(vector*weight))
+    state = round(np.sum(vector*weight))
+    if (state >= 1) :
+        return 1
+    return 0
+    
     
 def iaMusic(inputs,inertia=2):
-    global g_py, g_getApi, g_ApiActive
+    global g_py, g_getApi, g_ApiActive, g_queue
+
     labels = list(collections.deque(inputs))
-    print(inputs)
-    print(labels)
+    label = int(labels[-1])
 
     if g_ApiActive : event = g_getApi.output_event()
     else : event = -1
@@ -117,17 +139,15 @@ def iaMusic(inputs,inertia=2):
         print(path)
         g_py.add_track_from_directory(path,channel=4)
 
-
-    if not (labels.count(labels[-1]) == len(labels)):
-        label = int(labels[-1])
-        if not (label == inputs[-inertia-1]):
-            g_py.kill_feeling( int(inputs[-inertia-1]) )
-            g_py.add_feeling(label)
+    if not (labels[-1] == labels[-2]):
+        g_py.kill_feeling( int(labels[-2]) )
+        g_py.add_feeling(label)
 
     if not (g_py.is_busy()):
         label = labels[-1]
         g_py.add_feeling(int(label),fade_in=0)
 
+    
     return g_py.get_feeling_busy()
 
 if __name__ == "__main__":

@@ -97,7 +97,8 @@ class Requests_Api():
         kill_count = kill_update - kill_init
         event.append(kill_count)
 
-        life_change = life_update - life_init
+        print(self.a_AllData['activePlayer']['championStats']['maxHealth'])
+        life_change = (life_update - life_init)/self.a_AllData['activePlayer']['championStats']['maxHealth']
         event.append(life_change)
       
         event.append(self.a_AllData['activePlayer']['championStats']['currentHealth']==0)
