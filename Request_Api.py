@@ -48,7 +48,7 @@ class Requests_Api():
                     name = str(event['KillerName'])
                     team = str(self.a_team[name])
 
-                    return event['EventName']+team
+                    if event['EventName'] in pyApi.keys(): return event['EventName']+team
                 except:
                     return -1
         else:
@@ -97,7 +97,6 @@ class Requests_Api():
         kill_count = kill_update - kill_init
         event.append(kill_count)
 
-        print(self.a_AllData['activePlayer']['championStats']['maxHealth'])
         life_change = (life_update - life_init)/self.a_AllData['activePlayer']['championStats']['maxHealth']
         event.append(life_change)
       
