@@ -46,7 +46,7 @@ class Pymix:
         if channel < 5 : print("Warning : channel {} already used for feelings".format(channel))
         channel = pygame.mixer.Channel(channel)
         channel.play(pygame.mixer.Sound(file),fade_ms=fade_in)
-        pygame.mixer.music.set_volume(0.2)
+        pygame.mixer.music.set_volume(0.05)
         return 1
 
     def add_track_from_directory(self,pathdirectory,channel=7,fade_in=3000):
@@ -56,7 +56,7 @@ class Pymix:
         listfile = self.get_file(pathdirectory)
         sound = pathdirectory + random.choice(listfile)
         pygame.mixer.Channel(channel).play( pygame.mixer.Sound( sound ),fade_ms=fade_in )
-        pygame.mixer.music.set_volume(0.2)
+        pygame.mixer.music.set_volume(0.05)
 
     def add_feeling(self,feeling,fade_in=3000,rand=True,file=None):
         """
@@ -70,10 +70,10 @@ class Pymix:
             sound = self.a_path[channel]+random.choice(self.a_soundfile[channel])
             print(sound)
             pygame.mixer.Channel(channel).play( pygame.mixer.Sound( sound ),fade_ms=fade_in )
-            pygame.mixer.music.set_volume(0.2)
+            pygame.mixer.music.set_volume(0.05)
         else:
             pygame.mixer.Channel(channel).play( pygame.mixer.Sound(file),fade_ms=fade_in )
-            pygame.mixer.music.set_volume(0.2)
+            pygame.mixer.music.set_volume(0.05)
         return 1
 
     def kill_feeling(self,feeling,fade_out=3000):
