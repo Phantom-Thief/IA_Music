@@ -1,8 +1,6 @@
 import requests
-import certifi
 import urllib3
 from Dictionnaire import pyApi
-from pandas import DataFrame
 urllib3.disable_warnings()
 
 class Requests_Api():

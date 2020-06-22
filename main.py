@@ -1,10 +1,7 @@
 import keylog
-import time
 import Mouselogger
 import numpy as np
-import json
 import Request_Api as api
-import scipy
 import repeatedTime
 import musicologie
 import pymix
@@ -108,11 +105,7 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
 
-<<<<<<< HEAD
 def iaClassification(vector, weight=[1.8,1.2,0.8,1,20,0]):
-=======
-def iaClassification(vector, weight=[2.6,1,0.4,1,20,0]):
->>>>>>> c4aa631ce17854cf56e6c32c6362c667ad2b5354
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
     global g_getApi, g_ApiActive
     if not len(vector) == len(weight):

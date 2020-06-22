@@ -1,5 +1,4 @@
 import pygame
-import time
 import random
 
 from os import listdir
