@@ -9,10 +9,10 @@ import repeatedTime
 import musicologie
 import pymix
 import collections
-import tensorflow as tf
-from tensorflow import keras
+#import tensorflow as tf
+#from tensorflow import keras
 
-g_model = keras.models.load_model('model.h5')
+#g_model = keras.models.load_model('model.h5')
 
 g_py = None
 g_klog = None
@@ -108,9 +108,13 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
 
+<<<<<<< HEAD
 def iaClassification(vector, weight=[1.8,1.2,0.8,1,20,0]):
+=======
+def iaClassification(vector, weight=[2.6,1,0.4,1,20,0]):
+>>>>>>> c4aa631ce17854cf56e6c32c6362c667ad2b5354
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
-    global g_model, g_getApi, g_ApiActive
+    global g_getApi, g_ApiActive
     if not len(vector) == len(weight):
         print("Warning : weight is not the same length than input vector !")
         return 0
