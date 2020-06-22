@@ -108,7 +108,7 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
 
-def iaClassification(vector, weight=[0.55,0.5,0.8,1,20,0]):
+def iaClassification(vector, weight=[1.5,0.9,0.7,1,20,0]):
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
     global g_model, g_getApi, g_ApiActive
     if not len(vector) == len(weight):
