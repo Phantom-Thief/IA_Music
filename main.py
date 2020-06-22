@@ -108,7 +108,7 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
 
-def iaClassification(vector, weight=[1,0.5,0.8,1,20,0]):
+def iaClassification(vector, weight=[0.55,0.5,0.8,1,20,0]):
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
     global g_model, g_getApi, g_ApiActive
     if not len(vector) == len(weight):
@@ -120,7 +120,7 @@ def iaClassification(vector, weight=[1,0.5,0.8,1,20,0]):
         return 3
 
     print(np.sum(vector*weight))
-    state = round(np.sum(vector*weight))
+    state = np.sum(vector*weight)
     if (state >= 1) :
         return 1
     return 0
