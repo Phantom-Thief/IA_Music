@@ -11,15 +11,15 @@ import pymix
 import collections
 from tensorflow import keras
 
-g_model = keras.models.load_model('model.h5')
+g_model = keras.models.load_model('oldmodel.h5')
 
 g_py = None
 g_klog = None
 g_mlog = None
 g_getApi = None
-g_queue = collections.deque([])
+g_queue = collections.deque([0,0,0,0])
 g_rt = None
-g_ApiActive=True
+g_ApiActive=False
 g_file = 'rawdata.csv'
 
 def main():
@@ -67,11 +67,9 @@ def dataHooker():
         g_queue.append(iaClassification( np.asarray([database]) ))
         #dans g_queue il y a les labels pour les musiques
         resetAll()
-        
-        label = [i for i in list(g_queue)]
 
-        if len(label)>3 : 
-            iaMusic(label)
+        if len(g_queue)>3 : 
+            iaMusic(g_queue)
             taillemaxqueue(3,g_queue)
     else:
         stopAll()
@@ -99,31 +97,36 @@ def resetAll():
     g_mlog.reset()
 
 def iaClassification(vector):
-    global g_model, g_getApi
-    print(g_getApi.output_event())
-    if g_getApi.event_kill_life()[2] == 1: return 3
+    global g_model, g_getApi, g_ApiActive
+    if g_ApiActive:
+        if g_getApi.event_kill_life()[2] == 1: return 3
     label = g_model.predict(vector)
-    return label
+    print((label[0][0]-0.39))
+    return round(label[0][0]-0.39)
     
-def iaMusic(input,inertia=2):
-    global g_py, g_getApi
-    labels = input[-inertia:]
+def iaMusic(inputs,inertia=2):
+    global g_py, g_getApi, g_ApiActive
+    labels = list(collections.deque(inputs))
+    print(inputs)
+    print(labels)
 
-    event = g_getApi.output_event()
+    if g_ApiActive : event = g_getApi.output_event()
+    else : event = -1
     if not event == -1:
         path = "musicologie/musiques/effects/" + event + "/"
         print(path)
         g_py.add_track_from_directory(path,channel=4)
 
 
-    if labels.count(labels[-1]) == len(labels) and labels:
+    if not (labels.count(labels[-1]) == len(labels)):
         label = int(labels[-1])
-        if not (label == input[-inertia-1]):
-            g_py.kill_feeling( int(input[-inertia-1]) )
+        if not (label == inputs[-inertia-1]):
+            g_py.kill_feeling( int(inputs[-inertia-1]) )
             g_py.add_feeling(label)
 
     if not (g_py.is_busy()):
-        g_py.add_feeling(label,fade_in=0)
+        label = labels[-1]
+        g_py.add_feeling(int(label),fade_in=0)
 
     return g_py.get_feeling_busy()
 
