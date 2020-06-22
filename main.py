@@ -18,9 +18,9 @@ g_py = None
 g_klog = None
 g_mlog = None
 g_getApi = None
-g_queue = collections.deque([0.0,0.0,0.0,0.0,0.0])
+g_queue = collections.deque([0.0, 0.0, 0.0, 0.0, 0.0])
 g_rt = None
-g_ApiActive=False
+g_ApiActive=True
 g_file = 'rawdata.csv'
 g_count = 0
 
@@ -108,7 +108,7 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
 
-def iaClassification(vector, weight=[1.5,0.9,0.7,1,20,0]):
+def iaClassification(vector, weight=[1.8,1.2,0.8,1,20,0]):
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
     global g_model, g_getApi, g_ApiActive
     if not len(vector) == len(weight):
@@ -119,6 +119,7 @@ def iaClassification(vector, weight=[1.5,0.9,0.7,1,20,0]):
     if is_dead:
         return 3
 
+    print("function")
     print(np.sum(vector*weight))
     state = np.sum(vector*weight)
     if (state >= 1) :
