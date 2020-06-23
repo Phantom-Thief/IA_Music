@@ -52,11 +52,6 @@ class IMA:
            
         self.Selection = None
 
-
-
-
-
-
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
         _compcolor = '#d9d9d9' # X11 color: 'gray85'
@@ -85,6 +80,7 @@ class IMA:
         self.ButtonRun.configure(background="#d9d9d9")
         self.ButtonRun.configure(disabledforeground="#a3a3a3")
         self.ButtonRun.configure(foreground="#000000")
+        self.ButtonRun.configure(command=self.run)
         self.ButtonRun.configure(highlightbackground="#d9d9d9")
         self.ButtonRun.configure(highlightcolor="black")
         self.ButtonRun.configure(pady="0")
@@ -175,13 +171,14 @@ class IMA:
         except:
             pass
 
-    def printMusic(self):
+    def printMusic(self,p_splitter):
         try:
-            splitter = main.g_py.a_sound.split('/')[-1]
-            self.MessageCMusic.configure(text='Current Music :'+ splitter)
+            self.MessageCMusic.configure(text='Current Music :'+ p_splitter)
         except:
             return ""
 
+    def run(self):
+        
 
         
 
