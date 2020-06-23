@@ -6,6 +6,7 @@ import repeatedTime
 import musicologie
 import pymix
 import collections
+import pickle
 #import tensorflow as tf
 #from tensorflow import keras
 
@@ -20,7 +21,11 @@ g_rt = None
 g_ApiActive=False
 g_file = 'rawdata.csv'
 g_count = 0
-g_normalize = [1,1,1,1,20,0]
+
+try :
+    g_normalize = pickle.load(open("normalize.dat", 'rb'))
+except :
+    g_normalize = [1.0,1.0,1.0,1.0,20.0,1.0]
 
 def main():
     init()
@@ -60,7 +65,8 @@ def dataHooker():
             0
         ])
 
-        normalize(database)
+        database = normalize(database)
+        print(database)
 
         if(g_ApiActive):
             database.extend(g_getApi.event_kill_life())
@@ -70,6 +76,7 @@ def dataHooker():
 
         if new_label == 1:
             g_count = 5
+
         if g_count:
             new_label = 1
             g_count = g_count - 1
@@ -98,6 +105,8 @@ def stopAll():
     g_rt.stop()
     g_py.stop()
 
+    pickle.dump(g_normalize, open("normalize.dat", 'wb'))
+
     print()
     print()
     print("All finished")
@@ -110,20 +119,19 @@ def resetAll():
 
 def normalize(vector):
     global g_normalize
+    # print(g_normalize)
     normalized = vector/g_normalize
     for i in range( len(normalized) ):
         if normalized[i] > 1:
             g_normalize[i] = vector[i]
-    return vector//g_normalize
+    return vector/g_normalize
 
-def iaClassification(vector, weight=g_normalize):
+def iaClassification(vector, weight=[160,120,80,100,2000,0]):
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
     global g_getApi, g_ApiActive
     if not len(vector) == len(weight):
-        delta = len(weight) - len(vector)
-        for i in range(delta):
-            vector = np.append(vector,0)
         print("Warning : weight is not the same length than input vector !")
+        return 0
 
     is_dead = vector[5]
     if is_dead:
@@ -132,7 +140,7 @@ def iaClassification(vector, weight=g_normalize):
     print("function")
     print(np.sum(vector*weight))
     state = np.sum(vector*weight)
-    if (state >= 1) :
+    if (state >= 100) :
         return 1
     return 0
     
