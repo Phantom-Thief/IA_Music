@@ -54,7 +54,10 @@ def dataHooker():
         database = np.asarray([
             g_klog.CountKey(),
             g_mlog.getCumulTravelDistance(),
-            g_mlog.getRightMouseClicF()
+            g_mlog.getRightMouseClicF(),
+            0,
+            0,
+            0
         ])
 
         normalize(database)
