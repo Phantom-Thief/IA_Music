@@ -17,9 +17,10 @@ g_mlog = None
 g_getApi = None
 g_queue = collections.deque([0.0, 0.0, 0.0, 0.0, 0.0])
 g_rt = None
-g_ApiActive=True
+g_ApiActive=False
 g_file = 'rawdata.csv'
 g_count = 0
+g_normalize = [1,1,1,1,20,0]
 
 def main():
     init()
@@ -51,16 +52,15 @@ def dataHooker():
     global g_klog, g_mlog, g_getApi, g_queue, g_rt, g_count
     if(g_klog.a_stopMain):
         database = np.asarray([
-            g_klog.CountKey()/8,
-            g_mlog.getCumulTravelDistance()/22000,
-            g_mlog.getRightMouseClicF()/10,
-            0,
-            0,
-            0])
+            g_klog.CountKey(),
+            g_mlog.getCumulTravelDistance(),
+            g_mlog.getRightMouseClicF()
+        ])
+
+        normalize(database)
 
         if(g_ApiActive):
-            for i in range(3):
-                database[i+3]=g_getApi.event_kill_life()[i]
+            database.extend(g_getApi.event_kill_life())
             g_getApi.update()
         
         new_label = iaClassification( np.asarray(database) )
@@ -105,12 +105,22 @@ def resetAll():
     g_klog.reset()
     g_mlog.reset()
 
-def iaClassification(vector, weight=[1.8,1.2,0.8,1,20,0]):
+def normalize(vector):
+    global g_normalize
+    normalized = vector/g_normalize
+    for i in range( len(normalized) ):
+        if normalized[i] > 1:
+            g_normalize[i] = vector[i]
+    return vector//g_normalize
+
+def iaClassification(vector, weight=g_normalize):
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
     global g_getApi, g_ApiActive
     if not len(vector) == len(weight):
+        delta = len(weight) - len(vector)
+        for i in range(delta):
+            vector = np.append(vector,0)
         print("Warning : weight is not the same length than input vector !")
-        return 0
 
     is_dead = vector[5]
     if is_dead:
