@@ -1,11 +1,8 @@
-import pickle
+import numpy as np
 
-li = ['Georges', 'Micheal']
-pickle.dump(li, open('aaaaaaTEST.dat', 'wb'))
+tab1 = [1,2,3,4,5,6,7,8,9]
+tab2 = [2222222222222,5555555555555]
 
-li = ['Charles', 'Henry']
-pickle.dump(li, open('aaaaaaTEST.dat', 'wb'))
-
-li = pickle.load(open('aaaaaaTEST.dat', 'rb'))
-
-print(li)
+tab = np.append(tab1,tab2)
+print(tab)
+print(tab.shape)

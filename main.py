@@ -7,6 +7,8 @@ import musicologie
 import pymix
 import collections
 import pickle
+import psutil
+import time
 #import tensorflow as tf
 #from tensorflow import keras
 
@@ -18,7 +20,7 @@ g_mlog = None
 g_getApi = None
 g_queue = collections.deque([0.0, 0.0, 0.0, 0.0, 0.0])
 g_rt = None
-g_ApiActive=False
+g_ApiActive=0
 g_file = 'rawdata.csv'
 g_count = 0
 
@@ -33,12 +35,16 @@ def main():
 
 def init():
     """This function instantiates all our global variables."""
-    global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py
+    global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py, g_ApiActive
+    g_ApiActive = checkIfProcessRunning('League of Legends')
+    if g_ApiActive : 
+        try : g_getApi = api.Requests_Api()
+        except : init()
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
     g_py = pymix.Pymix()
-    if g_ApiActive : g_getApi = api.Requests_Api()
+    
     print("Initialize")
 
 def startAll():
@@ -54,23 +60,32 @@ def startAll():
 
 def dataHooker():
     """Fills the 'g_queue' list with the different calculation functions implemented in classes."""
-    global g_klog, g_mlog, g_getApi, g_queue, g_rt, g_count
+    global g_klog, g_mlog, g_getApi, g_queue, g_rt, g_count, g_ApiActive
     if(g_klog.a_stopMain):
+
+        if checkIfProcessRunning('League of Legends') and not g_ApiActive:
+            stopAll()
+            time.sleep(10)
+            main()
+        
+        if not checkIfProcessRunning('League of Legends') and g_ApiActive:
+            stopAll()
+            main()
+
         database = np.asarray([
             g_klog.CountKey(),
             g_mlog.getCumulTravelDistance(),
-            g_mlog.getRightMouseClicF(),
-            0,
-            0,
-            0
+            g_mlog.getRightMouseClicF()
         ])
+
+        if(g_ApiActive):
+            database = np.append(database,g_getApi.event_kill_life())
+            g_getApi.update()
+        else:
+            database = np.append(database,[0.,0.,0.])
 
         database = normalize(database)
         print(database)
-
-        if(g_ApiActive):
-            database.extend(g_getApi.event_kill_life())
-            g_getApi.update()
         
         new_label = iaClassification( np.asarray(database) )
 
@@ -91,6 +106,21 @@ def dataHooker():
             taillemaxqueue(5,g_queue)
     else:
         stopAll()
+
+
+def checkIfProcessRunning(processName):
+    '''
+    Check if there is any running process that contains the given name processName.
+    '''
+    #Iterate over the all the running process
+    for proc in psutil.process_iter():
+        try:
+            # Check if process name contains the given name string.
+            if processName.lower() in proc.name().lower():
+                return True
+        except :
+            pass
+    return False
 
 def taillemaxqueue(max,queue):
   if len(queue)>max:
@@ -121,7 +151,7 @@ def normalize(vector):
     global g_normalize
     # print(g_normalize)
     normalized = vector/g_normalize
-    for i in range( len(normalized) ):
+    for i in range( 3 ):
         if normalized[i] > 1:
             g_normalize[i] = vector[i]
     return vector/g_normalize
