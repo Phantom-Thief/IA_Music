@@ -6,7 +6,9 @@
 #    Jun 23, 2020 02:45:21 PM CEST  platform: Windows NT
 
 import sys
+import shutil
 from tkinter import filedialog
+import main
 
 try:
     import tkinter as tk
@@ -49,6 +51,12 @@ class IMA:
            top is the toplevel containing window.'''
            
         self.Selection = None
+
+
+
+
+
+
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
         _compcolor = '#d9d9d9' # X11 color: 'gray85'
@@ -144,12 +152,6 @@ class IMA:
         self.MessageCMusic.configure(text='Current Music :')
         self.MessageCMusic.configure(width=286)
 
-        self.TPReset = ttk.Progressbar(top)
-        self.TPReset.place(relx=0.233, rely=0.47, relwidth=0.35, relheight=0.0
-                , height=15)
-        self.TPReset.configure(length="210")
-        self.TPReset.configure(cursor="fleur")
-
         self.ButtonReset = tk.Button(top)
         self.ButtonReset.place(relx=0.033, rely=0.45, height=33, width=86)
         self.ButtonReset.configure(activebackground="#ececec")
@@ -164,10 +166,22 @@ class IMA:
 
     def select(self,event):
         self.Selection = self.ListboxMusic.selection_get()
-        print(self.Selection)
     
     def putInFile(self):
         MusicFile = filedialog.askopenfilename(filetypes=(("Wav file", "*.wav"),))
+        
+        try:
+            shutil.move(MusicFile,"./musicologie/musiques/"+self.Selection+"/")
+        except:
+            pass
+
+    def printMusic(self):
+        try:
+            splitter = main.g_py.a_sound.split('/')[-1]
+            self.MessageCMusic.configure(text='Current Music :'+ splitter)
+        except:
+            return ""
+
 
         
 
