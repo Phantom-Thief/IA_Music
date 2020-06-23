@@ -19,7 +19,7 @@ class Pymix:
         self.a_path = [pathcalm,pathanger,pathjoy,pathsad]
         self.a_soundfile = (self.get_file(pathcalm),self.get_file(pathanger),self.get_file(pathjoy),self.get_file(pathsad))
         self.a_label = {'calm':0,'anger':1,'joy':2,'sad':3}
-        
+        self.a_sound = None
         pygame.mixer.set_num_channels(8)
         pygame.mixer.set_reserved(0)
         pygame.mixer.set_reserved(1)
@@ -66,9 +66,9 @@ class Pymix:
         if type(feeling)==str : channel = self.a_label[feeling]
         else : channel = feeling
         if rand:
-            sound = self.a_path[channel]+random.choice(self.a_soundfile[channel])
-            print(sound)
-            pygame.mixer.Channel(channel).play( pygame.mixer.Sound( sound ),fade_ms=fade_in )
+            self.a_sound = self.a_path[channel]+random.choice(self.a_soundfile[channel])
+            print(self.a_sound)
+            pygame.mixer.Channel(channel).play( pygame.mixer.Sound( self.a_sound ),fade_ms=fade_in )
             pygame.mixer.music.set_volume(0.05)
         else:
             pygame.mixer.Channel(channel).play( pygame.mixer.Sound(file),fade_ms=fade_in )
