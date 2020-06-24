@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 from os import listdir
 from os.path import isfile, join
@@ -81,6 +82,23 @@ class Pymix:
         else : channel = feeling
         pygame.mixer.Channel(channel).fadeout(fade_out)
         return 1
+
+    def set_volume(self,vol,channel=None):
+        if channel:
+            pygame.mixer.Channel(channel).set_volume(vol)
+            return
+        pygame.mixer.music.set_volume(vol)
+        return
+
+    def get_volume(self,channel=None):
+        if channel: return pygame.mixer.Channel(channel).get_volume()
+        return pygame.mixer.music.get_volume()
+
+    def pause_feeling(self,feeling,fade_out=3000):
+        pass
+
+    def play_feeling(self,feeling,duration=3):
+        pass
 
     def get_feeling_busy(self):
         return [pygame.mixer.Channel(0).get_busy(),

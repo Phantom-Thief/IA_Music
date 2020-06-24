@@ -21,18 +21,11 @@ g_mlog = None
 g_getApi = None
 g_queue = collections.deque([0.0, 0.0, 0.0, 0.0, 0.0])
 g_rt = None
-g_currentSong = None
 g_ApiActive=0
 g_file = 'rawdata.csv'
 g_count = 0
 g_ApiActive = False
-
-try :
-    g_normalize = pickle.load(open("normalize.dat", 'rb'))
-    print("load from file")
-except :
-    g_normalize = [1.0,1.0,1.0,1.0,20.0,1.0]
-    print("new norm")
+g_normalize = None
 
 def main():
     init()
@@ -40,7 +33,7 @@ def main():
 
 def init():
     """This function instantiates all our global variables."""
-    global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py, g_ApiActive
+    global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py, g_ApiActive, g_normalize
     g_ApiActive = checkIfProcessRunning('League of Legends')
     if g_ApiActive :
         while(1):
@@ -53,12 +46,22 @@ def init():
                 print('retry')
                 pass
 
+
+    try :
+        g_normalize = pickle.load(open("normalize.dat", 'rb'))
+        print("load from file")
+    except :
+        g_normalize = [1.0,1.0,1.0,1.0,20.0,1.0]
+        print("new norm")
+
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
     g_py = pymix.Pymix()
     
     print("Initialize")
+    print(g_normalize)
+    quit()
 
 def startAll():
     """Starts listening to the keyboard+mouse and recording the voice."""
@@ -78,7 +81,7 @@ def dataHooker():
 
         if checkIfProcessRunning('League of Legends') and not g_ApiActive:
             stopAll()
-            print('League og legends detected, starting the API.')
+            print('League of legends detected, starting the API.')
             time.sleep(10)
             main()
         

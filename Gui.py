@@ -76,7 +76,7 @@ class IMA:
         top.configure(background="#d9d9d9")
 
         self.ButtonRun = tk.Button(top)
-        self.ButtonRun.place(relx=0.717, rely=0.8, height=63, width=146)
+        self.ButtonRun.place(relx=0.25, rely=0.3, height=63, width=300)
         self.ButtonRun.configure(activebackground="#b0b6e1")
         self.ButtonRun.configure(activeforeground="#000000")
         self.ButtonRun.configure(background="#d9d9d9")
@@ -89,7 +89,7 @@ class IMA:
         self.ButtonRun.configure(text='Play')
 
         self.ButtonStop = tk.Button(top)
-        self.ButtonStop.place(relx=0.450, rely=0.8, height=63, width=146)
+        self.ButtonStop.place(relx=0.25, rely=0.3, height=63, width=300)
         self.ButtonStop.configure(activebackground="#b0b6e1")
         self.ButtonStop.configure(activeforeground="#000000")
         self.ButtonStop.configure(background="#d9d9d9")
@@ -101,6 +101,33 @@ class IMA:
         self.ButtonStop.configure(pady="0")
         self.ButtonStop.configure(text='Stop')
         self.ButtonStop.place_forget()
+
+        self.ButtonSetting = tk.Button(top)
+        self.ButtonSetting.place(relx=0.29, rely=0.5, height=63, width=250)
+        self.ButtonSetting.configure(activebackground="#b0b6e1")
+        self.ButtonSetting.configure(activeforeground="#000000")
+        self.ButtonSetting.configure(background="#d9d9d9")
+        self.ButtonSetting.configure(command=self.settingConfiguration)
+        self.ButtonSetting.configure(disabledforeground="#a3a3a3")
+        self.ButtonSetting.configure(foreground="#000000")
+        self.ButtonSetting.configure(highlightbackground="#d9d9d9")
+        self.ButtonSetting.configure(highlightcolor="black")
+        self.ButtonSetting.configure(pady="0")
+        self.ButtonSetting.configure(text='Setting')
+
+        self.ButtonBackSetting = tk.Button(top)
+        self.ButtonBackSetting.place(relx=0.75, rely=0.8, height=63, width=125)
+        self.ButtonBackSetting.configure(activebackground="#b0b6e1")
+        self.ButtonBackSetting.configure(activeforeground="#000000")
+        self.ButtonBackSetting.configure(background="#d9d9d9")
+        self.ButtonBackSetting.configure(command=self.exitSetting)
+        self.ButtonBackSetting.configure(disabledforeground="#a3a3a3")
+        self.ButtonBackSetting.configure(foreground="#000000")
+        self.ButtonBackSetting.configure(highlightbackground="#d9d9d9")
+        self.ButtonBackSetting.configure(highlightcolor="black")
+        self.ButtonBackSetting.configure(pady="0")
+        self.ButtonBackSetting.configure(text='back')
+        self.ButtonBackSetting.place_forget()
 
         self.LabelTitle = tk.Label(top)
         self.LabelTitle.place(relx=0.417, rely=0.05, height=48, width=92)
@@ -130,7 +157,8 @@ class IMA:
         self.ButtonMusic.configure(highlightbackground="#d9d9d9")
         self.ButtonMusic.configure(highlightcolor="black")
         self.ButtonMusic.configure(pady="0")
-        self.ButtonMusic.configure(text='Done')
+        self.ButtonMusic.configure(text='Import')
+        self.ButtonMusic.place_forget()
 
         self.LabelMusic = tk.Label(top)
         self.LabelMusic.place(relx=0.033, rely=0.30, height=26, width=132)
@@ -138,6 +166,7 @@ class IMA:
         self.LabelMusic.configure(disabledforeground="#a3a3a3")
         self.LabelMusic.configure(foreground="#000000")
         self.LabelMusic.configure(text='Add your music in :')
+        self.LabelMusic.place_forget()
 
         self.ListboxMusic = tk.Listbox(top)
         self.ListboxMusic.place(relx=0.267, rely=0.255, relheight=0.14
@@ -151,18 +180,7 @@ class IMA:
         self.ListboxMusic.configure(font="TkFixedFont")
         self.ListboxMusic.configure(foreground="#000000")
         self.ListboxMusic.configure(selectmode='single')
-        
-        # self.MessageCMusic = tk.Message(top)
-        # self.MessageCMusic.place(relx=0.017, rely=0.825, relheight=0.075
-        #         , relwidth=0.477)
-        # self.MessageCMusic.configure(anchor='w')
-        # self.MessageCMusic.configure(background="#d9d9d9")
-        # self.MessageCMusic.configure(cursor="fleur")
-        # self.MessageCMusic.configure(foreground="#000000")
-        # self.MessageCMusic.configure(highlightbackground="#d9d9d9")
-        # self.MessageCMusic.configure(highlightcolor="black")
-        # self.MessageCMusic.configure(text='Current Music :')
-        # self.MessageCMusic.configure(width=286)
+        self.ListboxMusic.place_forget()
 
         self.ButtonReset = tk.Button(top)
         self.ButtonReset.place(relx=0.033, rely=0.45, height=33, width=86)
@@ -176,29 +194,37 @@ class IMA:
         self.ButtonReset.configure(highlightcolor="black")
         self.ButtonReset.configure(pady="0")
         self.ButtonReset.configure(text='Recalibrate')
+        self.ButtonReset.place_forget()
 
     def select(self,event):
         self.a_selection = self.ListboxMusic.selection_get()
     
     def putInFile(self):
-        MusicFile = filedialog.askopenfilename(filetypes=(("Wav file", "*.wav"),))
+        MusicFile = filedialog.askopenfilename(multiple=True ,filetypes=(("Wav file", "*.wav"),))
         
         try:
-            shutil.move(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
+            shutil.copy2(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
+            messagebox.showinfo("Done","The music is now in "+ str(self.a_selection))
         except:
-            pass
+            try:
+                for i in MusicFile:
+                    shutil.copy2(i,"./musicologie/musiques/"+self.a_selection+"/")
+                messagebox.showinfo("Done","musics are now in "+ str(self.a_selection))
+            except:
+                messagebox.showerror("error", "Can't import") 
 
     def resetNorma(self):
         try :
             os.remove('normalize.dat')
+            messagebox.showinfo("Done","The file is now recalibrate")
         except:
-            messagebox.showerror("error", "This file is Already recalibrate")
+            messagebox.showerror("error", "This file is already recalibrate")
 
     def run(self):
         self.ButtonRun.configure(state=tk.DISABLED)
-        self.ButtonRun.place_forget()
-        main()
-        self.ButtonStop.place(relx=0.717, rely=0.8, height=63, width=146)
+        self.hide(0)
+        #main()
+        self.ButtonStop.place(relx=0.25, rely=0.3, height=63, width=300)
         self.ButtonStop.configure(state=tk.ACTIVE)
         self.ButtonStop.update_idletasks()
 
@@ -206,14 +232,40 @@ class IMA:
     def stop(self):
         self.ButtonStop.configure(state=tk.DISABLED)
         self.ButtonStop.place_forget()
-        stopAll()
-        self.ButtonRun.place(relx=0.717, rely=0.8, height=63, width=146)
+        #stopAll()
+        self.show(0)
         self.ButtonRun.configure(state=tk.ACTIVE)
         self.ButtonRun.update_idletasks()
 
-
+    def settingConfiguration(self):
+        self.hide(0)
+        self.show(1)
+       
+    def exitSetting(self):
+        self.hide(1)
+        self.show(0)
         
+    def show(self, what):
+        if what == 1:
+            self.ButtonReset.place(relx=0.033, rely=0.45, height=33, width=86)
+            self.ListboxMusic.place(relx=0.267, rely=0.255, relheight=0.14, relwidth=0.173)
+            self.LabelMusic.place(relx=0.033, rely=0.30, height=26, width=132)
+            self.ButtonMusic.place(relx=0.467, rely=0.28, height=33, width=48)
+            self.ButtonBackSetting.place(relx=0.75, rely=0.8, height=63, width=125)
+        else:
+            self.ButtonRun.place(relx=0.25, rely=0.3, height=63, width=300)
+            self.ButtonSetting.place(relx=0.29, rely=0.5, height=63, width=250)
 
+    def hide(self, what):
+        if what == 1:
+            self.ButtonReset.place_forget()
+            self.ListboxMusic.place_forget()
+            self.LabelMusic.place_forget()
+            self.ButtonMusic.place_forget()
+            self.ButtonBackSetting.place_forget()
+        else:
+            self.ButtonRun.place_forget()
+            self.ButtonSetting.place_forget()
 
 if __name__ == '__main__':
     vp_start_gui()
