@@ -6,8 +6,13 @@
 #    Jun 23, 2020 02:45:21 PM CEST  platform: Windows NT
 
 import sys
+import shutil
+import os
 from tkinter import filedialog
+import main
 
+g_root = None
+g_top = None
 try:
     import tkinter as tk
 except ImportError:
@@ -20,22 +25,29 @@ except ImportError:
     import tkinter.ttk as ttk
     py3 = True
 
+def printMusic(p_splitter):
+    try:
+        g_top.MessageCMusic.configure(text='Current Music :'+ p_splitter)
+        g_root.update()
+    except:
+        pass
+
 
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
-    root = tk.Tk()
-    top = IMA(root)
-    root.mainloop()
+    g_root = tk.Tk()
+    g_top = IMA(g_root)
+    g_root.mainloop()
 
 w = None
 def create_IMA(rt, *args, **kwargs):
     '''Starting point when module is imported by another module.
        Correct form of call: 'create_IMA(root, *args, **kwargs)' .'''
     #rt = root
-    root = rt
-    w = tk.Toplevel(root)
-    top = IMA(w)
-    return (w, top)
+    g_root = rt
+    w = tk.Toplevel(g_root)
+    g_top = IMA(w)
+    return (w, g_top)
 
 def destroy_IMA():
     global w
@@ -49,6 +61,7 @@ class IMA:
            top is the toplevel containing window.'''
            
         self.Selection = None
+
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
         _compcolor = '#d9d9d9' # X11 color: 'gray85'
@@ -77,6 +90,7 @@ class IMA:
         self.ButtonRun.configure(background="#d9d9d9")
         self.ButtonRun.configure(disabledforeground="#a3a3a3")
         self.ButtonRun.configure(foreground="#000000")
+        self.ButtonRun.configure(command=self.run)
         self.ButtonRun.configure(highlightbackground="#d9d9d9")
         self.ButtonRun.configure(highlightcolor="black")
         self.ButtonRun.configure(pady="0")
@@ -144,12 +158,6 @@ class IMA:
         self.MessageCMusic.configure(text='Current Music :')
         self.MessageCMusic.configure(width=286)
 
-        self.TPReset = ttk.Progressbar(top)
-        self.TPReset.place(relx=0.233, rely=0.47, relwidth=0.35, relheight=0.0
-                , height=15)
-        self.TPReset.configure(length="210")
-        self.TPReset.configure(cursor="fleur")
-
         self.ButtonReset = tk.Button(top)
         self.ButtonReset.place(relx=0.033, rely=0.45, height=33, width=86)
         self.ButtonReset.configure(activebackground="#ececec")
@@ -164,10 +172,17 @@ class IMA:
 
     def select(self,event):
         self.Selection = self.ListboxMusic.selection_get()
-        print(self.Selection)
     
     def putInFile(self):
         MusicFile = filedialog.askopenfilename(filetypes=(("Wav file", "*.wav"),))
+        
+        try:
+            shutil.move(MusicFile,"./musicologie/musiques/"+self.Selection+"/")
+        except:
+            pass
+
+    def run(self):
+        os.system("python main.py")
 
         
 
