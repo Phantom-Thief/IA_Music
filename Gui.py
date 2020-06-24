@@ -10,7 +10,6 @@ import shutil
 import os
 from tkinter import filedialog
 from main import *
-import threading
 
 try:
     import tkinter as tk
@@ -29,6 +28,7 @@ except ImportError:
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
     root = tk.Tk()
+    root.iconbitmap('./LogoIMA.ico')
     top = IMA(root)
     root.mainloop()
 
@@ -52,7 +52,7 @@ class IMA:
 
         '''This class configures and populates the toplevel window.
            top is the toplevel containing window.'''
-        self.a_thread = threading.Thread(target=self.run)
+
         self.a_selection = None
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
@@ -71,7 +71,7 @@ class IMA:
         top.geometry("600x400+592+230")
         top.minsize(148, 1)
         top.maxsize(1924, 1055)
-        top.resizable(1, 1)
+        top.resizable(width=False, height=False)
         top.title("I.M.A")
         top.configure(background="#d9d9d9")
 

@@ -9,6 +9,7 @@ import collections
 import pickle
 import psutil
 import time
+from Dictionnaire import weighChamp, champ
 
 #import tensorflow as tf
 #from tensorflow import keras
@@ -26,6 +27,7 @@ g_file = 'rawdata.csv'
 g_count = 0
 g_ApiActive = False
 g_normalize = None
+g_weight = None
 
 def main():
     init()
@@ -65,10 +67,13 @@ def init():
 
 def startAll():
     """Starts listening to the keyboard+mouse and recording the voice."""
-    global g_klog, g_mlog, g_ApiActive, g_py, g_rt
+    global g_klog, g_mlog, g_ApiActive, g_py, g_rt, g_weight
     g_klog.start()
     g_mlog.start()
-    if g_ApiActive : g_getApi.update()
+    if g_ApiActive : 
+        g_getApi.update()
+        g_weight = weighChamp[ champ[g_getApi.a_champ] ]
+        print(weighChamp)
     g_py.add_track('musicologie/musiques/effects/high_tech_start.wav')
     g_py.add_feeling('calm',fade_in=10000)
     g_rt.start()
@@ -76,7 +81,7 @@ def startAll():
 
 def dataHooker():
     """Fills the 'g_queue' list with the different calculation functions implemented in classes."""
-    global g_klog, g_mlog, g_getApi, g_queue, g_rt, g_count, g_ApiActive
+    global g_klog, g_mlog, g_getApi, g_queue, g_rt, g_count, g_ApiActive, g_weight
     if(g_klog.a_stopMain):
 
         if checkIfProcessRunning('League of Legends') and not g_ApiActive:
@@ -104,7 +109,7 @@ def dataHooker():
         database = normalize(database)
         print(database)
         
-        new_label = iaClassification( np.asarray(database) )
+        new_label = iaClassification( np.asarray(database), g_weight )
 
         if new_label == 1:
             g_count = 5
