@@ -7,9 +7,12 @@
 
 import sys
 import shutil
+import os
 from tkinter import filedialog
 import main
 
+g_root = None
+g_top = None
 try:
     import tkinter as tk
 except ImportError:
@@ -22,22 +25,29 @@ except ImportError:
     import tkinter.ttk as ttk
     py3 = True
 
+def printMusic(p_splitter):
+    try:
+        g_top.MessageCMusic.configure(text='Current Music :'+ p_splitter)
+        g_root.update()
+    except:
+        pass
+
 
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
-    root = tk.Tk()
-    top = IMA(root)
-    root.mainloop()
+    g_root = tk.Tk()
+    g_top = IMA(g_root)
+    g_root.mainloop()
 
 w = None
 def create_IMA(rt, *args, **kwargs):
     '''Starting point when module is imported by another module.
        Correct form of call: 'create_IMA(root, *args, **kwargs)' .'''
     #rt = root
-    root = rt
-    w = tk.Toplevel(root)
-    top = IMA(w)
-    return (w, top)
+    g_root = rt
+    w = tk.Toplevel(g_root)
+    g_top = IMA(w)
+    return (w, g_top)
 
 def destroy_IMA():
     global w
@@ -171,14 +181,8 @@ class IMA:
         except:
             pass
 
-    def printMusic(self,p_splitter):
-        try:
-            self.MessageCMusic.configure(text='Current Music :'+ p_splitter)
-        except:
-            return ""
-
     def run(self):
-        
+        os.system("python main.py")
 
         
 
