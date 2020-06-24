@@ -9,7 +9,6 @@ import collections
 import pickle
 import psutil
 import time
-import Gui
 
 #import tensorflow as tf
 #from tensorflow import keras
@@ -103,9 +102,6 @@ def dataHooker():
         print(database)
         
         new_label = iaClassification( np.asarray(database) )
-
-        g_currentSong = g_py.a_sound.split('/')[-1]
-        Gui.IMA().printMusic(g_currentSong)
 
         if new_label == 1:
             g_count = 5
