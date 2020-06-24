@@ -25,18 +25,14 @@ g_file = 'rawdata.csv'
 g_count = 0
 g_ApiActive = False
 
-# try :
-g_normalize = pickle.load(open("normalize.dat", 'rb'))
-print("load from file")
-# except :
-#     g_normalize = [1.0,1.0,1.0,1.0,20.0,1.0]
-#     print("new norm")
+try :
+    g_normalize = pickle.load(open("normalize.dat", 'rb'))
+    print("load from file")
+except :
+    g_normalize = [1.0,1.0,1.0,1.0,20.0,1.0]
+    print("new norm")
 
 def main():
-    # while(1):
-    #     try:
-    #         pass
-    #     break
     init()
     startAll()
 
@@ -44,7 +40,16 @@ def init():
     """This function instantiates all our global variables."""
     global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py, g_ApiActive
     g_ApiActive = checkIfProcessRunning('League of Legends')
-    if g_ApiActive : g_getApi = api.Requests_Api()
+    if g_ApiActive :
+        while(1):
+            try: 
+                g_getApi = api.Requests_Api()
+                print('API started !')
+                break
+            except:
+                time.sleep(10)
+                print('retry')
+                pass
 
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
@@ -70,11 +75,8 @@ def dataHooker():
     if(g_klog.a_stopMain):
 
         if checkIfProcessRunning('League of Legends') and not g_ApiActive:
-            while(1):
-                try : 
-                    g_getApi = api.Requests_Api()
-                except : return
             stopAll()
+            print('League og legends detected, starting the API.')
             time.sleep(10)
             main()
         
