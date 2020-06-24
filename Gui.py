@@ -9,11 +9,12 @@ import sys
 import shutil
 import os
 from tkinter import filedialog
-import main
+from main import *
 import threading
 
 try:
     import tkinter as tk
+    from tkinter import messagebox
 except ImportError:
     import tkinter as tk
 
@@ -51,9 +52,8 @@ class IMA:
 
         '''This class configures and populates the toplevel window.
            top is the toplevel containing window.'''
-           
-        self.a_selection = None
         self.a_thread = threading.Thread(target=self.run)
+        self.a_selection = None
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
         _compcolor = '#d9d9d9' # X11 color: 'gray85'
@@ -82,7 +82,7 @@ class IMA:
         self.ButtonRun.configure(background="#d9d9d9")
         self.ButtonRun.configure(disabledforeground="#a3a3a3")
         self.ButtonRun.configure(foreground="#000000")
-        self.ButtonRun.configure(command=self.start_new_thread)
+        self.ButtonRun.configure(command=self.run)
         self.ButtonRun.configure(highlightbackground="#d9d9d9")
         self.ButtonRun.configure(highlightcolor="black")
         self.ButtonRun.configure(pady="0")
@@ -93,9 +93,9 @@ class IMA:
         self.ButtonStop.configure(activebackground="#b0b6e1")
         self.ButtonStop.configure(activeforeground="#000000")
         self.ButtonStop.configure(background="#d9d9d9")
+        self.ButtonStop.configure(command=self.stop)
         self.ButtonStop.configure(disabledforeground="#a3a3a3")
         self.ButtonStop.configure(foreground="#000000")
-        self.ButtonStop.configure(command=self.stop)
         self.ButtonStop.configure(highlightbackground="#d9d9d9")
         self.ButtonStop.configure(highlightcolor="black")
         self.ButtonStop.configure(pady="0")
@@ -169,6 +169,7 @@ class IMA:
         self.ButtonReset.configure(activebackground="#ececec")
         self.ButtonReset.configure(activeforeground="#000000")
         self.ButtonReset.configure(background="#d9d9d9")
+        self.ButtonReset.configure(command=self.resetNorma)
         self.ButtonReset.configure(disabledforeground="#a3a3a3")
         self.ButtonReset.configure(foreground="#000000")
         self.ButtonReset.configure(highlightbackground="#d9d9d9")
@@ -187,21 +188,29 @@ class IMA:
         except:
             pass
 
-    def start_new_thread(self):
-        self.a_thread.start()
-
+    def resetNorma(self):
+        try :
+            os.remove('normalize.dat')
+        except:
+            messagebox.showerror("error", "This file is Already recalibrate")
 
     def run(self):
+        self.ButtonRun.configure(state=tk.DISABLED)
         self.ButtonRun.place_forget()
+        main()
         self.ButtonStop.place(relx=0.717, rely=0.8, height=63, width=146)
+        self.ButtonStop.configure(state=tk.ACTIVE)
         self.ButtonStop.update_idletasks()
-        os.system("python main.py")
+
 
     def stop(self):
+        self.ButtonStop.configure(state=tk.DISABLED)
         self.ButtonStop.place_forget()
+        stopAll()
         self.ButtonRun.place(relx=0.717, rely=0.8, height=63, width=146)
+        self.ButtonRun.configure(state=tk.ACTIVE)
         self.ButtonRun.update_idletasks()
-        self.a_thread.stop()
+
 
         
 

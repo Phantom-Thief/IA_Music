@@ -183,7 +183,7 @@ def iaClassification(vector, weight=[160,120,80,100,2000,0]):
     is_dead = vector[5]
     if is_dead:
         return 3
-
+    print (g_getApi.a_champ)
     print("function")
     print(np.sum(vector*weight))
     state = np.sum(vector*weight)
