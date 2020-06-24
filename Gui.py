@@ -10,9 +10,8 @@ import shutil
 import os
 from tkinter import filedialog
 import main
+import threading
 
-g_root = None
-g_top = None
 try:
     import tkinter as tk
 except ImportError:
@@ -25,29 +24,22 @@ except ImportError:
     import tkinter.ttk as ttk
     py3 = True
 
-def printMusic(p_splitter):
-    try:
-        g_top.MessageCMusic.configure(text='Current Music :'+ p_splitter)
-        g_root.update()
-    except:
-        pass
-
 
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
-    g_root = tk.Tk()
-    g_top = IMA(g_root)
-    g_root.mainloop()
+    root = tk.Tk()
+    top = IMA(root)
+    root.mainloop()
 
 w = None
 def create_IMA(rt, *args, **kwargs):
     '''Starting point when module is imported by another module.
        Correct form of call: 'create_IMA(root, *args, **kwargs)' .'''
     #rt = root
-    g_root = rt
-    w = tk.Toplevel(g_root)
-    g_top = IMA(w)
-    return (w, g_top)
+    root = rt
+    w = tk.Toplevel(root)
+    top = IMA(w)
+    return (w, top)
 
 def destroy_IMA():
     global w
@@ -60,8 +52,8 @@ class IMA:
         '''This class configures and populates the toplevel window.
            top is the toplevel containing window.'''
            
-        self.Selection = None
-
+        self.a_selection = None
+        self.a_thread = threading.Thread(target=self.run)
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
         _compcolor = '#d9d9d9' # X11 color: 'gray85'
@@ -90,11 +82,25 @@ class IMA:
         self.ButtonRun.configure(background="#d9d9d9")
         self.ButtonRun.configure(disabledforeground="#a3a3a3")
         self.ButtonRun.configure(foreground="#000000")
-        self.ButtonRun.configure(command=self.run)
+        self.ButtonRun.configure(command=self.start_new_thread)
         self.ButtonRun.configure(highlightbackground="#d9d9d9")
         self.ButtonRun.configure(highlightcolor="black")
         self.ButtonRun.configure(pady="0")
-        self.ButtonRun.configure(text='Run')
+        self.ButtonRun.configure(text='Play')
+
+        self.ButtonStop = tk.Button(top)
+        self.ButtonStop.place(relx=0.450, rely=0.8, height=63, width=146)
+        self.ButtonStop.configure(activebackground="#b0b6e1")
+        self.ButtonStop.configure(activeforeground="#000000")
+        self.ButtonStop.configure(background="#d9d9d9")
+        self.ButtonStop.configure(disabledforeground="#a3a3a3")
+        self.ButtonStop.configure(foreground="#000000")
+        self.ButtonStop.configure(command=self.stop)
+        self.ButtonStop.configure(highlightbackground="#d9d9d9")
+        self.ButtonStop.configure(highlightcolor="black")
+        self.ButtonStop.configure(pady="0")
+        self.ButtonStop.configure(text='Stop')
+        self.ButtonStop.place_forget()
 
         self.LabelTitle = tk.Label(top)
         self.LabelTitle.place(relx=0.417, rely=0.05, height=48, width=92)
@@ -146,17 +152,17 @@ class IMA:
         self.ListboxMusic.configure(foreground="#000000")
         self.ListboxMusic.configure(selectmode='single')
         
-        self.MessageCMusic = tk.Message(top)
-        self.MessageCMusic.place(relx=0.017, rely=0.825, relheight=0.075
-                , relwidth=0.477)
-        self.MessageCMusic.configure(anchor='w')
-        self.MessageCMusic.configure(background="#d9d9d9")
-        self.MessageCMusic.configure(cursor="fleur")
-        self.MessageCMusic.configure(foreground="#000000")
-        self.MessageCMusic.configure(highlightbackground="#d9d9d9")
-        self.MessageCMusic.configure(highlightcolor="black")
-        self.MessageCMusic.configure(text='Current Music :')
-        self.MessageCMusic.configure(width=286)
+        # self.MessageCMusic = tk.Message(top)
+        # self.MessageCMusic.place(relx=0.017, rely=0.825, relheight=0.075
+        #         , relwidth=0.477)
+        # self.MessageCMusic.configure(anchor='w')
+        # self.MessageCMusic.configure(background="#d9d9d9")
+        # self.MessageCMusic.configure(cursor="fleur")
+        # self.MessageCMusic.configure(foreground="#000000")
+        # self.MessageCMusic.configure(highlightbackground="#d9d9d9")
+        # self.MessageCMusic.configure(highlightcolor="black")
+        # self.MessageCMusic.configure(text='Current Music :')
+        # self.MessageCMusic.configure(width=286)
 
         self.ButtonReset = tk.Button(top)
         self.ButtonReset.place(relx=0.033, rely=0.45, height=33, width=86)
@@ -171,18 +177,31 @@ class IMA:
         self.ButtonReset.configure(text='Recalibrate')
 
     def select(self,event):
-        self.Selection = self.ListboxMusic.selection_get()
+        self.a_selection = self.ListboxMusic.selection_get()
     
     def putInFile(self):
         MusicFile = filedialog.askopenfilename(filetypes=(("Wav file", "*.wav"),))
         
         try:
-            shutil.move(MusicFile,"./musicologie/musiques/"+self.Selection+"/")
+            shutil.move(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
         except:
             pass
 
+    def start_new_thread(self):
+        self.a_thread.start()
+
+
     def run(self):
+        self.ButtonRun.place_forget()
+        self.ButtonStop.place(relx=0.717, rely=0.8, height=63, width=146)
+        self.ButtonStop.update_idletasks()
         os.system("python main.py")
+
+    def stop(self):
+        self.ButtonStop.place_forget()
+        self.ButtonRun.place(relx=0.717, rely=0.8, height=63, width=146)
+        self.ButtonRun.update_idletasks()
+        self.a_thread.stop()
 
         
 
