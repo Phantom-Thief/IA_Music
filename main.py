@@ -73,7 +73,7 @@ def startAll():
     if g_ApiActive : 
         g_getApi.update()
         g_weight = weighChamp[ champ[g_getApi.a_champ] ]
-        print(weightChamp)
+        print(weighChamp)
     g_py.add_track('musicologie/musiques/effects/high_tech_start.wav')
     g_py.add_feeling('calm',fade_in=10000)
     g_rt.start()
