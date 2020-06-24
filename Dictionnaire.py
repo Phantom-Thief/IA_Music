@@ -18,9 +18,6 @@ pyApi["Aceenemy"]=6
 # pyApi["ChampionKillenemy"]=7
 # pyApi["firstBloodenemy"]=7
 # pyApi["Multikillenemy"]=7
-<<<<<<< HEAD
-# pyApi["enemy"]
-=======
 #pyApi["enemy"]
 
 champ={"Akali" : "Assassin" , "Evelynn" : "Assassin"}
@@ -307,4 +304,3 @@ Weighchamp["Tank"]= [160,120,80,100,2000,0]
 Weighchamp["Mage"]= [160,120,80,100,2000,0]
 Weighchamp["Marksman"]= [160,120,80,100,2000,0]
 Weighchamp["Fighter"]= [160,120,80,100,2000,0]
->>>>>>> aa13e084b17b6d2acf34927fbde01c087ee4aadb
