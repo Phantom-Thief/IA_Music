@@ -82,6 +82,12 @@ class Pymix:
         pygame.mixer.Channel(channel).fadeout(fade_out)
         return 1
 
+    def pause_feeling(self,feeling):
+        pass
+
+    def play_feeling(self,feeling):
+        pass
+
     def get_feeling_busy(self):
         return [pygame.mixer.Channel(0).get_busy(),
                 pygame.mixer.Channel(1).get_busy(),
