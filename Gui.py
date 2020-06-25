@@ -150,7 +150,6 @@ class IMA:
         self.ButtonMusic.configure(command=self.putInFile)
         self.ButtonMusic.configure(activeforeground="#000000")
         self.ButtonMusic.configure(background="#d9d9d9")
-        self.ButtonMusic.configure(cursor="fleur")
         self.ButtonMusic.configure(disabledforeground="#a3a3a3")
         self.ButtonMusic.configure(foreground="#000000")
         self.ButtonMusic.configure(highlightbackground="#d9d9d9")
