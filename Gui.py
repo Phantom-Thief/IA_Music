@@ -2,7 +2,6 @@ import sys
 import shutil
 import os
 from tkinter import filedialog
-#from pydub import AudioSegment
 from main import *
 
 try:
