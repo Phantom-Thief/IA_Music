@@ -29,11 +29,11 @@ g_ApiActive = False
 g_normalize = None
 g_weight = None
 
-def main():
-    init()
+def main(volume=1):
+    init(volume)
     startAll()
 
-def init():
+def init(volume=1):
     """This function instantiates all our global variables."""
     global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py, g_ApiActive, g_normalize
     g_ApiActive = checkIfProcessRunning('League of Legends')
@@ -59,11 +59,10 @@ def init():
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
-    g_py = pymix.Pymix()
+    g_py = pymix.Pymix(volume)
     
     print("Initialize")
     print(g_normalize)
-    quit()
 
 def startAll():
     """Starts listening to the keyboard+mouse and recording the voice."""
@@ -73,10 +72,10 @@ def startAll():
     if g_ApiActive : 
         g_getApi.update()
         g_weight = weighChamp[ champ[g_getApi.a_champ] ]
-        print(weighChamp)
     g_py.add_track('musicologie/musiques/effects/high_tech_start.wav')
     g_py.add_feeling('calm',fade_in=10000)
     g_rt.start()
+    if not g_weight: g_weight=[160,120,80,100,2000,0]
     print("All Started")
 
 def dataHooker():
@@ -222,4 +221,4 @@ def iaMusic(inputs,inertia=2):
     return g_py.get_feeling_busy()
 
 if __name__ == "__main__":
-    main()
+    main(1)
