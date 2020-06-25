@@ -28,11 +28,12 @@ g_count = 0
 g_ApiActive = False
 g_normalize = None
 g_weight = None
+
 g_vol = None
+g_Run = True
 
 def main(p_vol = 0.1):
     g_vol = p_vol
-    print(g_vol)
     init(p_vol)
     startAll()
 
@@ -84,7 +85,7 @@ def startAll():
 def dataHooker():
     """Fills the 'g_queue' list with the different calculation functions implemented in classes."""
     global g_klog, g_mlog, g_getApi, g_queue, g_rt, g_count, g_ApiActive, g_weight
-    if(g_klog.a_stopMain):
+    if(g_Run):
 
         if checkIfProcessRunning('League of Legends') and not g_ApiActive:
             stopAll()
@@ -131,6 +132,9 @@ def dataHooker():
     else:
         stopAll()
 
+def stopHooker(end):
+    global g_Run
+    g_Run = end
 
 def checkIfProcessRunning(processName):
     '''

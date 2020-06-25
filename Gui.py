@@ -9,7 +9,7 @@ import sys
 import shutil
 import os
 from tkinter import filedialog
-from pydub import AudioSegment
+#from pydub import AudioSegment
 from main import *
 
 try:
@@ -32,6 +32,7 @@ def vp_start_gui():
     root.iconbitmap('./LogoIMA.ico')
     top = IMA(root)
     root.mainloop()
+    top.stopcroix()
 
 w = None
 def create_IMA(rt, *args, **kwargs):
@@ -215,6 +216,7 @@ class IMA:
     def putInFile(self):
         MusicFile = filedialog.askopenfilename(multiple=True ,filetypes=(("Wav file", "*.wav"),("Mp3 file","*.mp3")))
         if MusicFile is not "":
+            print(MusicFile[0].split('/'))
             try:
                 shutil.copy2(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
                 messagebox.showinfo("Done","The music is now in "+ str(self.a_selection))
@@ -246,11 +248,13 @@ class IMA:
         self.ButtonStop.configure(state=tk.ACTIVE)
         self.ButtonStop.update_idletasks()
 
+    def stopcroix(self):
+        stopHooker(False)
 
     def stop(self):
+        stopHooker(False)
         self.ButtonStop.configure(state=tk.DISABLED)
         self.ButtonStop.place_forget()
-        stopAll()
         self.show(0)
         self.ButtonRun.configure(state=tk.ACTIVE)
 
