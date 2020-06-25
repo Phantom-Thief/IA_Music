@@ -228,11 +228,12 @@ class IMA:
 
     def defVolume(self,p_vol):
         self.VSV = p_vol
+         
 
     def run(self):
         self.ButtonRun.configure(state=tk.DISABLED)
         self.hide(0)
-        #main()
+        main(self.VSV)
         self.ButtonStop.place(relx=0.25, rely=0.3, height=63, width=300)
         self.ButtonStop.configure(state=tk.ACTIVE)
         self.ButtonStop.update_idletasks()
