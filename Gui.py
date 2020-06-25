@@ -116,7 +116,6 @@ class IMA:
         self.ButtonSetting.configure(text='Setting')
 
         self.ButtonBackSetting = tk.Button(top)
-        self.ButtonBackSetting.place(relx=0.75, rely=0.8, height=63, width=125)
         self.ButtonBackSetting.configure(activebackground="#b0b6e1")
         self.ButtonBackSetting.configure(activeforeground="#000000")
         self.ButtonBackSetting.configure(background="#d9d9d9")
@@ -127,7 +126,6 @@ class IMA:
         self.ButtonBackSetting.configure(highlightcolor="black")
         self.ButtonBackSetting.configure(pady="0")
         self.ButtonBackSetting.configure(text='back')
-        self.ButtonBackSetting.place_forget()
 
         self.LabelTitle = tk.Label(top)
         self.LabelTitle.place(relx=0.417, rely=0.05, height=48, width=92)
@@ -146,7 +144,6 @@ class IMA:
         self.LabelSubTitle.configure(text='Adapt your Music to your GamePlay')
 
         self.ButtonMusic = tk.Button(top)
-        self.ButtonMusic.place(relx=0.467, rely=0.28, height=33, width=48)
         self.ButtonMusic.configure(activebackground="#ececec")
         self.ButtonMusic.configure(command=self.putInFile)
         self.ButtonMusic.configure(activeforeground="#000000")
@@ -158,19 +155,24 @@ class IMA:
         self.ButtonMusic.configure(highlightcolor="black")
         self.ButtonMusic.configure(pady="0")
         self.ButtonMusic.configure(text='Import')
-        self.ButtonMusic.place_forget()
 
         self.LabelMusic = tk.Label(top)
-        self.LabelMusic.place(relx=0.033, rely=0.30, height=26, width=132)
         self.LabelMusic.configure(background="#d9d9d9")
         self.LabelMusic.configure(disabledforeground="#a3a3a3")
         self.LabelMusic.configure(foreground="#000000")
         self.LabelMusic.configure(text='Add your music in :')
-        self.LabelMusic.place_forget()
+
+        self.VSV = None
+        self.SetVolume = tk.Scale(top)
+        self.SetVolume.configure(orient='horizontal')
+        self.SetVolume.configure(background="#d9d9d9")
+        self.SetVolume.configure(from_=0.0)
+        self.SetVolume.configure(to=10.0)
+        self.SetVolume.configure(command=self.defVolume)
+        self.SetVolume.configure(tickinterval=0.1)
+        self.SetVolume.configure(label='Volume')
 
         self.ListboxMusic = tk.Listbox(top)
-        self.ListboxMusic.place(relx=0.267, rely=0.255, relheight=0.14
-                , relwidth=0.173)
         self.ListboxMusic.insert(1,"Calm")
         self.ListboxMusic.insert(2,"Action")
         self.ListboxMusic.insert(3,"Sad")
@@ -180,10 +182,14 @@ class IMA:
         self.ListboxMusic.configure(font="TkFixedFont")
         self.ListboxMusic.configure(foreground="#000000")
         self.ListboxMusic.configure(selectmode='single')
-        self.ListboxMusic.place_forget()
+
+        self.LabelReset = tk.Label(top)
+        self.LabelReset.configure(background="#d9d9d9")
+        self.LabelReset.configure(disabledforeground="#a3a3a3")
+        self.LabelReset.configure(foreground="#000000")
+        self.LabelReset.configure(text='Push this for recalibrate :')
 
         self.ButtonReset = tk.Button(top)
-        self.ButtonReset.place(relx=0.033, rely=0.45, height=33, width=86)
         self.ButtonReset.configure(activebackground="#ececec")
         self.ButtonReset.configure(activeforeground="#000000")
         self.ButtonReset.configure(background="#d9d9d9")
@@ -194,16 +200,15 @@ class IMA:
         self.ButtonReset.configure(highlightcolor="black")
         self.ButtonReset.configure(pady="0")
         self.ButtonReset.configure(text='Recalibrate')
-        self.ButtonReset.place_forget()
 
     def select(self,event):
         self.a_selection = self.ListboxMusic.selection_get()
     
     def putInFile(self):
         MusicFile = filedialog.askopenfilename(multiple=True ,filetypes=(("Wav file", "*.wav"),))
-        
         try:
             shutil.copy2(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
+            
             messagebox.showinfo("Done","The music is now in "+ str(self.a_selection))
         except:
             try:
@@ -219,6 +224,10 @@ class IMA:
             messagebox.showinfo("Done","The file is now recalibrate")
         except:
             messagebox.showerror("error", "This file is already recalibrate")
+
+
+    def defVolume(self,p_vol):
+        self.VSV = p_vol
 
     def run(self):
         self.ButtonRun.configure(state=tk.DISABLED)
@@ -245,24 +254,28 @@ class IMA:
         self.hide(1)
         self.show(0)
         
-    def show(self, what):
-        if what == 1:
-            self.ButtonReset.place(relx=0.033, rely=0.45, height=33, width=86)
+    def show(self, p_what):
+        if p_what == 1:
+            self.ButtonReset.place(relx=0.3, rely=0.44, height=33, width=86)
             self.ListboxMusic.place(relx=0.267, rely=0.255, relheight=0.14, relwidth=0.173)
             self.LabelMusic.place(relx=0.033, rely=0.30, height=26, width=132)
             self.ButtonMusic.place(relx=0.467, rely=0.28, height=33, width=48)
             self.ButtonBackSetting.place(relx=0.75, rely=0.8, height=63, width=125)
+            self.LabelReset.place(relx=0.052, rely=0.45, height=26, width=132)
+            self.SetVolume.place(relx=0.052, rely=0.60, height=75, width=300)
         else:
             self.ButtonRun.place(relx=0.25, rely=0.3, height=63, width=300)
             self.ButtonSetting.place(relx=0.29, rely=0.5, height=63, width=250)
 
-    def hide(self, what):
-        if what == 1:
+    def hide(self, p_what):
+        if p_what == 1:
             self.ButtonReset.place_forget()
             self.ListboxMusic.place_forget()
             self.LabelMusic.place_forget()
             self.ButtonMusic.place_forget()
             self.ButtonBackSetting.place_forget()
+            self.LabelReset.place_forget()
+            self.SetVolume.place_forget()
         else:
             self.ButtonRun.place_forget()
             self.ButtonSetting.place_forget()
