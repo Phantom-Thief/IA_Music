@@ -221,4 +221,4 @@ def iaMusic(inputs,inertia=2):
     return g_py.get_feeling_busy()
 
 if __name__ == "__main__":
-    main(1)
+    main()
