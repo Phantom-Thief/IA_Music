@@ -22,7 +22,11 @@ class Requests_Api():
         self.a_query = 'https://127.0.0.1:2999/liveclientdata/playerscores?summonerName='+str(self.a_summonerName)
         self.a_score = requests.get(self.a_query,verify=False).json()
         self.a_score_bis = requests.get(self.a_query,verify=False).json()
+<<<<<<< HEAD
         self.a_champ = None
+=======
+        self.a_champ = ""
+>>>>>>> e799c775328e7550c5a5ac9f291d4d50e89dc5ad
         self.team()
 
     def output_event(self):
