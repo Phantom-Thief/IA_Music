@@ -167,10 +167,18 @@ class IMA:
         self.SetVolume.configure(orient='horizontal')
         self.SetVolume.configure(background="#d9d9d9")
         self.SetVolume.configure(from_=0.0)
-        self.SetVolume.configure(to=10.0)
+        self.SetVolume.configure(to=100.0)
+        self.SetVolume.configure(resolution=0.1)
+        self.SetVolume.configure(tickinterval=50)
         self.SetVolume.configure(command=self.defVolume)
-        self.SetVolume.configure(tickinterval=0.1)
         self.SetVolume.configure(label='Volume')
+
+        self.LabelSetVolume = tk.Label(top)
+        self.LabelSetVolume.configure(background="#d9d9d9")
+        self.LabelSetVolume.configure(disabledforeground="#a3a3a3")
+        self.LabelSetVolume.configure(foreground="#000000")
+        self.LabelSetVolume.configure(text='be careful above 10 the sound is loud')
+
 
         self.ListboxMusic = tk.Listbox(top)
         self.ListboxMusic.insert(1,"Calm")
@@ -264,6 +272,7 @@ class IMA:
             self.ButtonBackSetting.place(relx=0.75, rely=0.8, height=63, width=125)
             self.LabelReset.place(relx=0.052, rely=0.45, height=26, width=132)
             self.SetVolume.place(relx=0.052, rely=0.60, height=75, width=300)
+            self.LabelSetVolume.place(relx=0.58, rely=0.60, height=26, width=200)
         else:
             self.ButtonRun.place(relx=0.25, rely=0.3, height=63, width=300)
             self.ButtonSetting.place(relx=0.29, rely=0.5, height=63, width=250)
@@ -277,6 +286,7 @@ class IMA:
             self.ButtonBackSetting.place_forget()
             self.LabelReset.place_forget()
             self.SetVolume.place_forget()
+            self.LabelSetVolume.place_forget()
         else:
             self.ButtonRun.place_forget()
             self.ButtonSetting.place_forget()
