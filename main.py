@@ -68,6 +68,7 @@ def init(p_vol):
     print(g_normalize)
 
 def startAll():
+    
     """Starts listening to the keyboard+mouse and recording the voice."""
     global g_klog, g_mlog, g_ApiActive, g_py, g_rt, g_weight
     g_klog.start()
@@ -86,15 +87,15 @@ def dataHooker():
     global g_klog, g_mlog, g_getApi, g_queue, g_rt, g_count, g_ApiActive, g_weight
     if(g_klog.a_stopMain):
 
-        if checkIfProcessRunning('League of Legends') and not g_ApiActive:
-            stopAll()
-            print('League of legends detected, starting the API.')
-            time.sleep(10)
-            main(g_vol)
-        
-        if not checkIfProcessRunning('League of Legends') and g_ApiActive:
-            stopAll()
-            main(g_vol)
+        # if checkIfProcessRunning('League of Legends') and not g_ApiActive:
+        #     stopAll()
+        #     print('League of legends detected, starting the API.')
+        #     time.sleep(10)
+        #     main(g_vol)
+
+        # if not checkIfProcessRunning('League of Legends') and g_ApiActive:
+        #     stopAll()
+        #     main(g_vol)
 
         database = np.asarray([
             g_klog.CountKey(),
@@ -104,9 +105,18 @@ def dataHooker():
 
         if(g_ApiActive):
             database = np.append(database,g_getApi.event_kill_life())
-            g_getApi.update()
+            try:
+                g_getApi.update()
+            except:
+                g_ApiActive = False
+                main(g_vol)
         else:
-            database = np.append(database,[0.,0.,0.])
+            try:
+                g_getApi = api.Requests_Api()
+                g_ApiActive = True
+                main(g_vol)
+            except:
+                database = np.append(database,[0.,0.,0.])
 
         database = normalize(database)
         print(database)
