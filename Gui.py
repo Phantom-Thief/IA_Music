@@ -25,6 +25,7 @@ def vp_start_gui():
     top = IMA(root)
     root.mainloop()
     top.stopcroix()
+    
 
 w = None
 def create_IMA(rt, *args, **kwargs):
@@ -204,20 +205,25 @@ class IMA:
     def select(self,event):
         self.a_selection = self.ListboxMusic.selection_get()
     
+
     def putInFile(self):
-        MusicFile = filedialog.askopenfilename(multiple=True ,filetypes=(("Wav file", "*.wav"),("Mp3 file","*.mp3")))
+        MusicFile = filedialog.askopenfilename(multiple=True ,filetypes=(("Wav file", "*.wav"),("Mp3 file","*.mp3"),
+                                                                        ("all file","*.*")))
         if MusicFile is not "":
-            print(MusicFile[0].split('/'))
-            try:
-                shutil.copy2(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
-                messagebox.showinfo("Done","The music is now in "+ str(self.a_selection))
-            except:
+            typefile = MusicFile[0].split('/')[-1].split('.')[-1]
+            if typefile == 'wav':
                 try:
-                    for i in MusicFile:
-                        shutil.copy2(i,"./musicologie/musiques/"+self.a_selection+"/")
-                    messagebox.showinfo("Done","musics are now in "+ str(self.a_selection))
+                    shutil.copy2(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
+                    messagebox.showinfo("Done","The music is now in "+ str(self.a_selection))
                 except:
-                    messagebox.showerror("error", "Can't import") 
+                    try:
+                        for i in MusicFile:
+                            shutil.copy2(i,"./musicologie/musiques/"+self.a_selection+"/")
+                        messagebox.showinfo("Done","musics are now in "+ str(self.a_selection))
+                    except:
+                        messagebox.showerror("error", "Can't import in None") 
+            else:
+                messagebox.showerror("error", "pls convert this file to a .wav")
 
     def resetNorma(self):
         try :
