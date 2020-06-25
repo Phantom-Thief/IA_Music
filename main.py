@@ -21,7 +21,8 @@ g_klog = None
 g_mlog = None
 g_getApi = None
 g_queue = collections.deque([0.0, 0.0, 0.0, 0.0, 0.0])
-g_rt = None
+g_data = None
+g_api = None
 g_ApiActive=0
 g_file = 'rawdata.csv'
 g_count = 0
@@ -33,13 +34,14 @@ g_vol = None
 g_Run = True
 
 def main(p_vol = 0.1):
+    global g_vol
     g_vol = p_vol
     init(p_vol)
     startAll()
 
 def init(p_vol):
     """This function instantiates all our global variables."""
-    global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py, g_ApiActive, g_normalize
+    global g_klog, g_mlog, g_getApi, g_data, g_ApiActive, g_py, g_ApiActive, g_normalize, g_api
     g_ApiActive = checkIfProcessRunning('League of Legends')
     if g_ApiActive :
         while(checkIfProcessRunning('League of Legends')):
@@ -62,7 +64,8 @@ def init(p_vol):
 
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
-    g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
+    g_data = repeatedTime.RepeatedTimer(1,dataHooker)
+    g_api = repeatedTime.RepeatedTimer(10,checkApi)
     g_py = pymix.Pymix(p_vol)
     
     print("Initialize")
@@ -70,7 +73,7 @@ def init(p_vol):
 
 def startAll():
     """Starts listening to the keyboard+mouse and recording the voice."""
-    global g_klog, g_mlog, g_ApiActive, g_py, g_rt, g_weight
+    global g_klog, g_mlog, g_ApiActive, g_py, g_data, g_weight, g_api
     g_klog.start()
     g_mlog.start()
     if g_ApiActive : 
@@ -78,13 +81,14 @@ def startAll():
         g_weight = weighChamp[ champ[g_getApi.a_champ] ]
     g_py.add_track('musicologie/musiques/effects/high_tech_start.wav')
     g_py.add_feeling('calm',fade_in=10000)
-    g_rt.start()
+    g_data.start()
+    g_api.start()
     if not g_weight: g_weight=[160,120,80,100,2000,0]
     print("All Started")
 
 def dataHooker():
     """Fills the 'g_queue' list with the different calculation functions implemented in classes."""
-    global g_klog, g_mlog, g_getApi, g_queue, g_rt, g_count, g_ApiActive, g_weight
+    global g_klog, g_mlog, g_getApi, g_queue, g_data, g_count, g_ApiActive, g_weight
     if(g_Run):
 
         database = np.asarray([
@@ -126,6 +130,22 @@ def stopHooker(end):
     global g_Run
     g_Run = end
 
+def checkApi():
+    global g_ApiActive, g_getApi, g_vol
+    if g_ApiActive:
+        try:
+            g_getApi.update()
+        except:
+            g_ApiActive = False
+            main(g_vol)
+    else:
+        try:
+            g_getApi = api.Requests_Api()
+            g_ApiActive = True
+            main(g_vol)
+        except:
+            pass
+
 def checkIfProcessRunning(processName):
     '''
     Check if there is any running process that contains the given name processName.
@@ -147,10 +167,10 @@ def taillemaxqueue(max,queue):
 
 def stopAll():
     """Stops all processes."""
-    global g_klog, g_mlog, g_rt, g_queue, g_file
+    global g_klog, g_mlog, g_data, g_queue, g_file
     g_klog.stop()
     g_mlog.stop()
-    g_rt.stop()
+    g_data.stop()
     g_py.stop()
 
     pickle.dump(g_normalize, open("normalize.dat", 'wb'))
