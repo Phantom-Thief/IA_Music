@@ -179,7 +179,6 @@ class IMA:
         self.LabelSetVolume.configure(foreground="#000000")
         self.LabelSetVolume.configure(text='Below 3 the sound is very low')
 
-
         self.ListboxMusic = tk.Listbox(top)
         self.ListboxMusic.insert(1,"Calm")
         self.ListboxMusic.insert(2,"Action")
@@ -241,7 +240,6 @@ class IMA:
     def run(self):
         self.ButtonRun.configure(state=tk.DISABLED)
         self.hide(0)
-        print(float(self.VSV)/100)
         main(float(self.VSV)/100)
         self.ButtonStop.place(relx=0.25, rely=0.3, height=63, width=300)
         self.ButtonStop.configure(state=tk.ACTIVE)
@@ -254,7 +252,6 @@ class IMA:
         stopAll()
         self.show(0)
         self.ButtonRun.configure(state=tk.ACTIVE)
-        self.ButtonRun.update_idletasks()
 
     def settingConfiguration(self):
         self.hide(0)

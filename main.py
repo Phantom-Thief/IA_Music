@@ -28,8 +28,11 @@ g_count = 0
 g_ApiActive = False
 g_normalize = None
 g_weight = None
+g_vol = None
 
 def main(p_vol = 0.1):
+    g_vol = p_vol
+    print(g_vol)
     init(p_vol)
     startAll()
 
@@ -87,11 +90,11 @@ def dataHooker():
             stopAll()
             print('League of legends detected, starting the API.')
             time.sleep(10)
-            main()
+            main(g_vol)
         
         if not checkIfProcessRunning('League of Legends') and g_ApiActive:
             stopAll()
-            main()
+            main(g_vol)
 
         database = np.asarray([
             g_klog.CountKey(),
