@@ -241,11 +241,10 @@ class IMA:
          
 
     def run(self):
-        self.ButtonRun.configure(state=tk.DISABLED)
         self.hide(0)
         main(float(self.VSV)/100)
+        stopHooker(True)
         self.ButtonStop.place(relx=0.25, rely=0.3, height=63, width=300)
-        self.ButtonStop.configure(state=tk.ACTIVE)
         self.ButtonStop.update_idletasks()
 
     def stopcroix(self):
@@ -253,10 +252,8 @@ class IMA:
 
     def stop(self):
         stopHooker(False)
-        self.ButtonStop.configure(state=tk.DISABLED)
         self.ButtonStop.place_forget()
         self.show(0)
-        self.ButtonRun.configure(state=tk.ACTIVE)
 
     def settingConfiguration(self):
         self.hide(0)
