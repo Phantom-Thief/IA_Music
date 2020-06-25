@@ -162,7 +162,7 @@ class IMA:
         self.LabelMusic.configure(foreground="#000000")
         self.LabelMusic.configure(text='Add your music in :')
 
-        self.VSV = None
+        self.VSV = 10
         self.SetVolume = tk.Scale(top)
         self.SetVolume.configure(orient='horizontal')
         self.SetVolume.configure(background="#d9d9d9")
@@ -177,7 +177,7 @@ class IMA:
         self.LabelSetVolume.configure(background="#d9d9d9")
         self.LabelSetVolume.configure(disabledforeground="#a3a3a3")
         self.LabelSetVolume.configure(foreground="#000000")
-        self.LabelSetVolume.configure(text='be careful above 10 the sound is loud')
+        self.LabelSetVolume.configure(text='Below 3 the sound is very low')
 
 
         self.ListboxMusic = tk.Listbox(top)
@@ -241,7 +241,8 @@ class IMA:
     def run(self):
         self.ButtonRun.configure(state=tk.DISABLED)
         self.hide(0)
-        main(self.VSV)
+        print(float(self.VSV)/100)
+        main(float(self.VSV)/100)
         self.ButtonStop.place(relx=0.25, rely=0.3, height=63, width=300)
         self.ButtonStop.configure(state=tk.ACTIVE)
         self.ButtonStop.update_idletasks()
@@ -250,7 +251,7 @@ class IMA:
     def stop(self):
         self.ButtonStop.configure(state=tk.DISABLED)
         self.ButtonStop.place_forget()
-        #stopAll()
+        stopAll()
         self.show(0)
         self.ButtonRun.configure(state=tk.ACTIVE)
         self.ButtonRun.update_idletasks()

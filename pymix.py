@@ -8,7 +8,7 @@ from os.path import isfile, join
 
 class Pymix:
 
-    def __init__(self,pathcalm='musicologie/musiques/Calm/',pathanger='musicologie/musiques/Action/',pathjoy='musicologie/musiques/joyeux/',pathsad='musicologie/musiques/Sad/'):
+    def __init__(self,p_vol,pathcalm='musicologie/musiques/Calm/',pathanger='musicologie/musiques/Action/',pathjoy='musicologie/musiques/joyeux/',pathsad='musicologie/musiques/Sad/'):
         """The builder of the 'Pymix' class
 
         Class for creating real time soundtrack.
@@ -17,6 +17,7 @@ class Pymix:
 
         """
         pygame.mixer.init()
+        self.a_vol = p_vol
         self.a_path = [pathcalm,pathanger,pathjoy,pathsad]
         self.a_soundfile = (self.get_file(pathcalm),self.get_file(pathanger),self.get_file(pathjoy),self.get_file(pathsad))
         self.a_label = {'calm':0,'anger':1,'joy':2,'sad':3}
@@ -45,7 +46,9 @@ class Pymix:
         """Play an audio file in the specified channel."""
         if channel < 5 : print("Warning : channel {} already used for feelings".format(channel))
         channel = pygame.mixer.Channel(channel)
-        channel.play(pygame.mixer.Sound(file),fade_ms=fade_in)
+        music = pygame.mixer.Sound(file)
+        music.set_volume(self.a_vol)
+        channel.play(music, fade_ms=fade_in)
         return 1
 
     def add_track_from_directory(self,pathdirectory,channel=7,fade_in=3000):
@@ -67,7 +70,10 @@ class Pymix:
         if rand:
             self.a_sound = self.a_path[channel]+random.choice(self.a_soundfile[channel])
             print(self.a_sound)
-            pygame.mixer.Channel(channel).play( pygame.mixer.Sound( self.a_sound ),fade_ms=fade_in )
+            son = pygame.mixer.Sound( self.a_sound )
+            son.set_volume(self.a_vol)
+            pygame.mixer.Channel(channel).play(son ,fade_ms=fade_in )
+            
         else:
             pygame.mixer.Channel(channel).play( pygame.mixer.Sound(file),fade_ms=fade_in )
         return 1
@@ -79,12 +85,12 @@ class Pymix:
         pygame.mixer.Channel(channel).fadeout(fade_out)
         return 1
 
-    def set_volume(self,vol,channel=None):
-        if channel:
-            pygame.mixer.Channel(channel).set_volume(vol)
-            return
-        pygame.mixer.music.set_volume(vol)
-        return
+    # def set_volume(self,vol, channel=None):
+    #     if channel:
+    #         pygame.mixer.Channel(channel).set_volume(vol)
+    #         return
+    #     pygame.mixer.music.set_volume(vol)
+    #     return
 
     def get_volume(self,channel=None):
         if channel: return pygame.mixer.Channel(channel).get_volume()
