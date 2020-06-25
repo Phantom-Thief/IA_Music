@@ -29,11 +29,11 @@ g_ApiActive = False
 g_normalize = None
 g_weight = None
 
-def main(volume=1):
-    init(volume)
+def main():
+    init()
     startAll()
 
-def init(volume=1):
+def init():
     """This function instantiates all our global variables."""
     global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py, g_ApiActive, g_normalize
     g_ApiActive = checkIfProcessRunning('League of Legends')
@@ -59,7 +59,7 @@ def init(volume=1):
     g_klog = keylog.KeyLogger()
     g_mlog = Mouselogger.Mouselog()
     g_rt = repeatedTime.RepeatedTimer(1,dataHooker)
-    g_py = pymix.Pymix(volume)
+    g_py = pymix.Pymix()
     
     print("Initialize")
     print(g_normalize)
