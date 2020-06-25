@@ -9,6 +9,7 @@ import sys
 import shutil
 import os
 from tkinter import filedialog
+from pydub import AudioSegment
 from main import *
 
 try:
@@ -212,18 +213,18 @@ class IMA:
         self.a_selection = self.ListboxMusic.selection_get()
     
     def putInFile(self):
-        MusicFile = filedialog.askopenfilename(multiple=True ,filetypes=(("Wav file", "*.wav"),))
-        try:
-            shutil.copy2(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
-            
-            messagebox.showinfo("Done","The music is now in "+ str(self.a_selection))
-        except:
+        MusicFile = filedialog.askopenfilename(multiple=True ,filetypes=(("Wav file", "*.wav"),("Mp3 file","*.mp3")))
+        if MusicFile is not "":
             try:
-                for i in MusicFile:
-                    shutil.copy2(i,"./musicologie/musiques/"+self.a_selection+"/")
-                messagebox.showinfo("Done","musics are now in "+ str(self.a_selection))
+                shutil.copy2(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
+                messagebox.showinfo("Done","The music is now in "+ str(self.a_selection))
             except:
-                messagebox.showerror("error", "Can't import") 
+                try:
+                    for i in MusicFile:
+                        shutil.copy2(i,"./musicologie/musiques/"+self.a_selection+"/")
+                    messagebox.showinfo("Done","musics are now in "+ str(self.a_selection))
+                except:
+                    messagebox.showerror("error", "Can't import") 
 
     def resetNorma(self):
         try :
