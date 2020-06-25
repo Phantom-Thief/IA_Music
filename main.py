@@ -38,7 +38,7 @@ def init(p_vol):
     global g_klog, g_mlog, g_getApi, g_rt, g_ApiActive, g_py, g_ApiActive, g_normalize
     g_ApiActive = checkIfProcessRunning('League of Legends')
     if g_ApiActive :
-        while(1):
+        while(checkIfProcessRunning('League of Legends')):
             try: 
                 g_getApi = api.Requests_Api()
                 print('API started !')
