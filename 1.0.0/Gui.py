@@ -76,12 +76,12 @@ class IMA:
         top.maxsize(1924, 1055)
         top.resizable(width=False, height=False)
         top.title("I.M.A")
-        top.configure(background="#404040")
+        top.configure(background="#606060")
 
         self.LabelTitle = tk.Label(top)
         self.LabelTitle.place(relx=0.4, rely=0.05, height=48, width=92)
         self.LabelTitle.configure(activebackground="#f0f0f0f0f0f0")
-        self.LabelTitle.configure(background="#404040")
+        self.LabelTitle.configure(background="#606060")
         self.LabelTitle.configure(font=font13)
         self.LabelTitle.configure(disabledforeground="#a3a3a3")
         self.LabelTitle.configure(foreground="#000000")
@@ -89,7 +89,7 @@ class IMA:
 
         self.LabelSubTitle = tk.Label(top)
         self.LabelSubTitle.place(relx=0.24, rely=0.125, height=26, width=292)
-        self.LabelSubTitle.configure(background="#404040")
+        self.LabelSubTitle.configure(background="#606060")
         self.LabelSubTitle.configure(disabledforeground="#a3a3a3")
         self.LabelSubTitle.configure(font=font9)
         self.LabelSubTitle.configure(foreground="#000000")
@@ -99,7 +99,7 @@ class IMA:
         self.ButtonRun.place(relx=0.23, rely=0.3, height=63, width=300)
         self.ButtonRun.configure(activebackground="#b0b6e1")
         self.ButtonRun.configure(activeforeground="#000000")
-        self.ButtonRun.configure(background="#606060")
+        self.ButtonRun.configure(background="#808080")
         self.ButtonRun.configure(disabledforeground="#a3a3a3")
         self.ButtonRun.configure(foreground="#000000")
         self.ButtonRun.configure(command=self.run)
@@ -111,7 +111,7 @@ class IMA:
         self.ButtonStop = tk.Button(top)
         self.ButtonStop.configure(activebackground="#b0b6e1")
         self.ButtonStop.configure(activeforeground="#000000")
-        self.ButtonStop.configure(background="#606060")
+        self.ButtonStop.configure(background="#808080")
         self.ButtonStop.configure(command=self.stop)
         self.ButtonStop.configure(disabledforeground="#a3a3a3")
         self.ButtonStop.configure(foreground="#000000")
@@ -125,7 +125,7 @@ class IMA:
         self.ButtonSetting.place(relx=0.27, rely=0.5, height=63, width=250)
         self.ButtonSetting.configure(activebackground="#b0b6e1")
         self.ButtonSetting.configure(activeforeground="#000000")
-        self.ButtonSetting.configure(background="#606060")
+        self.ButtonSetting.configure(background="#808080")
         self.ButtonSetting.configure(command=lambda: self.settingConfiguration(0,1))
         self.ButtonSetting.configure(disabledforeground="#a3a3a3")
         self.ButtonSetting.configure(foreground="#000000")
@@ -138,7 +138,7 @@ class IMA:
         self.ButtonCredit.place(relx=0.308, rely=0.7, height=63, width=200)
         self.ButtonCredit.configure(activebackground="#b0b6e1")
         self.ButtonCredit.configure(activeforeground="#000000")
-        self.ButtonCredit.configure(background="#606060")
+        self.ButtonCredit.configure(background="#808080")
         self.ButtonCredit.configure(command=lambda: self.settingConfiguration(0,3))
         self.ButtonCredit.configure(disabledforeground="#a3a3a3")
         self.ButtonCredit.configure(foreground="#000000")
@@ -147,19 +147,23 @@ class IMA:
         self.ButtonCredit.configure(pady="0")
         self.ButtonCredit.configure(text='Credit')
 
-        self.LabelCredit = tk.Label(top)
-        self.LabelCredit.configure(background="#404040")
-        self.LabelCredit.configure(disabledforeground="#a3a3a3")
+        self.LabelCredit = tk.Text(top)
+        self.LabelCredit.configure(background="#606060")
         self.LabelCredit.configure(font=font9)
-        self.LabelCredit.configure(foreground="#000000")
-        self.LabelCredit.configure(text="""This project was done by Nicolas Brun, Thomas Menchi, Jérôme Kacimi, Alexis Chevalier and 
-                                        Théo Guerrois.
-                                        On behalf of all this team we really thank you for downloading our application. Have fun 
-                                        and win your games.""")
+        text="""This project was done by :
+
+    Nicolas Brun, Thomas Menchi, Jérôme Kacimi, Alexis Chevalier and Théo Guerrois.
+
+    On behalf of all this team we really thank you for downloading our application.
+                                                
+                                                
+                                                Have fun and win your games."""
+        self.LabelCredit.insert('1.0', text)
+
         self.ButtonBackSetting = tk.Button(top)
         self.ButtonBackSetting.configure(activebackground="#b0b6e1")
         self.ButtonBackSetting.configure(activeforeground="#000000")
-        self.ButtonBackSetting.configure(background="#606060")
+        self.ButtonBackSetting.configure(background="#808080")
         self.ButtonBackSetting.configure(command=lambda: self.exitSetting(1,0))
         self.ButtonBackSetting.configure(disabledforeground="#a3a3a3")
         self.ButtonBackSetting.configure(foreground="#000000")
@@ -168,13 +172,10 @@ class IMA:
         self.ButtonBackSetting.configure(pady="0")
         self.ButtonBackSetting.configure(text='done')
 
-        self.FrameSetting = tk.Frame(top)
-        self.FrameSetting.configure(background="#202020")
-
         self.ButtonMusicSetting = tk.Button(top)
         self.ButtonMusicSetting.configure(activebackground="#b0b6e1")
         self.ButtonMusicSetting.configure(activeforeground="#000000")
-        self.ButtonMusicSetting.configure(background="#606060")
+        self.ButtonMusicSetting.configure(background="#808080")
         self.ButtonMusicSetting.configure(command=lambda: self.settingConfiguration(1,2))
         self.ButtonMusicSetting.configure(disabledforeground="#a3a3a3")
         self.ButtonMusicSetting.configure(foreground="#000000")
@@ -186,7 +187,7 @@ class IMA:
         self.ButtonMusicBackSetting = tk.Button(top)
         self.ButtonMusicBackSetting.configure(activebackground="#b0b6e1")
         self.ButtonMusicBackSetting.configure(activeforeground="#000000")
-        self.ButtonMusicBackSetting.configure(background="#606060")
+        self.ButtonMusicBackSetting.configure(background="#808080")
         self.ButtonMusicBackSetting.configure(command=lambda: self.exitSetting(2,1))
         self.ButtonMusicBackSetting.configure(disabledforeground="#a3a3a3")
         self.ButtonMusicBackSetting.configure(foreground="#000000")
@@ -199,7 +200,7 @@ class IMA:
         self.ButtonMusic.configure(activebackground="#ececec")
         self.ButtonMusic.configure(command=self.putInFile)
         self.ButtonMusic.configure(activeforeground="#000000")
-        self.ButtonMusic.configure(background="#606060")
+        self.ButtonMusic.configure(background="#808080")
         self.ButtonMusic.configure(disabledforeground="#a3a3a3")
         self.ButtonMusic.configure(foreground="#000000")
         self.ButtonMusic.configure(highlightbackground="#606060")
@@ -208,14 +209,14 @@ class IMA:
         self.ButtonMusic.configure(text='Import')
 
         self.LabelMusic = tk.Label(top)
-        self.LabelMusic.configure(background="#404040")
+        self.LabelMusic.configure(background="#606060")
         self.LabelMusic.configure(disabledforeground="#a3a3a3")
         self.LabelMusic.configure(foreground="#000000")
         self.LabelMusic.configure(text='Add your music in :')
 
         self.SetVolume = tk.Scale(top)
         self.SetVolume.configure(orient='horizontal')
-        self.SetVolume.configure(background="#606060")
+        self.SetVolume.configure(background="#808080")
         self.SetVolume.configure(from_=0.0)
         self.SetVolume.configure(to=100.0)
         self.SetVolume.configure(resolution=1)
@@ -238,7 +239,7 @@ class IMA:
         self.ButtonReset = tk.Button(top)
         self.ButtonReset.configure(activebackground="#ececec")
         self.ButtonReset.configure(activeforeground="#000000")
-        self.ButtonReset.configure(background="#606060")
+        self.ButtonReset.configure(background="#808080")
         self.ButtonReset.configure(command=self.resetNorma)
         self.ButtonReset.configure(disabledforeground="#a3a3a3")
         self.ButtonReset.configure(foreground="#000000")
@@ -314,10 +315,9 @@ class IMA:
             self.ButtonCredit.place(relx=0.308, rely=0.7, height=63, width=200)
             
         if p_what == 1:            
-            self.ButtonReset.place(relx=0.053, rely=0.52, height=63, width=140)
+            self.ButtonReset.place(relx=0.35, rely=0.52, height=63, width=140)
             self.ButtonBackSetting.place(relx=0.8, rely=0.8, height=63, width=100)
-            self.ButtonMusicSetting.place(relx=0.053, rely=0.3, height=63, width=140)
-            self.FrameSetting.place(relx=0.03, rely=0.3, height=150, width=10)
+            self.ButtonMusicSetting.place(relx=0.35, rely=0.3, height=63, width=140)
         
         if p_what == 2:
             self.ListboxMusic.place(relx=0.41, rely=0.355, relheight=0.14, relwidth=0.173)
@@ -327,7 +327,7 @@ class IMA:
             self.ButtonMusicBackSetting.place(relx=0.8, rely=0.8, height=63, width=100)
         
         if p_what == 3:
-            self.LabelCredit.place(relx=0.05, rely=0.2, height=300, width=500)
+            self.LabelCredit.place(relx=0.1, rely=0.3, height=150, width=475)
             self.ButtonBackSetting.place(relx=0.8, rely=0.8, height=63, width=100)
 
     def hide(self, p_what):
@@ -340,7 +340,7 @@ class IMA:
             self.ButtonReset.place_forget()
             self.ButtonBackSetting.place_forget()
             self.ButtonMusicSetting.place_forget()
-            self.FrameSetting.place_forget()
+            self.LabelCredit.place_forget()
 
         if p_what == 2:
             self.ListboxMusic.place_forget()
