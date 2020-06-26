@@ -1,15 +1,13 @@
 import requests
 import urllib3
 import json
-import time
-import pickle
 import zipfile
 import os
 import shutil
 
 urllib3.disable_warnings()
 
-def updater()
+def updater():
     release_tag = requests.get(
         'http://api.github.com/repos/Phantom-Thief/IA_Music/releases/latest', verify = False
         ).json()['tag_name'].strip()
@@ -18,21 +16,26 @@ def updater()
     with open('version.txt','r') as f:
         current_tag = f.read().strip()
 
-    print(release_tag)
-    print(current_tag)
-    print(release_tag==current_tag)
+    if current_tag == release_tag: return
 
-    print("Durée d'exécution : {}s".format(time.time()-start_time))
+    print('Launching update')
 
-    query = requests.get('http://api.github.com/repos/Phantom-Thief/IA_Music/releases/latest', verify = False).json()
+    zipurl = requests.get('http://api.github.com/repos/Phantom-Thief/IA_Music/releases/latest', verify = False).json()['zipball_url']
 
-    # zipurl = query['zipball_url']
-    # resp = requests.get(zipurl)
+    resp = requests.get(zipurl)
 
-    # zname = "github.zip"
-    # zfile = open(zname, 'wb')
-    # zfile.write(resp.content)
-    # zfile.close()
+    print('Update downloaded')
 
-    with zipfile.ZipFile('github.zip', 'r') as zip_ref:
+    zname = release_tag
+    zfile = open(zname, 'wb')
+    zfile.write(resp.content)
+    zfile.close()
+
+    with zipfile.ZipFile(release_tag, 'r') as zip_ref:
         zip_ref.extractall('tmp')
+
+    shutil.rmtree('/'+current_tag, ignore_errors=True)
+    with open('version.txt','w') as f:
+        f.write(release_tag)
+
+    print('Update installed')
