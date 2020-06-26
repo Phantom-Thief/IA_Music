@@ -139,7 +139,7 @@ class IMA:
         self.ButtonCredit.configure(activebackground="#b0b6e1")
         self.ButtonCredit.configure(activeforeground="#000000")
         self.ButtonCredit.configure(background="#606060")
-        self.ButtonCredit.configure(command=lambda: self.exitSetting(0,3))
+        self.ButtonCredit.configure(command=lambda: self.settingConfiguration(0,3))
         self.ButtonCredit.configure(disabledforeground="#a3a3a3")
         self.ButtonCredit.configure(foreground="#000000")
         self.ButtonCredit.configure(highlightbackground="#606060")
@@ -147,6 +147,15 @@ class IMA:
         self.ButtonCredit.configure(pady="0")
         self.ButtonCredit.configure(text='Credit')
 
+        self.LabelCredit = tk.Label(top)
+        self.LabelCredit.configure(background="#404040")
+        self.LabelCredit.configure(disabledforeground="#a3a3a3")
+        self.LabelCredit.configure(font=font9)
+        self.LabelCredit.configure(foreground="#000000")
+        self.LabelCredit.configure(text="""This project was done by Nicolas Brun, Thomas Menchi, Jérôme Kacimi, Alexis Chevalier and 
+                                        Théo Guerrois.
+                                        On behalf of all this team we really thank you for downloading our application. Have fun 
+                                        and win your games.""")
         self.ButtonBackSetting = tk.Button(top)
         self.ButtonBackSetting.configure(activebackground="#b0b6e1")
         self.ButtonBackSetting.configure(activeforeground="#000000")
@@ -316,6 +325,10 @@ class IMA:
             self.ButtonMusic.place(relx=0.6, rely=0.38, height=33, width=48)
             self.SetVolume.place(relx=0.23, rely=0.55, height=75, width=300)
             self.ButtonMusicBackSetting.place(relx=0.8, rely=0.8, height=63, width=100)
+        
+        if p_what == 3:
+            self.LabelCredit.place(relx=0.05, rely=0.2, height=300, width=500)
+            self.ButtonBackSetting.place(relx=0.8, rely=0.8, height=63, width=100)
 
     def hide(self, p_what):
         if p_what == 0:
