@@ -79,7 +79,7 @@ class IMA:
         top.configure(background="#404040")
 
         self.LabelTitle = tk.Label(top)
-        self.LabelTitle.place(relx=0.41, rely=0.05, height=48, width=92)
+        self.LabelTitle.place(relx=0.4, rely=0.05, height=48, width=92)
         self.LabelTitle.configure(activebackground="#f0f0f0f0f0f0")
         self.LabelTitle.configure(background="#404040")
         self.LabelTitle.configure(font=font13)
@@ -88,7 +88,7 @@ class IMA:
         self.LabelTitle.configure(text='I.M.A')
 
         self.LabelSubTitle = tk.Label(top)
-        self.LabelSubTitle.place(relx=0.25, rely=0.125, height=26, width=292)
+        self.LabelSubTitle.place(relx=0.24, rely=0.125, height=26, width=292)
         self.LabelSubTitle.configure(background="#404040")
         self.LabelSubTitle.configure(disabledforeground="#a3a3a3")
         self.LabelSubTitle.configure(font=font9)
@@ -139,7 +139,7 @@ class IMA:
         self.ButtonCredit.configure(activebackground="#b0b6e1")
         self.ButtonCredit.configure(activeforeground="#000000")
         self.ButtonCredit.configure(background="#606060")
-        self.ButtonCredit.configure(command=lambda: self.exitSetting(1,0))
+        self.ButtonCredit.configure(command=lambda: self.exitSetting(0,3))
         self.ButtonCredit.configure(disabledforeground="#a3a3a3")
         self.ButtonCredit.configure(foreground="#000000")
         self.ButtonCredit.configure(highlightbackground="#606060")
@@ -159,23 +159,26 @@ class IMA:
         self.ButtonBackSetting.configure(pady="0")
         self.ButtonBackSetting.configure(text='done')
 
+        self.FrameSetting = tk.Frame(top)
+        self.FrameSetting.configure(background="#202020")
+
         self.ButtonMusicSetting = tk.Button(top)
         self.ButtonMusicSetting.configure(activebackground="#b0b6e1")
         self.ButtonMusicSetting.configure(activeforeground="#000000")
         self.ButtonMusicSetting.configure(background="#606060")
-        self.ButtonMusicSetting.configure(command=lambda: self.settingConfiguration(0,1))
+        self.ButtonMusicSetting.configure(command=lambda: self.settingConfiguration(1,2))
         self.ButtonMusicSetting.configure(disabledforeground="#a3a3a3")
         self.ButtonMusicSetting.configure(foreground="#000000")
         self.ButtonMusicSetting.configure(highlightbackground="#606060")
         self.ButtonMusicSetting.configure(highlightcolor="black")
         self.ButtonMusicSetting.configure(pady="0")
-        self.ButtonMusicSetting.configure(text='done')
+        self.ButtonMusicSetting.configure(text='Music')
 
         self.ButtonMusicBackSetting = tk.Button(top)
         self.ButtonMusicBackSetting.configure(activebackground="#b0b6e1")
         self.ButtonMusicBackSetting.configure(activeforeground="#000000")
         self.ButtonMusicBackSetting.configure(background="#606060")
-        self.ButtonMusicBackSetting.configure(command=lambda: self.exitSetting(1,0))
+        self.ButtonMusicBackSetting.configure(command=lambda: self.exitSetting(2,1))
         self.ButtonMusicBackSetting.configure(disabledforeground="#a3a3a3")
         self.ButtonMusicBackSetting.configure(foreground="#000000")
         self.ButtonMusicBackSetting.configure(highlightbackground="#606060")
@@ -212,12 +215,6 @@ class IMA:
         self.SetVolume.configure(command=self.defVolume)
         self.SetVolume.configure(label='Volume')
 
-        self.LabelSetVolume = tk.Label(top)
-        self.LabelSetVolume.configure(background="#404040")
-        self.LabelSetVolume.configure(disabledforeground="#a3a3a3")
-        self.LabelSetVolume.configure(foreground="#000000")
-        self.LabelSetVolume.configure(text='Below 3 the sound is very low')
-
         self.ListboxMusic = tk.Listbox(top)
         self.ListboxMusic.insert(1,"Calm")
         self.ListboxMusic.insert(2,"Action")
@@ -229,12 +226,6 @@ class IMA:
         self.ListboxMusic.configure(foreground="#000000")
         self.ListboxMusic.configure(selectmode='single')
 
-        self.LabelReset = tk.Label(top)
-        self.LabelReset.configure(background="#404040")
-        self.LabelReset.configure(disabledforeground="#a3a3a3")
-        self.LabelReset.configure(foreground="#000000")
-        self.LabelReset.configure(text='Push this for recalibrate :')
-
         self.ButtonReset = tk.Button(top)
         self.ButtonReset.configure(activebackground="#ececec")
         self.ButtonReset.configure(activeforeground="#000000")
@@ -245,7 +236,7 @@ class IMA:
         self.ButtonReset.configure(highlightbackground="#606060")
         self.ButtonReset.configure(highlightcolor="black")
         self.ButtonReset.configure(pady="0")
-        self.ButtonReset.configure(text='Recalibrate')
+        self.ButtonReset.configure(text='Recalibrate AI sensitivity')
 
     def select(self,event):
         self.a_selection = self.ListboxMusic.selection_get()
@@ -308,34 +299,43 @@ class IMA:
         self.show(show)
         
     def show(self, p_what):
-        if p_what == 1:
-            self.ButtonReset.place(relx=0.3, rely=0.44, height=33, width=86)
-            self.ListboxMusic.place(relx=0.267, rely=0.255, relheight=0.14, relwidth=0.173)
-            self.LabelMusic.place(relx=0.033, rely=0.30, height=26, width=132)
-            self.ButtonMusic.place(relx=0.467, rely=0.28, height=33, width=48)
-            self.ButtonBackSetting.place(relx=0.75, rely=0.8, height=63, width=125)
-            self.LabelReset.place(relx=0.052, rely=0.45, height=26, width=132)
-            self.SetVolume.place(relx=0.052, rely=0.60, height=75, width=300)
-            self.LabelSetVolume.place(relx=0.58, rely=0.60, height=26, width=200)
-        else:
+        if p_what == 0:
             self.ButtonRun.place(relx=0.23, rely=0.3, height=63, width=300)
             self.ButtonSetting.place(relx=0.27, rely=0.5, height=63, width=250)
-            self.ButtonCredit.place(relx=0.27, rely=0.7, height=63, width=250)
+            self.ButtonCredit.place(relx=0.308, rely=0.7, height=63, width=200)
+            
+        if p_what == 1:            
+            self.ButtonReset.place(relx=0.053, rely=0.52, height=63, width=140)
+            self.ButtonBackSetting.place(relx=0.8, rely=0.8, height=63, width=100)
+            self.ButtonMusicSetting.place(relx=0.053, rely=0.3, height=63, width=140)
+            self.FrameSetting.place(relx=0.03, rely=0.3, height=150, width=10)
+        
+        if p_what == 2:
+            self.ListboxMusic.place(relx=0.41, rely=0.355, relheight=0.14, relwidth=0.173)
+            self.LabelMusic.place(relx=0.2, rely=0.40, height=26, width=132)
+            self.ButtonMusic.place(relx=0.6, rely=0.38, height=33, width=48)
+            self.SetVolume.place(relx=0.23, rely=0.55, height=75, width=300)
+            self.ButtonMusicBackSetting.place(relx=0.8, rely=0.8, height=63, width=100)
 
     def hide(self, p_what):
-        if p_what == 1:
-            self.ButtonReset.place_forget()
-            self.ListboxMusic.place_forget()
-            self.LabelMusic.place_forget()
-            self.ButtonMusic.place_forget()
-            self.ButtonBackSetting.place_forget()
-            self.LabelReset.place_forget()
-            self.SetVolume.place_forget()
-            self.LabelSetVolume.place_forget()
-        else:
+        if p_what == 0:
             self.ButtonRun.place_forget()
             self.ButtonSetting.place_forget()
             self.ButtonCredit.place_forget()
+
+        if p_what == 1:
+            self.ButtonReset.place_forget()
+            self.ButtonBackSetting.place_forget()
+            self.ButtonMusicSetting.place_forget()
+            self.FrameSetting.place_forget()
+
+        if p_what == 2:
+            self.ListboxMusic.place_forget()
+            self.LabelMusic.place_forget()
+            self.ButtonMusic.place_forget()
+            self.SetVolume.place_forget()
+            self.ButtonMusicBackSetting.place_forget()
+
 
 if __name__ == '__main__':
     vp_start_gui()
