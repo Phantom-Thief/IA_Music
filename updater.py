@@ -32,7 +32,7 @@ def download_directory(repository, sha, server_path):
     Download all contents at server_path with commit tag sha in
     the repository.
     """
-    contents = repository.get_dir_contents(server_path, ref=sha)
+    contents = repository.get_contents(server_path, ref=sha)
 
     for content in contents:
         print ("Processing %s" % content.path)
@@ -59,21 +59,32 @@ def download_directory_from_git(tag,directory):
     download_directory(repository, sha, directory_to_download)
 
 def updater():
-    release_tag = requests.get(
-        'http://api.github.com/repos/Phantom-Thief/IA_Music/releases/latest', verify = False
-        ).json()['tag_name'].strip()
 
     current_tag = None
     with open('version.txt','r') as f:
         current_tag = f.read().strip()
 
+    try:
+        release_tag = requests.get(
+            'http://api.github.com/repos/Phantom-Thief/IA_Music/releases/latest', verify = False
+            ).json()['tag_name'].strip()
+    except:
+        release_tag = current_tag
+
     if current_tag == release_tag: return
 
     print('Launching update')
 
-    path = os.getcwd()
-    print ("The current working directory is %s" % path)
     os.mkdir(release_tag)
+    os.chdir(release_tag)
 
+    download_directory_from_git(release_tag, 'musicologie')
+    os.chdir('..')
+    os.rmdir(current_tag)
+
+    with open('version.txt','w') as f:
+        f.write(release_tag)
+
+    print("Update successful")
     
 updater()
