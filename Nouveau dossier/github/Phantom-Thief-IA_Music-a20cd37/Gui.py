@@ -1,6 +1,7 @@
 import sys
 import shutil
 import os
+import pickle
 from tkinter import filedialog
 from main import *
 
@@ -44,6 +45,10 @@ def destroy_IMA():
 
 class IMA:
     def __init__(self, top=None):
+        try:
+            self.VSV = pickle.load(open("volume.dat", 'rb'))
+        except:
+            self.VSV = 10
 
         '''This class configures and populates the toplevel window.
            top is the toplevel containing window.'''
@@ -156,13 +161,13 @@ class IMA:
         self.LabelMusic.configure(foreground="#000000")
         self.LabelMusic.configure(text='Add your music in :')
 
-        self.VSV = 10
         self.SetVolume = tk.Scale(top)
         self.SetVolume.configure(orient='horizontal')
         self.SetVolume.configure(background="#d9d9d9")
         self.SetVolume.configure(from_=0.0)
         self.SetVolume.configure(to=100.0)
-        self.SetVolume.configure(resolution=0.1)
+        self.SetVolume.set(self.VSV)
+        self.SetVolume.configure(resolution=1)
         self.SetVolume.configure(tickinterval=50)
         self.SetVolume.configure(command=self.defVolume)
         self.SetVolume.configure(label='Volume')
@@ -223,7 +228,7 @@ class IMA:
                     except:
                         messagebox.showerror("error", "Can't import in None") 
             else:
-                messagebox.showerror("error", "pls convert this file to a .wav")
+                messagebox.showerror("error", "please convert this file to a .wav")
 
     def resetNorma(self):
         try :
@@ -245,9 +250,11 @@ class IMA:
         self.ButtonStop.update_idletasks()
 
     def stopcroix(self):
+        pickle.dump(self.VSV, open("volume.dat", 'wb'))
         stopHooker(False)
 
     def stop(self):
+        pickle.dump(self.VSV, open("volume.dat", 'wb'))
         stopHooker(False)
         self.ButtonStop.place_forget()
         self.show(0)
