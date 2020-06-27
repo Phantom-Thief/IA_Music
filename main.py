@@ -3,7 +3,6 @@ import Mouselogger
 import numpy as np
 import Request_Api as api
 import repeatedTime
-import musicologie
 import pymix
 import collections
 import pickle
@@ -20,7 +19,8 @@ g_py = None
 g_klog = None
 g_mlog = None
 g_getApi = None
-g_queue = collections.deque([0.0, 0.0, 0.0, 0.0, 0.0])
+g_queue = collections.deque([0., 0., 0., 0., 0.])
+g_degree = 0
 g_data = None
 g_api = None
 g_ApiActive=0
@@ -88,7 +88,7 @@ def startAll():
 
 def dataHooker():
     """Fills the 'g_queue' list with the different calculation functions implemented in classes."""
-    global g_klog, g_mlog, g_getApi, g_queue, g_data, g_count, g_ApiActive, g_weight
+    global g_klog, g_mlog, g_getApi, g_queue, g_data, g_count, g_ApiActive, g_weight, g_degree
     if(g_Run):
 
         database = np.asarray([
@@ -108,9 +108,18 @@ def dataHooker():
         
         new_label = iaClassification( np.asarray(database), g_weight )
 
+        #Soit 0 1 3 ==> new label
+
+
         if new_label == 1:
             g_count = 5
 
+            #pour Action
+            g_degree+=1
+        else:
+        #   pour Calm
+            g_degree-=1
+        
         if g_count:
             new_label = 1
             g_count = g_count - 1
@@ -167,7 +176,7 @@ def taillemaxqueue(max,queue):
 
 def stopAll():
     """Stops all processes."""
-    global g_klog, g_mlog, g_data, g_queue, g_file
+    global g_klog, g_mlog, g_data, g_file
     g_klog.stop()
     g_mlog.stop()
     g_data.stop()
@@ -196,26 +205,39 @@ def normalize(vector):
 
 def iaClassification(vector, weight=[160,120,80,100,2000,0]):
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
-    global g_getApi, g_ApiActive
+    global g_getApi, g_ApiActive, g_degree, g_queue
+    label = None
+    print()
+    print()
+    print(vector)
+    print(weight)
     if not len(vector) == len(weight):
         print("Warning : weight is not the same length than input vector !")
         return 0
 
     is_dead = vector[5]
     if is_dead:
-        return 3
+        label = 3
     
-    print("function")
-    print(np.sum(vector*weight))
-    state = np.sum(vector*weight)
-    if (state >= 100) :
-        return 1
-    return 0
+    else:
+        print("function")
+        print(np.sum(vector*weight))
+        state = np.sum(vector*weight)
+        if (state >= 100) :
+            label = 1
+        else : label = 0
+
+    if label==g_queue[-1]:
+        g_degree = g_degree +1
+    else :
+        g_degree = 0
+
+    return label
     
     
 def iaMusic(inputs,inertia=2):
-    global g_py, g_getApi, g_ApiActive, g_queue
-
+    global g_py, g_getApi, g_ApiActive, g_degree
+    degree= g_degree
     labels = list(collections.deque(inputs))
     label = int(labels[-1])
 
@@ -227,6 +249,7 @@ def iaMusic(inputs,inertia=2):
         g_py.add_track_from_directory(path,channel=4)
 
     if not (labels[-1] == labels[-2]):
+        g_degree=0
         g_py.kill_feeling( int(labels[-2]) )
         g_py.add_feeling(label)
 
@@ -234,7 +257,25 @@ def iaMusic(inputs,inertia=2):
         label = labels[-1]
         g_py.add_feeling(int(label),fade_in=0)
 
+    if g_degree > 0:
+        if g_degree < 5:
+          degree = "lowA"
+        elif g_degree < 9:
+          degree = "averageA"
+        else:
+          degree = "highA"
     
+    else:
+        if g_degree > -5:
+          degree = "lowC"
+        elif g_degree > -9:
+          degree = "averageC"
+        else:
+          degree = "highC"
+
+    g_py.add_track_from_directory('./'+degree)
+
+
     return g_py.get_feeling_busy()
 
 if __name__ == "__main__":
