@@ -205,7 +205,7 @@ def normalize(vector):
 
 def iaClassification(vector, weight=[160,120,80,100,2000,0]):
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
-    global g_getApi, g_ApiActive
+    global g_getApi, g_ApiActive, g_queue
     if not len(vector) == len(weight):
         print("Warning : weight is not the same length than input vector !")
         return 0
@@ -218,13 +218,14 @@ def iaClassification(vector, weight=[160,120,80,100,2000,0]):
     print(np.sum(vector*weight))
     state = np.sum(vector*weight)
     if (state >= 100) :
-        return 1
-    return 0
+        return (1,g_queue.count(1))
+    return (0,g_queue.count(0))
     
     
 def iaMusic(inputs,inertia=2):
-    global g_py, g_getApi, g_ApiActive, g_queue, g_degree
-    degree= ""
+    global g_py, g_getApi, g_ApiActive, g_queue
+    degree= inputs[1]
+    inputs = inputs[0]
     labels = list(collections.deque(inputs))
     label = int(labels[-1])
 
@@ -236,7 +237,6 @@ def iaMusic(inputs,inertia=2):
         g_py.add_track_from_directory(path,channel=4)
 
     if not (labels[-1] == labels[-2]):
-        g_degree=0
         g_py.kill_feeling( int(labels[-2]) )
         g_py.add_feeling(label)
 
@@ -244,18 +244,18 @@ def iaMusic(inputs,inertia=2):
         label = labels[-1]
         g_py.add_feeling(int(label),fade_in=0)
 
-    if g_degree > 0:
-        if g_degree < 5:
+    if degree > 0:
+        if degree < 5:
           degree = "lowA"
-        elif g_degree < 9:
+        elif degree < 9:
           degree = "averageA"
         else:
           degree = "highA"
     
     else:
-        if g_degree > -5:
+        if degree > -5:
           degree = "lowC"
-        elif g_degree > -9:
+        elif degree > -9:
           degree = "averageC"
         else:
           degree = "highC"
