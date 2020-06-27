@@ -19,7 +19,7 @@ g_py = None
 g_klog = None
 g_mlog = None
 g_getApi = None
-g_queue = collections.deque([(0.,0.), (0.,0.), (0.,0.), (0.,0.), (0.,0.)])
+g_queue = collections.deque([0., 0., 0., 0., 0.])
 g_degree = 0
 g_data = None
 g_api = None
@@ -207,6 +207,10 @@ def iaClassification(vector, weight=[160,120,80,100,2000,0]):
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
     global g_getApi, g_ApiActive, g_degree, g_queue
     label = None
+    print()
+    print()
+    print(vector)
+    print(weight)
     if not len(vector) == len(weight):
         print("Warning : weight is not the same length than input vector !")
         return 0
@@ -223,7 +227,7 @@ def iaClassification(vector, weight=[160,120,80,100,2000,0]):
             label = 1
         else : label = 0
 
-    if label==g_queue[-1][0]:
+    if label==g_queue[-1]:
         g_degree = g_degree +1
     else :
         g_degree = 0
