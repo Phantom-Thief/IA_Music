@@ -307,7 +307,7 @@ class IMA:
     def exitSetting(self, hide, show):
         self.hide(hide)
         self.show(show)
-        
+
     def show(self, p_what):
         if p_what == 0:
             self.ButtonRun.place(relx=0.23, rely=0.3, height=63, width=300)
