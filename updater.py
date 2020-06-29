@@ -49,7 +49,7 @@ def download_directory(repository, sha, server_path):
 
 
 def download_directory_from_git(tag,directory):
-    g = Github('Menchit-ai','9kRYNx#ZrCaQQWvoRZM6E^ZCC$EHwN')
+    g = Github()
 
     repository = g.get_repo(full_name_or_id='Phantom-Thief/IA_Music')
     
