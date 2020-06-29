@@ -8,11 +8,7 @@ from os.path import isfile, join
 
 class Pymix:
 
-<<<<<<< HEAD
-    def __init__(self,p_vol,pathcalm='../musiques/Calm/',pathanger='../musiques/Action/',pathjoy='../musiques/joyeux/',pathsad='../musiques/Sad/'):
-=======
-    def __init__(self,p_vol,pathcalm='musicologie/musiques/Calm/',pathanger='musicologie/musiques/Action/',pathsad='musicologie/musiques/Sad/'):
->>>>>>> 3320c3c48089b1f4a54294cbfd5dbb0b16fb01ca
+    def __init__(self,p_vol,pathcalm='/musiques/Calm/',pathanger='/musiques/Action/',pathjoy='/musiques/joyeux/',pathsad='/musiques/Sad/'):
         """The builder of the 'Pymix' class
 
         Class for creating real time soundtrack.

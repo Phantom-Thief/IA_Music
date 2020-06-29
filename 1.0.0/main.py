@@ -80,7 +80,7 @@ def startAll():
     if g_ApiActive : 
         g_getApi.update()
         g_weight = weighChamp[ champ[g_getApi.a_champ] ]
-    g_py.add_track('musicologie/musiques/effects/high_tech_start.wav')
+    g_py.add_track('musiques/effects/high_tech_start.wav')
     g_py.add_feeling('calm',fade_in=10000)
     g_data.start()
     g_api.start()
@@ -112,7 +112,6 @@ def dataHooker():
         #Soit 0 1 3 ==> new label
         
         if g_count:
-            new_label = 1
             g_count = g_count - 1
 
         g_queue.append(new_label)
@@ -127,8 +126,9 @@ def dataHooker():
         stopAll()
 
 def stopHooker(end):
-    global g_Run
+    global g_Run, g_api
     g_Run = end
+    g_api = end
 
 def checkApi():
     global g_ApiActive, g_getApi, g_vol
@@ -196,12 +196,8 @@ def normalize(vector):
 
 def iaClassification(vector, weight=[160,120,80,100,2000,0]):
     # vector = [countKeys, traveDistMouse, freqRightClic, deltaKills, deltaLife, isDead]
-    global g_getApi, g_ApiActive, g_degree, g_queue
+    global g_getApi, g_ApiActive, g_degree, g_queue, g_count
     label = None
-    print()
-    print()
-    print(vector)
-    print(weight)
     if not len(vector) == len(weight):
         print("Warning : weight is not the same length than input vector !")
         return 0
@@ -217,6 +213,9 @@ def iaClassification(vector, weight=[160,120,80,100,2000,0]):
         if (state >= 100) :
             label = 1
         else : label = 0
+
+    if g_count:
+        label = 1
 
     if label==g_queue[-1]:
         g_degree = g_degree +1
