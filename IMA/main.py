@@ -80,7 +80,7 @@ def startAll():
     if g_ApiActive : 
         g_getApi.update()
         g_weight = weighChamp[ champ[g_getApi.a_champ] ]
-    g_py.add_track('musiques/effects/high_tech_start.wav')
+    g_py.add_track('IMA/musiques/effects/high_tech_start.wav')
     g_py.add_feeling('calm',fade_in=10000)
     g_data.start()
     g_api.start()
@@ -269,8 +269,9 @@ def iaMusic(inputs,inertia=2):
     degree = choosedegree(label)
 
     if not (degree == g_old_degree) and not degree == "":
-        g_py.kill_feeling(7)
-        g_py.add_track_from_directory('musiques/'+degree+'/')
+        if degree == 'averageC': channel = 6
+        else : channel = 7
+        g_py.add_track_from_directory('IMA/musiques/'+degree+'/',channel=channel)
         g_old_degree = degree
 
     return g_py.get_feeling_busy()
