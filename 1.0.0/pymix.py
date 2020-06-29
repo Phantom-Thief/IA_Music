@@ -8,7 +8,11 @@ from os.path import isfile, join
 
 class Pymix:
 
+<<<<<<< HEAD
     def __init__(self,p_vol,pathcalm='../musiques/Calm/',pathanger='../musiques/Action/',pathjoy='../musiques/joyeux/',pathsad='../musiques/Sad/'):
+=======
+    def __init__(self,p_vol,pathcalm='musicologie/musiques/Calm/',pathanger='musicologie/musiques/Action/',pathsad='musicologie/musiques/Sad/'):
+>>>>>>> 3320c3c48089b1f4a54294cbfd5dbb0b16fb01ca
         """The builder of the 'Pymix' class
 
         Class for creating real time soundtrack.
@@ -18,9 +22,9 @@ class Pymix:
         """
         pygame.mixer.init()
         self.a_vol = p_vol
-        self.a_path = [pathcalm,pathanger,pathjoy,pathsad]
-        self.a_soundfile = (self.get_file(pathcalm),self.get_file(pathanger),self.get_file(pathjoy),self.get_file(pathsad))
-        self.a_label = {'calm':0,'anger':1,'joy':2,'sad':3}
+        self.a_path = [pathcalm,pathanger,pathsad]
+        self.a_soundfile = (self.get_file(pathcalm),self.get_file(pathanger),self.get_file(pathsad))
+        self.a_label = {'calm':0,'anger':1,'sad':3}
         self.a_sound = None
         pygame.mixer.set_num_channels(8)
         pygame.mixer.set_reserved(0)
