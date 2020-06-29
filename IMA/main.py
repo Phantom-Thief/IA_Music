@@ -251,7 +251,7 @@ def iaMusic(inputs,inertia=2):
     if g_ApiActive : event = g_getApi.output_event()
     else : event = -1
     if not event == -1:
-        path = "musicologie/musiques/effects/" + event + "/"
+        path = "/musiques/effects/" + event + "/"
         print(path)
         g_py.add_track_from_directory(path,channel=4)
 
@@ -270,7 +270,7 @@ def iaMusic(inputs,inertia=2):
 
     if not (degree == g_old_degree) and not degree == "":
         g_py.kill_feeling(7)
-        g_py.add_track_from_directory('./'+degree)
+        g_py.add_track_from_directory('musiques/'+degree+'/')
         g_old_degree = degree
 
     return g_py.get_feeling_busy()

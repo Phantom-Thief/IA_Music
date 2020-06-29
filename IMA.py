@@ -7,4 +7,3 @@ except: pass
 
 
 os.system("python IMA/Gui.py")
-quit()
