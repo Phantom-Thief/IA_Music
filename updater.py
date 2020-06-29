@@ -4,6 +4,7 @@ import json
 import zipfile
 import os
 import shutil
+import tempfile
 
 urllib3.disable_warnings()
 
@@ -75,16 +76,28 @@ def updater():
 
     print('Launching update')
 
-    os.rmdir('IMA')
-    os.mkdir('IMA')
-    os.chdir('IMA')
+    tmp = tempfile.mkdtemp()
+
+    os.chdir(tmp)
 
     download_directory_from_git(release_tag, 'IMA')
     os.chdir('..')
 
+    shutil.rmtree('/IMA', ignore_errors=True)
+    os.mkdir('IMA')
+
+    source = tmp
+    dest1 = 'IMA'
+
+    files = os.listdir(source)
+
+    for f in files:
+        shutil.move(source+f, dest1)
+
 
     with open('version.txt','w') as f:
         f.write(release_tag)
+        print(release_tag)
 
     print("Update successful")
     
