@@ -29,6 +29,7 @@ g_count = 0
 g_ApiActive = False
 g_normalize = None
 g_weight = None
+g_old_degree = "a"
 
 g_vol = None
 g_Run = True
@@ -109,16 +110,6 @@ def dataHooker():
         new_label = iaClassification( np.asarray(database), g_weight )
 
         #Soit 0 1 3 ==> new label
-
-
-        if new_label == 1:
-            g_count = 5
-
-            #pour Action
-            g_degree+=1
-        else:
-        #   pour Calm
-            g_degree-=1
         
         if g_count:
             new_label = 1
@@ -234,10 +225,31 @@ def iaClassification(vector, weight=[160,120,80,100,2000,0]):
 
     return label
     
-    
+
+def choosedegree(label):
+    global g_degree
+    degree = ""
+    if label == 1:
+        if g_degree < 5:
+            degree = "lowA"
+        elif g_degree < 9:
+            degree = "averageA"
+        else:
+            degree = "highA"
+    elif label == 0:
+        if g_degree < 5:
+            degree = "lowC"
+        elif g_degree < 9:
+            degree = "averageC"
+        else:
+            degree = "highC"
+    else:
+        return degree
+
+    return degree
+
 def iaMusic(inputs,inertia=2):
-    global g_py, g_getApi, g_ApiActive, g_degree
-    degree= g_degree
+    global g_py, g_getApi, g_ApiActive, g_degree, g_old_degree
     labels = list(collections.deque(inputs))
     label = int(labels[-1])
 
@@ -250,31 +262,21 @@ def iaMusic(inputs,inertia=2):
 
     if not (labels[-1] == labels[-2]):
         g_degree=0
+        g_py.kill_feeling(7)
         g_py.kill_feeling( int(labels[-2]) )
         g_py.add_feeling(label)
 
     if not (g_py.is_busy()):
         label = labels[-1]
         g_py.add_feeling(int(label),fade_in=0)
-
-    if g_degree > 0:
-        if g_degree < 5:
-          degree = "lowA"
-        elif g_degree < 9:
-          degree = "averageA"
-        else:
-          degree = "highA"
     
-    else:
-        if g_degree > -5:
-          degree = "lowC"
-        elif g_degree > -9:
-          degree = "averageC"
-        else:
-          degree = "highC"
+    
+    degree = choosedegree(label)
 
-    g_py.add_track_from_directory('./'+degree)
-
+    if not (degree == g_old_degree) and not degree == "":
+        g_py.kill_feeling(7)
+        g_py.add_track_from_directory('./'+degree)
+        g_old_degree = degree
 
     return g_py.get_feeling_busy()
 

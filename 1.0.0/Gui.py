@@ -159,7 +159,8 @@ class IMA:
                                                 
                                                 Have fun and win your games."""
         self.LabelCredit.insert('1.0', text)
-
+        self.LabelCredit.configure(state='disabled')
+        
         self.ButtonBackSetting = tk.Button(top)
         self.ButtonBackSetting.configure(activebackground="#b0b6e1")
         self.ButtonBackSetting.configure(activeforeground="#000000")

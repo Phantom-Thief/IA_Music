@@ -57,7 +57,9 @@ class Pymix:
         """
         listfile = self.get_file(pathdirectory)
         sound = pathdirectory + random.choice(listfile)
-        pygame.mixer.Channel(channel).play( pygame.mixer.Sound( sound ),fade_ms=fade_in )
+        play = pygame.mixer.Sound( sound )
+        play.set_volume(self.a_vol)
+        pygame.mixer.Channel(channel).play( play,fade_ms=fade_in )
 
     def add_feeling(self,feeling,fade_in=3000,rand=True,file=None):
         """
