@@ -49,7 +49,7 @@ def download_directory(repository, sha, server_path):
 
 
 def download_directory_from_git(tag,directory):
-    g = Github()
+    g = Github('Menchit-ai','9kRYNx#ZrCaQQWvoRZM6E^ZCC$EHwN')
 
     repository = g.get_repo(full_name_or_id='Phantom-Thief/IA_Music')
     
@@ -76,17 +76,17 @@ def updater():
 
     print('Launching update')
 
-    tmp = tempfile.mkdtemp()
+    os.mkdir('TMP')
 
-    os.chdir(tmp)
+    os.chdir('TMP')
 
     download_directory_from_git(release_tag, 'IMA')
     os.chdir('..')
 
-    shutil.rmtree('/IMA', ignore_errors=True)
+    shutil.rmtree('IMA', ignore_errors=True)
     os.mkdir('IMA')
 
-    source = tmp
+    source = 'TMP/'
     dest1 = 'IMA'
 
     files = os.listdir(source)
@@ -98,6 +98,8 @@ def updater():
     with open('version.txt','w') as f:
         f.write(release_tag)
         print(release_tag)
+
+    shutil.rmtree('TMP', ignore_errors=True)
 
     print("Update successful")
     
