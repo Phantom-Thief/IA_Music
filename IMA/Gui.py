@@ -22,7 +22,7 @@ except ImportError:
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
     root = tk.Tk()
-    root.iconbitmap('1.0.0/LogoIMA.ico')
+    root.iconbitmap('IMA/LogoIMA.ico')
     top = IMA(root)
     root.mainloop()
     top.stopcroix()
