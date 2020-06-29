@@ -274,6 +274,7 @@ def iaMusic(inputs,inertia=2):
     degree = choosedegree(label)
 
     if not (degree == g_old_degree) and not degree == "":
+        g_py.kill_feeling(7)
         g_py.add_track_from_directory('./'+degree)
         g_old_degree = degree
 
