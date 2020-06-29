@@ -229,14 +229,14 @@ def choosedegree(label):
     global g_degree
     degree = ""
     if label == 1:
-        if g_degree >= 5 and g_degree < 13:
+        if g_degree >= 5 and g_degree < 9:
             degree = "averageA"
-        elif g_degree >= 13:
+        elif g_degree >= 9:
             degree = "highA"
     elif label == 0:
-        if g_degree >= 7 and g_degree < 16:
+        if g_degree >= 5 and g_degree < 9:
             degree = "averageC"
-        elif g_degree >= 16:
+        elif g_degree >= 9:
             degree = "highC"
     else:
         return degree
