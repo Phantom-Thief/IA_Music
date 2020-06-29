@@ -102,5 +102,3 @@ def updater():
     shutil.rmtree('TMP', ignore_errors=True)
 
     print("Update successful")
-    
-updater()
