@@ -75,12 +75,13 @@ def updater():
 
     print('Launching update')
 
-    os.mkdir(release_tag)
-    os.chdir(release_tag)
+    os.rmdir('IMA')
+    os.mkdir('IMA')
+    os.chdir('IMA')
 
-    download_directory_from_git(release_tag, 'musicologie')
+    download_directory_from_git(release_tag, 'IMA')
     os.chdir('..')
-    os.rmdir(current_tag)
+
 
     with open('version.txt','w') as f:
         f.write(release_tag)
