@@ -257,6 +257,7 @@ def iaMusic(inputs,inertia=2):
 
     if not (labels[-1] == labels[-2]):
         g_degree=0
+        g_py.kill_feeling(6)
         g_py.kill_feeling(7)
         g_py.kill_feeling( int(labels[-2]) )
         g_py.add_feeling(label)
