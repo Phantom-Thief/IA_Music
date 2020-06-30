@@ -10,6 +10,11 @@ import psutil
 import time
 from Dictionnaire import weighChamp, champ
 
+#import tensorflow as tf
+#from tensorflow import keras
+
+#g_model = keras.models.load_model('model.h5')
+
 g_py = None
 g_klog = None
 g_mlog = None
@@ -75,7 +80,7 @@ def startAll():
     if g_ApiActive : 
         g_getApi.update()
         g_weight = weighChamp[ champ[g_getApi.a_champ] ]
-    g_py.add_track('IMA/musiques/effects/high_tech_start.wav')
+    g_py.add_track('/musiques/effects/high_tech_start.wav')
     g_py.add_feeling('calm',fade_in=10000)
     g_data.start()
     g_api.start()
@@ -252,7 +257,6 @@ def iaMusic(inputs,inertia=2):
 
     if not (labels[-1] == labels[-2]):
         g_degree=0
-        g_py.kill_feeling(6)
         g_py.kill_feeling(7)
         g_py.kill_feeling( int(labels[-2]) )
         g_py.add_feeling(label)
