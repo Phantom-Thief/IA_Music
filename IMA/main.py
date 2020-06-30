@@ -10,11 +10,6 @@ import psutil
 import time
 from Dictionnaire import weighChamp, champ
 
-#import tensorflow as tf
-#from tensorflow import keras
-
-#g_model = keras.models.load_model('model.h5')
-
 g_py = None
 g_klog = None
 g_mlog = None
@@ -272,7 +267,7 @@ def iaMusic(inputs,inertia=2):
     if not (degree == g_old_degree) and not degree == "":
         if degree == 'averageC': channel = 6
         else : channel = 7
-        g_py.add_track_from_directory('IMA/musiques/'+degree+'/',channel=channel)
+        g_py.add_track_from_directory('/musiques/'+degree+'/',channel=channel)
         g_old_degree = degree
 
     return g_py.get_feeling_busy()

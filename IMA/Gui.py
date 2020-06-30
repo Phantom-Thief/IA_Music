@@ -260,12 +260,12 @@ class IMA:
             typefile = MusicFile[0].split('/')[-1].split('.')[-1]
             if typefile == 'wav':
                 try:
-                    shutil.copy2(MusicFile,"./musicologie/musiques/"+self.a_selection+"/")
+                    shutil.copy2(MusicFile,"/musiques/"+self.a_selection+"/")
                     messagebox.showinfo("Done","The music is now in "+ str(self.a_selection))
                 except:
                     try:
                         for i in MusicFile:
-                            shutil.copy2(i,"./musicologie/musiques/"+self.a_selection+"/")
+                            shutil.copy2(i,"/musiques/"+self.a_selection+"/")
                         messagebox.showinfo("Done","musics are now in "+ str(self.a_selection))
                     except:
                         messagebox.showerror("error", "Can't import in None") 
